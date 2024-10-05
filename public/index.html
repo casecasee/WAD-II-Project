@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In Page</title>
+
+    <!-- vue CDN -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+</head>
+<body>
+    <div id="app">
+
+      <h1>Sign in or Sign up</h1>
+
+      Email: 
+      <input type="email" placeholder="email" id="email" v-model="email">
+      <br>
+      Password:
+      <input type="password" placeholder="pwd" id="pwd" v-model="pwd">
+      <br>
+      <button id="signInButton">Sign In</button>
+      <button id="signUpButton">Sign Up</button>
+
+
+      
+    </div>
+    <script type="module" src="signIn.js"></script>
+    
+</body>
+</html>
