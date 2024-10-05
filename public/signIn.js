@@ -27,7 +27,7 @@
               createUserWithEmailAndPassword(auth, email, pwd)
               .then((userCredentials) => {
                   const user = userCredentials.user;
-                  alert('Welcome' + user['email']);
+                  alert('Welcome ' + user['email']);
                   window.location.href = 'content.html'
           
               })
@@ -46,7 +46,7 @@
             .then((userCredentials) => {
                 const user = userCredentials.user;
                 console.log(user);
-                alert('Welcome' + user['email']);
+                alert('Welcome ' + user['email']);
                 window.location.href = 'content.html'
         
             })
