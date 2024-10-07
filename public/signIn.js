@@ -60,5 +60,4 @@
 
       } // methods
   });
-  let lol = 'test';
   const vm = app.mount('#app'); 
