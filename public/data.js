@@ -18,6 +18,8 @@ let data = {
     age: 20
 };
 
+var hello = 'hi';
+
 addDoc(table, data)
     .then( () => {
         console.log('added')
