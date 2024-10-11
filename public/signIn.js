@@ -1,60 +1,68 @@
   // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
   import { getAuth,
            createUserWithEmailAndPassword, 
            signInWithEmailAndPassword,
            onAuthStateChanged,
            signOut } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
   
-  import { config } from './stuff.js';
+  import { firebaseApp } from './stuff.js';
+
+  import { add } from './functions.js';
 
   // Initialize Firebase
-  const firebaseApp = initializeApp(config);
   const auth = getAuth(firebaseApp);
 
   const app = Vue.createApp({ 
       data() { 
           return { 
                 email: '',
-                pwd: ''
+                pwd: '', 
+                name: ''
           };
       },
       
       methods: {
-          async signUp() {
+           async signUp() {
+
               const email = this.email;
               const pwd = this.pwd;
-              createUserWithEmailAndPassword(auth, email, pwd)
-              .then((userCredentials) => {
-                  const user = userCredentials.user;
-                  alert('Welcome ' + user['email']);
-                  window.location.href = 'content.html'
-          
-              })
-              .catch((error) => {
+              const name = this.name;
+
+              try {
+                const userCredentials = await createUserWithEmailAndPassword(auth, email, pwd);
+                const user = userCredentials.user;
+                const UID = user['uid'];
+
+                await add(firebaseApp, UID, email, name);
+                alert('Welcome ' + user['email']);
+                window.location.href = 'homepage.html';
+              }
+
+              catch (error) {
                   const errCode = error.code;
                   const errMsg = error.message;
                   console.log(errCode + errMsg);
-              })    
+              }  
           },
 
           async signIn() {
 
             const email = this.email;
             const pwd = this.pwd;
-            signInWithEmailAndPassword(auth, email, pwd)
-            .then((userCredentials) => {
+
+            try {
+                const userCredentials = await signInWithEmailAndPassword(auth, email, pwd)
                 const user = userCredentials.user;
                 console.log(user);
                 alert('Welcome ' + user['email']);
-                window.location.href = 'content.html'
-        
-            })
-            .catch((error) => {
+                window.location.href = 'homepage.html';
+            }
+
+            catch(error) {
                 const errCode = error.code;
                 const errMsg = error.message;
                 console.log(errCode + errMsg);
-            })
+            };
 
           }
 
