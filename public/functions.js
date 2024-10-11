@@ -10,7 +10,8 @@ export const add = async function addUserToTable(app, UID, email, name) {
     const data = {
         'uid' : UID,
         'email' : email, 
-        'name' : name
+        'name' : name,
+        'trips': []
     };
 
     try {
