@@ -1,0 +1,318 @@
+<!-- AIzaSyCDZX8FC6DFwa9EQvCIxoCLgN_oz41wB98
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Attractions</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    .card {
+      margin-bottom: 20px;
+      height: 400px; /* Fixed height for all cards */
+    }
+    .card-img-top {
+      height: 200px; /* Fixed height for images */
+      object-fit: cover; /* Crop images to cover */
+    }
+    #explorationSites {
+      display: none;
+    }
+  </style>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCDZX8FC6DFwa9EQvCIxoCLgN_oz41wB98&libraries=places"></script>
+</head>
+<body>
+
+<div class="container mt-5">
+  <h1 class="text-center">Explore Sites in <span id="countryName"></span></h1>
+
+  <div id="explorationSites" class="mt-5">
+    <h2>Exploration Sites</h2>
+    <div id="sitesRow" class="row">
+      Cards will be dynamically added here
+    </div>
+  </div>
+
+  <p id="noSites" class="text-center" style="display: none;">No sites available for this country.</p>
+</div>
+
+<script>
+  // Function to extract query parameter from the URL
+  function getQueryParam(param) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(param);
+  }
+
+  // Get the selected country from the URL
+  const selectedCountry = getQueryParam('country');
+
+  // Display the selected country name on the page
+  document.getElementById('countryName').textContent = selectedCountry;
+
+  // Fetch country coordinates from REST Countries API
+  async function getCountryCoordinates(countryName) {
+    const response = await fetch(`https://restcountries.com/v3.1/name/${countryName}`);
+    const data = await response.json();
+    const country = data[0];
+
+    return {
+      lat: country.latlng[0], // Latitude
+      lon: country.latlng[1]  // Longitude
+    };
+  }
+
+  // Function to fetch nearby attractions using Google Places API
+  function getAttractions(lat, lon) {
+    let service = new google.maps.places.PlacesService(document.createElement('div'));
+
+    let request = {
+      location: new google.maps.LatLng(lat, lon),
+      radius: '10000',
+      type: ['tourist_attraction']
+    };
+
+    service.nearbySearch(request, function(results, status) {
+      if (status === google.maps.places.PlacesServiceStatus.OK) {
+        if (results.length > 0) {
+          showSites(results);
+        } else {
+          document.getElementById('noSites').style.display = 'block';
+        }
+      } else {
+        console.error('Places API Error:', status);
+      }
+    });
+  }
+
+  // Display the exploration sites as cards
+  function showSites(sites) {
+    const sitesRow = document.getElementById('sitesRow');
+    sitesRow.innerHTML = '';
+
+    let hasSites = false;
+
+    sites.forEach(site => {
+      if (site.photos && site.photos.length > 0) {
+        const imgUrl = site.photos[0].getUrl({ maxWidth: 300, maxHeight: 200 });
+
+        const cardHtml = `
+          <div class="col-md-4">
+            <div class="card">
+              <img class="card-img-top" src="${imgUrl}" alt="${site.name}">
+              <div class="card-body">
+                <h5 class="card-title">${site.name}</h5>
+                <p class="card-text">${site.types.join(', ')}</p>
+              </div>
+            </div>
+          </div>
+        `;
+        sitesRow.innerHTML += cardHtml;
+        hasSites = true;
+      }
+    });
+
+    if (hasSites) {
+      document.getElementById('explorationSites').style.display = 'block';
+      document.getElementById('noSites').style.display = 'none';
+    } else {
+      document.getElementById('noSites').style.display = 'block';
+      document.getElementById('explorationSites').style.display = 'none';
+    }
+  }
+
+  // Fetch and display sites for the selected country
+  async function displaySitesForCountry() {
+    if (selectedCountry) {
+      const { lat, lon } = await getCountryCoordinates(selectedCountry);
+      getAttractions(lat, lon);
+    } else {
+      alert('No country selected.');
+    }
+  }
+
+  // Show sites for the selected country when the page loads
+  displaySitesForCountry();
+</script>
+
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore Attractions</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #F5F5DC;
+            color: #333;
+            font-family: 'Arial', sans-serif;
+            padding: 20px;
+        }
+        .title {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            color: black;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+            font-weight: bold;
+        }
+        .attraction-card {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: rgba(0, 0, 0, 0.6); /* Slightly darker for better text visibility */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            height: 320px; 
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden; /* Ensures the image fits within the card */
+        }
+        .attraction-card h5,
+        .attraction-card p {
+            color: white;
+            margin: 0;
+            z-index: 1; /* Ensures text is above background */
+        }
+        .attraction-card h5 {
+            text-transform: uppercase;
+            font-size: 1.25em;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            font-weight: bold;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
+        }
+        .attraction-card p {
+            font-size: 1em;
+            font-weight: bold;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+        }
+        .attraction-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('');
+            background-size: cover; 
+            background-position: center; 
+            z-index: -1; 
+            opacity: 0.7; 
+        }
+
+        .navbar{
+          background-color: rgba(245, 245, 220, 0.5);
+          width: auto;
+        }
+
+        .navbar-brand{
+          font-size: 1.5em;
+          font-weight: bold;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Nav bar -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+      <a class="navbar-brand" href="#">ROAMEO</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+              <li class="nav-item">
+                  <a class="nav-link" href="#">Home</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="#">Community Feed</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="#">My Trip</a>
+              </li>
+          </ul>
+      </div>
+    </nav>
+
+    <h1 class="title">Explore Attractions in <span id="countryName"></span></h1>
+
+    <div class="container">
+        <div class="row" id="attractionsList">
+            <!-- Attraction cards will be inserted here -->
+        </div>
+    </div>
+
+    <script>
+        // Sample data for attractions in different countries
+        const attractionsData = {
+            France: [
+                { name: "Eiffel Tower", image: "countryPics/eiffel_tower.jpg", description: "Icon of Paris with stunning city views." },
+                { name: "Louvre Museum", image: "countryPics/louvre_museum.jpg", description: "Home to Mona Lisa and thousands of other artworks." },
+                { name: "Palace of Versailles", image: "countryPics/palace_of_versailles.jpg", description: "Opulent architecture with grand gardens." },
+                { name: "Mont Saint-Michel", image: "countryPics/mont_saint_michel.jpg", description: "A picturesque island commune in Normandy." },
+                { name: "Sainte Chapelle", image: "countryPics/sainte_chapelle.jpg", description: "Originally, 22 relics were acquired by Saint-Louis. There are now only three: a fragment of the cross, a nail, and the crown of thorns." }
+            ],
+            Italy: [
+                { name: "Colosseum", image: "countryPics/colosseum.jpg", description: "Ancient amphitheater in Rome for gladiatorial games." },
+                { name: "Venice Canals", image: "countryPics/venice_canals.jpg", description: "Charming gondola-lined canals of Venice." },
+                { name: "Leaning Tower of Pisa", image: "countryPics/leaning_tower_of_pisa.jpg", description: "Famous leaning tower in Pisa." }
+            ],
+            Japan: [
+                { name: "Mount Fuji", image: "countryPics/mount_fuji.jpg", description: "Japan's highest peak and an active volcano." },
+                { name: "Kyoto Temples", image: "countryPics/kyoto_temples.jpg", description: "Historical temples with beautiful architecture." },
+                { name: "Tokyo Skytree", image: "countryPics/tokyo_skytree.jpg", description: "Tall observation tower with panoramic views of Tokyo." }
+            ]
+        };
+
+        const getCountryFromUrl = () => {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('country');
+        };
+
+        const loadAttractions = (country) => {
+            const attractions = attractionsData[country];
+            const attractionsList = document.getElementById('attractionsList');
+            const countryName = document.getElementById('countryName');
+
+            if (attractions) {
+                countryName.textContent = country;
+                attractionsList.innerHTML = '';  // Clear existing items
+
+                attractions.forEach(attraction => {
+                    const card = document.createElement('div');
+                    card.className = 'col-md-4';
+                    card.innerHTML = `
+                        <div class="attraction-card" style="background-image: url('${attraction.image}')">
+                            <h5>${attraction.name}</h5>
+                            <p>${attraction.description}</p>
+                        </div>
+                    `;
+                    attractionsList.appendChild(card);
+                });
+            } else {
+                countryName.textContent = 'Unknown';
+                attractionsList.innerHTML = `<p>No attractions available for this country.</p>`;
+            }
+        };
+
+        // Initialize page by loading attractions
+        const selectedCountry = getCountryFromUrl();
+        if (selectedCountry) {
+            loadAttractions(selectedCountry);
+        } else {
+            document.getElementById('countryName').textContent = 'Unknown';
+        }
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
