@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Hotels</title>
+    <style>
+        body {
+            background-color: #F5F5DC;
+            color: #333;
+            font-family: 'Arial', sans-serif;
+            padding: 20px;
+        }
+        .title {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            color: black;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+            font-weight: bold;
+        }
+        .navbar{
+          background-color: rgba(245, 245, 220, 0.5);
+          width: auto;
+        }
+
+        .navbar-brand{
+          font-size: 1.5em;
+          font-weight: bold;
+        }
+
+.wrapper {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  gap: 40px; /* Adjust the spacing between the two sections */
+}
+
+.budget-tracker-section,
+.calendar-section {
+  text-align: center;
+}
+
+.progress-ring {
+  width: 150px;
+  height: 150px;
+  position: relative;
+}
+
+.progress-ring-circle {
+  width: 100%;
+  height: 100%;
+  background: conic-gradient(#4caf50 0% 0%, #ccc 0% 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.progress-text {
+  position: absolute;
+  text-align: center;
+}
+
+.progress-text span {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.input-section {
+  margin-top: 20px;
+}
+
+.input-section input {
+  margin: 0 10px;
+  padding: 5px;
+}
+
+button {
+  padding: 5px 10px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+.calendar-section input {
+  padding: 5px;
+  margin: 5px;
+}
+
+
+    </style>
+</head>
+<body>
+    <!-- main nav bar -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <a class="navbar-brand" href="#">ROAMEO</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="homepage.html">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="community.html">Community Feed</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="mytrips.html">My Trip</a>
+                </li>
+            </ul>
+        </div>
+      </nav>
+
+
+    <h1 class="title">Hotels</h1>
+
+
+    <!-- start and end date -->
+    <div class="date-picker">
+        <label for="start-date">Start: </label>
+        <input type="date" id="start-date">
+        <label for="end-date">End: </label>
+        <input type="date" id="end-date">
+    </div>
+
+    <!-- budget tracker -->
+    <div class="wrapper">
+        <div class="budget-tracker-section">
+          <div class="progress-ring">
+            <div class="progress-ring-circle">
+              <div class="progress-text">
+                <span id="progress-value">0%</span>
+              </div>
+            </div>
+          </div>
+          <div class="input-section">
+            <label for="budget">Budget: $</label>
+            <input type="number" id="budget" value="1000">
+            <label for="spending">Spending: $</label>
+            <input type="number" id="spending" value="200">
+            <button onclick="updateBudget()">Update Tracker</button>
+          </div>
+        </div>
+    
+      <script src="budget.js"></script>
+    <!-- comparisons -->
+</body>
+</html>
