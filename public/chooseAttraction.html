@@ -145,9 +145,10 @@
                 <form id="countryForm" @submit.prevent="submit">
                     <div class="form-group">
                         <label for="countrySelect">Select a Country to Explore:</label>
-                        <select v-model='selectedCountry' class="form-control" id="countrySelect">
-                            <option value="">Where to?</option>
-                            <option v-for="country in countries"> {{country}} </option>
+                        <input v-model="entry" @keyup="fetchCountries()" type="text" placeholder="Where to?" class="form-control">
+                        <select v-model='selectedCountry' class="form-control" id="countrySelect" size="5" @click="change">
+                            <!-- <option value="">Where to?</option> -->
+                            <option v-for="country in countries" @click="change(this.value)"> {{country}} </option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -212,7 +213,8 @@
         data() { 
             return { 
             countries: [],
-            selectedCountry: ''
+            selectedCountry: '',
+            entry: ''
             };
         }, 
         mounted() { 
@@ -221,8 +223,17 @@
         methods: {
             async fetchCountries() {
                 try {
+                    let all = [];
                     const response = await axios.get('https://restcountries.com/v3.1/all');
-                    this.countries = response.data.map(country => country.name.common);
+                    // this.countries = response.data.map(country => country.name.common);
+                    for (country of response.data) {
+                        if (country.name.common.startsWith(this.entry)) {
+                            all.push(country.name.common);
+                        }
+                    }
+                    this.countries = all;
+
+
                 } 
                 catch (error) {
                     console.error('Error fetching countries:', error);
@@ -230,7 +241,12 @@
             },
             submit() {
                 console.log('here');
-                window.location.href = 'attractions.html?country=' + this.selectedCountry; 
+                window.location.href = 'attractions.html?country=' + this.entry; 
+            },
+            change() {
+                console.log('gdsfa');
+                this.entry = this.selectedCountry;
+
             }
         }
         });
