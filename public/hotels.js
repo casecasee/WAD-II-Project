@@ -16,3 +16,11 @@ function updateBudget() {
     // Update the text inside the ring
     document.getElementById('progress-value').innerText = `${Math.round(cappedPercentage)}%`;
   }
+
+function addHotel() {
+  const button = document.createElement('button');
+  button.className= "book-btn";
+  button.textContent = "Book";
+  button.setAttribute('aria-label', 'Book Now');
+  return button;
+}
