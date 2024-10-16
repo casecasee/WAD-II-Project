@@ -64,6 +64,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Travel Explorer</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Vue 3 -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <!-- Axios -->
+    <script src='https://unpkg.com/axios/dist/axios.min.js'></script>
+    
     <style>
         body {
             margin: 0;
@@ -132,19 +137,18 @@
     </style>
 </head>
 <body>
-
+    <div id="app">
     <div class="col-md-12 container">
         <h1 class="title">Choose Your Destination</h1>
         <div class="row justify-content-center">
             <div class="col-md-12 form-container">
-                <form id="countryForm">
+                <form id="countryForm" @submit.prevent="submit">
                     <div class="form-group">
                         <label for="countrySelect">Select a Country to Explore:</label>
-                        <select class="form-control" id="countrySelect">
-                            <option value="">Where to?</option>
-                            <option value="France">France</option>
-                            <option value="Italy">Italy</option>
-                            <option value="Japan">Japan</option>
+                        <input v-model="entry" @keyup="fetchCountries()" type="text" placeholder="Where to?" class="form-control">
+                        <select v-model='selectedCountry' class="form-control" id="countrySelect" size="5" @click="change">
+                            <!-- <option value="">Where to?</option> -->
+                            <option v-for="country in countries" @click="change(this.value)"> {{country}} </option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -169,7 +173,7 @@
                             </div>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-block">Start Planning</button>
+                    <button @click='submit()' class="btn btn-block">Start Planning</button>
                 </form>
             </div>
         </div>
@@ -190,19 +194,64 @@
           <span class="sr-only">Next</span>
       </a> -->
   </div>
+</div>
   
 
     <script>
         // Handle form submission and redirect to the attractions page
-        document.getElementById('countryForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const selectedCountry = document.getElementById('countrySelect').value;
-            if (selectedCountry) {
-                window.location.href = `attractions.html?country=${selectedCountry}`;
-            } else {
-                alert('Please select a country');
+        // document.getElementById('countryForm').addEventListener('submit', function(e) {
+        //     e.preventDefault();
+        //     const selectedCountry = document.getElementById('countrySelect').value;
+        //     if (selectedCountry) {
+        //         window.location.href = `attractions.html?country=${selectedCountry}`;
+        //     } else {
+        //         alert('Please select a country');
+        //     }
+        // });
+
+        const app = Vue.createApp({ 
+        data() { 
+            return { 
+            countries: [],
+            selectedCountry: '',
+            entry: ''
+            };
+        }, 
+        mounted() { 
+            this.fetchCountries();
+        },
+        methods: {
+            async fetchCountries() {
+                try {
+                    let all = [];
+                    const response = await axios.get('https://restcountries.com/v3.1/all');
+                    // this.countries = response.data.map(country => country.name.common);
+                    for (country of response.data) {
+                        if (country.name.common.startsWith(this.entry)) {
+                            all.push(country.name.common);
+                        }
+                    }
+                    this.countries = all;
+
+
+                } 
+                catch (error) {
+                    console.error('Error fetching countries:', error);
+                };
+            },
+            submit() {
+                console.log('here');
+                window.location.href = 'attractions.html?country=' + this.entry; 
+            },
+            change() {
+                console.log('gdsfa');
+                this.entry = this.selectedCountry;
+
             }
+        }
         });
+        const vm = app.mount('#app');
+
     </script>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" defer></script>
