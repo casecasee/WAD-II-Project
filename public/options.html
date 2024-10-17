@@ -7,15 +7,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Travel Choices</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=New+Amsterdam">
 
     <style>
         body {
             height: 100vh;
-            background: linear-gradient(135deg, beige, #e09d7e);
+            background: linear-gradient(135deg, beige, #ffbfa1);
             display: flex;
             justify-content: center;
             align-items: center;
-            font-family: 'Arial', sans-serif;
+            /* font-family: Georgia, 'Times New Roman', Times, serif; */
         }
 
         /* Nav bar */
@@ -25,7 +26,7 @@
             position: fixed;
             top: 0;
             padding: 10px;
-            border-bottom: 1px solid #ddd;
+            border-bottom: 2px solid #ddd;
         }
 
         .navbar-brand {
@@ -38,6 +39,7 @@
         }
 
         .buttons-container {
+            font-family: Arial, Helvetica, sans-serif;
             text-align: center;
             background-color: rgba(255, 255, 255, 0.9); 
             padding: 40px;
@@ -54,11 +56,11 @@
             border: none;
             border-radius: 10px;
             font-size: 19px;
-            display: flex;
-            align-items: center;
+            /* display: flex; */
+            /* align-items: center; */
             justify-content: center;
             transition: background-color 0.3s ease, transform 0.2s ease;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 8px 10px rgba(0, 0, 0, 0.1);
         }
 
         .btn:hover {
@@ -67,11 +69,22 @@
         }
 
         .btn img {
-            height: 30px;
+            height: 50px;
             margin-right: 10px;
         }
 
+        a{
+            text-decoration: none;
+            color: black;
+        }
+
+        a:hover{
+            text-decoration: none;
+            color: white;
+        }
+
         h1 {
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
             font-size: 40px;
             color: #333;
             margin-bottom: 30px;
@@ -91,20 +104,20 @@
 
     <!-- Nav bar -->
     <nav class="navbar navbar-expand-lg navbar-light">
-        <a class="navbar-brand" href="homepage.html">ROAMEO</a>
+        <a class="navbar-brand" href="homepage.html" style = "font-family: 'New Amsterdam', sans-serif; font-size: 35px;">ROAMEO</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Home</a>
+                    <a class="nav-link" href="homepage.html">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Community Feed</a>
+                    <a class="nav-link" href="communityFeed.html">Community Feed</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">My Trip</a>
+                    <a class="nav-link" href="mytrips.html">My Trip</a>
                 </li>
             </ul>
         </div>
@@ -112,15 +125,17 @@
 
     <!-- Main buttons section -->
     <div class="buttons-container">
-        <h1>Plan Your Trip</h1>
+        <h1>PLAN YOUR TRIP</h1>
         <div>
-            <button id="flight" class="btn"><img src="countryPics/ticket_sign.png" alt="Flight Icon">FLIGHT</button>
+            <a href="hotels.html"><button id="hotel" class="btn"><img src="countryPics/hotel_sign.png" alt="Hotel Icon"><a href="hotels.html">HOTEL</button></a>
         </div>
+
         <div>
-            <button id="hotel" class="btn"><img src="countryPics/hotel_sign.png" alt="Hotel Icon">HOTEL</button>
+            <a href = "flights.html"><button id="flight" class="btn"><img src="countryPics/ticket_sign.png" alt="Flight Icon">FLIGHT</button></a>
         </div>
+
         <div>
-            <button id="attractions" class="btn"><img src="countryPics/attraction_sign.png" alt="Attractions Icon">ATTRACTIONS</button>
+            <a href = "attractions.html"><button id="attractions" class="btn"><img src="countryPics/attraction_sign.png" alt="Attractions Icon">ATTRACTIONS</button></a>
         </div>
     </div>
 
