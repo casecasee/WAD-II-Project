@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBqbv7BqX1_7CcpPT80locaYJ3fnsdC-Sg&libraries=places,marker&callback=getImgs" defer></script>
+    <!-- Axios -->
+    <script src='https://unpkg.com/axios/dist/axios.min.js'></script>
+    
+</head>
+<body>
+    <div id="imgs">
+
+    </div>
+
+    <script>
+        async function getCountryCoordinates(countryName) {
+            const response = await axios.get(`https://restcountries.com/v3.1/name/${countryName}`);
+            const data = response.data;
+            const country = data[0];
+            console.log
+
+            return {
+                lat: country.latlng[0], // Latitude
+                lon: country.latlng[1]  // Longitude
+            };
+        }
+
+        async function getImgs() {
+            // const info = await getCountryCoordinates('France')
+            // console.log(info);
+            // const lat = info.lat;
+            // const long = info.lon;
+            const lat = 1.3521;
+            const long = 103.8198;
+
+            console.log(lat);
+            console.log(long);
+
+            var loc = new google.maps.LatLng(lat, long);
+
+            const service = new google.maps.places.PlacesService(document.createElement('div'));
+
+            const request = {
+                location: loc,
+                radius: '20000',
+                type: ['tourist_attraction']
+                };
+
+            service.nearbySearch(request, handleResponse);
+        }
+
+        function handleResponse(results, status) {
+            // results = results.slice(0, 5);
+            destination = document.getElementById('imgs');
+                if (status === google.maps.places.PlacesServiceStatus.OK) {
+                    // console.log(results);
+                    results.forEach(attraction => {
+                        name = attraction.name
+                        // console.log(name);
+                        url = `https://www.googleapis.com/customsearch/v1?key=AIzaSyAnMQUrtx33-PNEd45HT4v5fiPI3I4qyVY&cx=e0d39b341ae854a03&q=${name}`;
+                        axios.get(url)
+                            .then(response => {
+                                // console.log(response.data);
+                                result = response.data.items[0];
+                                image = result.pagemap.cse_image[0].src;
+                                // console.log(image);
+                                el = document.createElement('img');
+                                el.setAttribute('src', image);
+                                destination.appendChild(el);
+
+                            })
+                            .catch( error => {
+                                console.log(error.message);
+                            });
+                    });
+
+                } 
+                else {
+                    console.error('PlacesService search failed due to:', status);
+                }
+        }
+    </script>
+    
+</body>
+</html>
