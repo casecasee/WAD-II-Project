@@ -1,56 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ROAMEO</title>
-
     <!-- vue CDN -->
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <!-- <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     
-    <script type="module" src="checkauth.js"></script>
-
-</head>
-<body>
-    <!-- <div id="app">
-        <ul>
-            <li v-for="item of items"> {{item}} </li>
-        </ul>
-    </div> -->
-
-    <!-- nav bar (home -> homepage.html, social->social.html, my trips->mytrips.html)  -->
-    <nav class="navbar navbar-expand-lg navbar-light">
-        <a class="navbar-brand" href="#">ROAMEO</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="homepage.html">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="social.html">Community Feed</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="mytrips.html">My Trip</a>
-                </li>
-            </ul>
-        </div>
-      </nav>
-
-    <!-- carousel  -->
-
-
-
-    <!-- add trip button -> addtrip.html  -->
-
-
-    <!-- <script type="module" src="data.js"></script> -->
-</body>
-</html>
-
+    <script type="module" src="checkauth.js"></script> -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -221,19 +173,19 @@
             <img class="d-block w-100" src="https://media.timeout.com/images/106181719/image.jpg" alt="France slide">
             <div class="title">FRANCE</div>
             <div class="info-box">FRANCE</div>
-            <button class="add-trip" onclick="addTrip('France')">ADD TRIP</button>
+            <button class="add-trip" onclick="window.location.href='addtrip.html'">ADD TRIP</button>
         </div>
         <div class="slide">
             <img class="d-block w-100" src="https://media.vogue.co.uk/photos/65f17c1e59d6093aba7d70ee/16:9/w_5760,h_3240,c_limit/GettyImages-1380534040.jpg" alt="Italy slide">
             <div class="title">ITALY</div>
             <div class="info-box">ITALY</div>
-            <button class="add-trip" onclick="addTrip('Italy')">ADD TRIP</button>
+            <button class="add-trip" onclick="window.location.href='addtrip.html'">ADD TRIP</button>
         </div>
         <div class="slide">
             <img class="d-block w-100" src="https://i.natgeofe.com/k/e800ca90-2b5b-4dad-b4d7-b67a48c96c91/spain-madrid_16x9.jpg?w=1200" alt="Spain slide">
             <div class="title">SPAIN</div>
             <div class="info-box">SPAIN</div>
-            <button class="add-trip" onclick="addTrip('Spain')">ADD TRIP</button>
+            <button class="add-trip" onclick="window.location.href='addtrip.html'">ADD TRIP</button>
         </div>
     </div>
 
@@ -311,13 +263,8 @@
 
         // Start the auto-sliding
         startAutoSlide();
-
-        // Function to handle adding a trip
-        function addTrip(destination) {
-            alert(`Trip to ${destination} added successfully!`);
-            // Here you would typically add code to actually add the trip to the user's itinerary
-            // For example, you might send a request to a server to save the trip
-        }
     </script>
+
+    <script type="module" src="data.js"></script> 
 </body>
 </html>
