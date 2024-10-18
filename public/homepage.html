@@ -11,33 +11,6 @@
     
     <script type="module" src="checkauth.js"></script>
 
-    <style>
-        body {
-            background-color: #F5F5DC;
-            color: #333;
-            font-family: 'Arial', sans-serif;
-            padding: 20px;
-        }
-        .title {
-            text-align: center;
-            font-size: 2.5em;
-            margin-bottom: 30px;
-            color: black;
-            font-family: Georgia, 'Times New Roman', Times, serif;
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-            font-weight: bold;
-        }
-        .navbar{
-            background-color: rgba(245, 245, 220, 0.5);
-            width: auto;
-        }
-
-        .navbar-brand{
-            font-size: 1.5em;
-            font-weight: bold;
-        }
-
-    </style>
 </head>
 <body>
     <!-- <div id="app">
@@ -68,39 +41,6 @@
       </nav>
 
     <!-- carousel  -->
-    <div id="fullPageCarousel" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-inner">
-            <div class="carousel-item active">
-                <img src="image1.jpg" class="d-block w-100" alt="Slide 1">
-                <div class="carousel-caption">
-                    <h5>First slide label</h5>
-                    <p>Some representative placeholder content for the first slide.</p>
-                </div>
-            </div>
-            <div class="carousel-item">
-                <img src="image2.jpg" class="d-block w-100" alt="Slide 2">
-                <div class="carousel-caption">
-                    <h5>Second slide label</h5>
-                    <p>Some representative placeholder content for the second slide.</p>
-                </div>
-            </div>
-            <div class="carousel-item">
-                <img src="image3.jpg" class="d-block w-100" alt="Slide 3">
-                <div class="carousel-caption">
-                    <h5>Third slide label</h5>
-                    <p>Some representative placeholder content for the third slide.</p>
-                </div>
-            </div>
-        </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#fullPageCarousel" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#fullPageCarousel" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
-    </div>
 
 
 
@@ -108,5 +48,276 @@
 
 
     <!-- <script type="module" src="data.js"></script> -->
+</body>
+</html>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ROAMEO</title>
+    <!-- vue CDN -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+        
+    <script type="module" src="checkauth.js"></script>
+
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: #f0f0f0;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+        .nav-link {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
+        .search-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .search-bar {
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .profile-link {
+            width: 30px;
+            height: 30px;
+            background-color: #ccc;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
+        .carousel {
+            height: 100%;
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+        .slide {
+            position: relative;
+            flex: 0 0 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 60px 20px 40px;
+            box-sizing: border-box;
+        }
+        .title {
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+        .info-box {
+            position: absolute;
+            border: 2px solid #000;
+            width: 200px;
+            height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        .add-trip {
+            position: absolute;
+            background-color: #fff;
+            border: 2px solid #000;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .add-trip:hover {
+            background-color: #000;
+            color: #fff;
+        }
+        .navigation {
+            position: fixed;
+            top: 50%;
+            left: 20px;
+            right: 20px;
+            display: flex;
+            justify-content: space-between;
+            z-index: 1000;
+        }
+        .nav-arrow {
+            font-size: 24px;
+            cursor: pointer;
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 10px;
+            border-radius: 50%;
+        }
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 10px;
+            background-color: #f0f0f0;
+        }
+        .footer-dot {
+            width: 10px;
+            height: 10px;
+            background-color: #000;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        .footer-dot.active {
+            background-color: #0066cc;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">ROAMEO</div>
+        <div class="nav-links">
+            <a href="homepage.html" class="nav-link">Home</a>
+            <a href="social.html" class="nav-link">Community Feed</a>
+            <a href="mytrips.html" class="nav-link">My Trips</a>
+        </div>
+        <div class="search-profile">
+            <input type="text" class="search-bar" placeholder="Search...">
+            <a href="#" class="profile-link">P</a>
+        </div>
+    </div>
+    
+    <div class="carousel">
+        <div class="slide">
+            <img class="d-block w-100" src="https://media.timeout.com/images/106181719/image.jpg" alt="France slide">
+            <div class="title">FRANCE</div>
+            <div class="info-box">FRANCE</div>
+            <button class="add-trip" onclick="addTrip('France')">ADD TRIP</button>
+        </div>
+        <div class="slide">
+            <img class="d-block w-100" src="https://media.vogue.co.uk/photos/65f17c1e59d6093aba7d70ee/16:9/w_5760,h_3240,c_limit/GettyImages-1380534040.jpg" alt="Italy slide">
+            <div class="title">ITALY</div>
+            <div class="info-box">ITALY</div>
+            <button class="add-trip" onclick="addTrip('Italy')">ADD TRIP</button>
+        </div>
+        <div class="slide">
+            <img class="d-block w-100" src="https://i.natgeofe.com/k/e800ca90-2b5b-4dad-b4d7-b67a48c96c91/spain-madrid_16x9.jpg?w=1200" alt="Spain slide">
+            <div class="title">SPAIN</div>
+            <div class="info-box">SPAIN</div>
+            <button class="add-trip" onclick="addTrip('Spain')">ADD TRIP</button>
+        </div>
+    </div>
+
+    <div class="navigation">
+        <div class="nav-arrow" id="prev">&lt;</div>
+        <div class="nav-arrow" id="next">&gt;</div>
+    </div>
+
+    <div class="footer" id="footer">
+        <div class="footer-dot active"></div>
+        <div class="footer-dot"></div>
+        <div class="footer-dot"></div>
+    </div>
+
+    <script>
+        const carousel = document.querySelector('.carousel');
+        const slides = document.querySelectorAll('.slide');
+        const prevBtn = document.getElementById('prev');
+        const nextBtn = document.getElementById('next');
+        const footer = document.getElementById('footer');
+        const dots = footer.querySelectorAll('.footer-dot');
+
+        let currentSlide = 0;
+        let autoSlideInterval;
+        const autoSlideDelay = 5000; // 5 seconds
+
+        function showSlide(index) {
+            carousel.style.transform = `translateX(-${index * 100}%)`;
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === index);
+            });
+            currentSlide = index;
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+        }
+
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+            showSlide(currentSlide);
+        }
+
+        function startAutoSlide() {
+            autoSlideInterval = setInterval(nextSlide, autoSlideDelay);
+        }
+
+        function stopAutoSlide() {
+            clearInterval(autoSlideInterval);
+        }
+
+        prevBtn.addEventListener('click', () => {
+            prevSlide();
+            stopAutoSlide();
+            startAutoSlide();
+        });
+
+        nextBtn.addEventListener('click', () => {
+            nextSlide();
+            stopAutoSlide();
+            startAutoSlide();
+        });
+
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                showSlide(index);
+                stopAutoSlide();
+                startAutoSlide();
+            });
+        });
+
+        carousel.addEventListener('mouseenter', stopAutoSlide);
+        carousel.addEventListener('mouseleave', startAutoSlide);
+
+        // Start the auto-sliding
+        startAutoSlide();
+
+        // Function to handle adding a trip
+        function addTrip(destination) {
+            alert(`Trip to ${destination} added successfully!`);
+            // Here you would typically add code to actually add the trip to the user's itinerary
+            // For example, you might send a request to a server to save the trip
+        }
+    </script>
 </body>
 </html>
