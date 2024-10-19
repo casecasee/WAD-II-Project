@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ROAMEO - My Trip Info</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Vue.js -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <style>
+        .profile-icon {
+            width: 40px;
+            height: 40px;
+            background-color: #007bff;
+            border-radius: 50%;
+        }
+        .budget-tracker {
+            width: 100px;
+            height: 100px;
+        }
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: #f0f0f0;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+        .nav-link {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
+        .search-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .search-bar {
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .profile-link {
+            width: 30px;
+            height: 30px;
+            background-color: #ccc;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
+        .main-content {
+            margin-top: 60px; /* Adjust based on your header height */
+            padding: 20px;
+            height: calc(100% - 60px); /* Adjust based on your header height */
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- Navigation bar -->
+        <div class="header">
+            <div class="logo">ROAMEO</div>
+            <div class="nav-links">
+                <a href="homepage.html" class="nav-link">Home</a>
+                <a href="social.html" class="nav-link">Community Feed</a>
+                <a href="mytrips.html" class="nav-link">My Trips</a>
+            </div>
+            <div class="search-profile">
+                <input type="text" class="search-bar" placeholder="Search...">
+                <a href="#" class="profile-link">P</a>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <h1 class="mb-4">My Trip Info</h1>
+
+            <div class="row">
+                <div class="col-md-8">
+                    <!-- Hotels and Lodging dropdown -->
+                    <div class="mb-4">
+                        <h2>Hotels and Lodging</h2>
+                        <select v-model="selectedHotel" class="form-select mb-2">
+                            <option v-for="hotel in hotels" :key="hotel.id" :value="hotel">
+                                {{ hotel.name }}
+                            </option>
+                        </select>
+                        <button @click="addHotel" class="btn btn-primary">+ Add Hotel</button>
+                    </div>
+
+                    <!-- Hotel details -->
+                    <div v-if="selectedHotel" class="mb-4">
+                        <h3>{{ selectedHotel.name }}</h3>
+                        <p>Date: {{ selectedHotel.startDate }} - {{ selectedHotel.endDate }}</p>
+                    </div>
+
+                    <!-- Itinerary dropdown -->
+                    <div class="mb-4">
+                        <h2>Itinerary</h2>
+                        <select v-model="selectedDay" class="form-select">
+                            <option v-for="day in itinerary" :key="day.id" :value="day">
+                                {{ day.name }}
+                            </option>
+                        </select>
+                    </div>
+
+                    <!-- Day details -->
+                    <div v-if="selectedDay" class="mb-4">
+                        <h3>{{ selectedDay.name }}</h3>
+                        <p>{{ selectedDay.activities }}</p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <!-- Flight Details -->
+                    <div class="mb-4">
+                        <h2>Flight Details</h2>
+                        <p>{{ flightInfo }}</p>
+                    </div>
+
+                    <!-- Budget Tracker -->
+                    <div class="budget-tracker">
+                        <svg width="100" height="100" viewBox="0 0 100 100">
+                            <circle cx="50" cy="50" r="45" fill="none" stroke="#ddd" stroke-width="10" />
+                            <circle cx="50" cy="50" r="45" fill="none" stroke="#4CAF50" stroke-width="10"
+                                :stroke-dasharray="circumference"
+                                :stroke-dashoffset="dashOffset" />
+                            <text x="50" y="50" text-anchor="middle" dy=".3em" font-size="20">
+                                {{ budgetPercentage }}%
+                            </text>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                hotels: [
+                    { id: 1, name: 'Grand Hotel', startDate: '2023-06-01', endDate: '2023-06-05' },
+                    { id: 2, name: 'Seaside Resort', startDate: '2023-06-06', endDate: '2023-06-10' },
+                ],
+                selectedHotel: null,
+                itinerary: [
+                    { id: 1, name: 'Day 1', activities: 'Visit the museum' },
+                    { id: 2, name: 'Day 2', activities: 'Beach day' },
+                    { id: 3, name: 'Day 3', activities: 'Mountain hiking' },
+                ],
+                selectedDay: null,
+                flightInfo: 'Flight AA123, Departure: 10:00 AM',
+                budget: {
+                    total: 1000,
+                    spent: 600
+                },
+                circumference: 2 * Math.PI * 45
+            },
+            computed: {
+                budgetPercentage() {
+                    return Math.round((this.budget.spent / this.budget.total) * 100);
+                },
+                dashOffset() {
+                    return this.circumference * (1 - this.budget.spent / this.budget.total);
+                }
+            },
+            methods: {
+                addHotel() {
+                    // This method would typically open a modal or navigate to hotels.html
+                    console.log('Add hotel clicked');
+                }
+            }
+        });
+    </script>
+
+    <!-- Bootstrap JS and Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+</body>
+</html>
