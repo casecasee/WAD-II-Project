@@ -1,5 +1,3 @@
-<!-- THIS PAGE WILL HAVE 3 BUTTON OPTIONS THAT DIRECT THEM TO PICK THEIR FLIGHT, ATTRACTIONS AND HOTEL -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,62 +7,41 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=New+Amsterdam">
 
+    <!-- Vue 3 -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    
     <style>
         body {
-            height: 100vh;
-            background: linear-gradient(135deg, beige, #ffbfa1);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            /* font-family: Georgia, 'Times New Roman', Times, serif; */
-        }
-
-        /* Nav bar */
-        .navbar {
-            background-color: transparent;
-            width: 100%;
-            position: fixed;
-            top: 0;
-            padding: 10px;
-            border-bottom: 2px solid #ddd;
-        }
-
-        .navbar-brand {
-            font-weight: bold;
-            font-size: 24px;
-        }
-
-        .navbar-nav .nav-link {
-            color: #333;
+            margin: 0;
+            font-family: 'Montserrat', sans-serif;
+            background-color: #BDC6C2;
         }
 
         .buttons-container {
-            font-family: Arial, Helvetica, sans-serif;
             text-align: center;
             background-color: rgba(255, 255, 255, 0.9); 
             padding: 40px;
             border-radius: 15px;
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); 
+            margin: 50px auto;
+            max-width: 500px; /* Limit max width for better appearance */
         }
 
         .btn {
-            background-color: #edc9af; 
-            color: #fff;
+            background-color: #B5855B; 
+            color: white;
             font-weight: bold;
             padding: 15px 30px;
             margin: 15px;
             border: none;
             border-radius: 10px;
             font-size: 19px;
-            /* display: flex; */
-            /* align-items: center; */
-            justify-content: center;
             transition: background-color 0.3s ease, transform 0.2s ease;
             box-shadow: 0 8px 10px rgba(0, 0, 0, 0.1);
         }
 
         .btn:hover {
-            background-color: #e17055;
+            background-color: #DCB287;
             transform: translateY(-2px);
         }
 
@@ -73,75 +50,120 @@
             margin-right: 10px;
         }
 
-        a{
-            text-decoration: none;
-            color: black;
-        }
-
-        a:hover{
-            text-decoration: none;
-            color: white;
-        }
-
         h1 {
-            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            font-family: 'Playfair Display', serif;
             font-size: 40px;
-            color: #333;
+            color: #764F37;
             margin-bottom: 30px;
         }
 
-        .navbar-toggler {
-            border-color: #333;
+        /* Nav bar */
+        .navbar {
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px; 
+            padding: 15px 0; /* Added padding for better spacing */
         }
 
-        .navbar-toggler-icon {
-            color: #333;
+        .navbar-brand {
+            color: #764F37 !important;
+            font-weight: 700; 
+            font-size: 30px; 
+            font-family: 'Playfair Display', serif;
+        }
+
+        .navbar-nav .nav-link {
+            color: #764F37;
+            font-weight: 500;
+            margin-left: 15px;
+            font-size: 18px; 
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #edc9af;
+            text-decoration: underline;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 30px;
+            font-family: 'Montserrat', sans-serif; 
         }
     </style>
+    
 </head>
-
 <body>
-
-    <!-- Nav bar -->
     <nav class="navbar navbar-expand-lg navbar-light">
-        <a class="navbar-brand" href="homepage.html" style = "font-family: 'New Amsterdam', sans-serif; font-size: 35px;">ROAMEO</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="homepage.html">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="communityFeed.html">Community Feed</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="mytrips.html">My Trip</a>
-                </li>
-            </ul>
+        <div class="container">
+            <a class="navbar-brand" href="homepage.html">ROAMEO</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="homepage.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="communityFeed.html">Community Feed</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="mytrips.html">My Trip</a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </nav>
 
     <!-- Main buttons section -->
-    <div class="buttons-container">
+    <div class="buttons-container" id="app">
         <h1>PLAN YOUR TRIP</h1>
         <div>
-            <a href="hotels.html"><button id="hotel" class="btn"><img src="countryPics/hotel_sign.png" alt="Hotel Icon"><a href="hotels.html">HOTEL</button></a>
+            <a href="hotels.html"><button id="hotel" class="btn"><img src="countryPics/hotel_sign.png" alt="Hotel Icon">HOTEL</button></a>
         </div>
 
         <div>
-            <a href = "flights.html"><button id="flight" class="btn"><img src="countryPics/ticket_sign.png" alt="Flight Icon">FLIGHT</button></a>
+            <a href="flights.html"><button id="flight" class="btn"><img src="countryPics/ticket_sign.png" alt="Flight Icon">FLIGHT</button></a>
         </div>
 
         <div>
-            <a href = "attractions.html"><button id="attractions" class="btn"><img src="countryPics/attraction_sign.png" alt="Attractions Icon">ATTRACTIONS</button></a>
+            <button id="attractions" class="btn" @click="goToAttractions"><img src="countryPics/attraction_sign.png" alt="Attractions Icon">ATTRACTIONS</button>
         </div>
     </div>
 
+    <script>
+        const app = Vue.createApp({ 
+            data() { 
+                return { 
+                    selectedCountry: ''
+                };
+            },
+            mounted() {
+                // Retrieve the selected country from localStorage
+                this.selectedCountry = localStorage.getItem('selectedCountry');
+            }, 
+            methods: {
+                goToAttractions() {
+                    // Store the selected country again for use in attractionImages.html
+                    localStorage.setItem('selectedCountry', this.selectedCountry);
+                    // Redirect to attractionImages.html
+                    window.location.href = 'attractionImages.html';
+                }
+            }
+        });
+        const vm = app.mount('#app');
+    </script>
+
+    <footer>
+        <p>&copy; 2024 ROAMEO. All Rights Reserved.</p>
+    </footer>
+
     <!-- Bootstrap JS and dependencies -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 </body>
