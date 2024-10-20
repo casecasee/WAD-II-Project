@@ -172,8 +172,8 @@
 
             const request = {
                 location: loc,
-                radius: '20000',
-                type: ['tourist_attraction']
+                radius: '100000',
+                type: ['tourist_attraction', 'museum', 'stadium', 'landmark', 'natural_feature'], 
             };
 
             service.nearbySearch(request, (results, status) => handleResponse(results, status, selectedCountry));
@@ -194,10 +194,46 @@
                     }
                     displayedNames.add(name); 
 
+// ---------------------------------------- using wikipedia api --------------------------------------------
+
+            const url = 'https://api.wikimedia.org/core/v1/wikipedia/en/search/page';
+
+            axios.get(url, { params: {q : name, limit: 1} })
+            .then(response => {
+
+                const result = response.data.pages;
+                if (result[0]) { // checks if the wiki page exists 
+                    const thumbimage = result[0].thumbnail.url;
+                    image = thumbimage.replace('/thumb', '').replace(/\/\d+px-.+$/, ''); 
+
+                    const card = document.createElement('div');
+                    card.className = 'card'; 
+
+                    const imgElement = document.createElement('img');
+                    imgElement.setAttribute('src', image);
+
+                    const caption = document.createElement('div');
+                    caption.className = 'caption'; 
+                    caption.innerText = name; 
+                    
+                    card.appendChild(imgElement);
+                    card.appendChild(caption);
+
+                    destination.appendChild(card);
+                }
+
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+
+        })};
+
+// ---------------------------------------- end -----------------------------------------------------------------------
+
 // ---------------------------------------- using unsplash api --------------------------------------------
 
                     // const url = `https://api.unsplash.com/search/photos?query=${country}%20${name}&client_id=v8ob4JtC_zfA0-jXKJUC2UEjpBQEgb4tAFDSbIaQa9s`;
-
 
                     // axios.get(url)
                     //     .then(response => {
@@ -235,36 +271,36 @@
 
 // ---------------------------------------- using gmaps api -----------------------------------------------------------
                         
-                    const url = `https://www.googleapis.com/customsearch/v1?key=AIzaSyAnMQUrtx33-PNEd45HT4v5fiPI3I4qyVY&cx=e0d39b341ae854a03&q=${name}`;
-                    axios.get(url)
-                        .then(response => {
-                            if (response.data.items && response.data.items.length > 0) {
-                                const result = response.data.items[0];
-                                const image = result.pagemap.cse_image[0].src;
+            //         const url = `https://www.googleapis.com/customsearch/v1?key=AIzaSyAnMQUrtx33-PNEd45HT4v5fiPI3I4qyVY&cx=e0d39b341ae854a03&q=${name}`;
+            //         axios.get(url)
+            //             .then(response => {
+            //                 if (response.data.items && response.data.items.length > 0) {
+            //                     const result = response.data.items[0];
+            //                     const image = result.pagemap.cse_image[0].src;
 
-                                const card = document.createElement('div');
-                                card.className = 'card'; 
+            //                     const card = document.createElement('div');
+            //                     card.className = 'card'; 
 
-                                const imgElement = document.createElement('img');
-                                imgElement.setAttribute('src', image);
+            //                     const imgElement = document.createElement('img');
+            //                     imgElement.setAttribute('src', image);
 
-                                const caption = document.createElement('div');
-                                caption.className = 'caption'; 
-                                caption.innerText = name; 
+            //                     const caption = document.createElement('div');
+            //                     caption.className = 'caption'; 
+            //                     caption.innerText = name; 
                                 
-                                card.appendChild(imgElement);
-                                card.appendChild(caption);
+            //                     card.appendChild(imgElement);
+            //                     card.appendChild(caption);
 
-                                destination.appendChild(card);
-                            }
-                        })
-                        .catch(error => {
-                            console.log(error.message);
-                        });
-                });
-            } else {
-                console.error('PlacesService search failed due to:', status);
-            }
+            //                     destination.appendChild(card);
+            //                 }
+            //             })
+            //             .catch(error => {
+            //                 console.log(error.message);
+            //             });
+            //     });
+            // } else {
+            //     console.error('PlacesService search failed due to:', status);
+            // }
 // ---------------------------------------- end -----------------------------------------------------------------------
 
         }
