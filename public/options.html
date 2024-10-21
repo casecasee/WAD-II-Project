@@ -7,93 +7,12 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=New+Amsterdam">
 
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
     <!-- Vue 3 -->
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     
-    <style>
-        body {
-            margin: 0;
-            font-family: 'Montserrat', sans-serif;
-            background-color: #BDC6C2;
-        }
-
-        .buttons-container {
-            text-align: center;
-            background-color: rgba(255, 255, 255, 0.9); 
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); 
-            margin: 50px auto;
-            max-width: 500px; /* Limit max width for better appearance */
-        }
-
-        .btn {
-            background-color: #B5855B; 
-            color: white;
-            font-weight: bold;
-            padding: 15px 30px;
-            margin: 15px;
-            border: none;
-            border-radius: 10px;
-            font-size: 19px;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            box-shadow: 0 8px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .btn:hover {
-            background-color: #DCB287;
-            transform: translateY(-2px);
-        }
-
-        .btn img {
-            height: 50px;
-            margin-right: 10px;
-        }
-
-        h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 40px;
-            color: #764F37;
-            margin-bottom: 30px;
-        }
-
-        /* Nav bar */
-        .navbar {
-            background-color: #fff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px; 
-            padding: 15px 0; /* Added padding for better spacing */
-        }
-
-        .navbar-brand {
-            color: #764F37 !important;
-            font-weight: 700; 
-            font-size: 30px; 
-            font-family: 'Playfair Display', serif;
-        }
-
-        .navbar-nav .nav-link {
-            color: #764F37;
-            font-weight: 500;
-            margin-left: 15px;
-            font-size: 18px; 
-            font-family: 'Montserrat', sans-serif;
-        }
-
-        .navbar-nav .nav-link:hover {
-            color: #edc9af;
-            text-decoration: underline;
-        }
-
-        footer {
-            text-align: center;
-            padding: 20px;
-            background-color: #fff;
-            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
-            margin-top: 30px;
-            font-family: 'Montserrat', sans-serif; 
-        }
-    </style>
+    <link rel = "stylesheet" href = "trip.css">
     
 </head>
 <body>
@@ -134,29 +53,7 @@
             <button id="attractions" class="btn" @click="goToAttractions"><img src="countryPics/attraction_sign.png" alt="Attractions Icon">ATTRACTIONS</button>
         </div>
     </div>
-
-    <script>
-        const app = Vue.createApp({ 
-            data() { 
-                return { 
-                    selectedCountry: ''
-                };
-            },
-            mounted() {
-                // Retrieve the selected country from localStorage
-                this.selectedCountry = localStorage.getItem('selectedCountry');
-            }, 
-            methods: {
-                goToAttractions() {
-                    // Store the selected country again for use in attractionImages.html
-                    localStorage.setItem('selectedCountry', this.selectedCountry);
-                    // Redirect to attractionImages.html
-                    window.location.href = 'attractionImages.html';
-                }
-            }
-        });
-        const vm = app.mount('#app');
-    </script>
+    <script src = "options.js"></script>
 
     <footer>
         <p>&copy; 2024 ROAMEO. All Rights Reserved.</p>
