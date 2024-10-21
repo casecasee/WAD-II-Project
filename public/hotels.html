@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -7,8 +7,8 @@
     <link rel="stylesheet" href="hotels.css">
     <title>Hotels</title>
 
-<body>
-    <!-- main nav bar -->
+<body> -->
+    <!-- main nav bar
     <nav class="navbar navbar-expand-lg navbar-light">
         <a class="navbar-brand" href="#">ROAMEO</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -32,17 +32,17 @@
 
     <div class="container-fluid">
         <h1 class="title">Hotels</h1>
-        <!-- start and end date -->
-        <div class="top-section">
+         start and end date -->
+        <!-- <div class="top-section">
             <div class="date-picker">
                 <label for="start-date">Check-in Date: </label>
                 <input type="date" id="start-date">
                 <label for="end-date">Check-out Date: </label>
                 <input type="date" id="end-date">
-            </div>
+            </div> -->
 
             <!-- budget tracker -->
-            <div class="wrapper">
+            <!-- <div class="wrapper">
                 <div class="budget-tracker-section">
                 <div class="progress-ring">
                     <div class="progress-ring-circle">
@@ -61,12 +61,12 @@
             </div>
             <script src="budget.js"></script>
         </div>
-    </div>
+    </div> -->
         
 
         <!-- comparions: -->
         <!-- one hotel: e.g. -->
-    <div class="container-fluid">
+    <!-- <div class="container-fluid">
         <div class="bottom-section">
             <div class="hotel-card">
                 <div class="hotel-image">
@@ -77,23 +77,23 @@
                     <div class="comparison-table">
                         <div class="platform">
                             <h3>X.com</h3>
-                            <p>Price: $100</p>
+                            <p>Price: $100</p> -->
                             <!-- add link -->
-                            <button class="book-btn" aria-label="Book Now on X.com for $100">Book Now</button>
+                            <!-- <button class="book-btn" aria-label="Book Now on X.com for $100">Book Now</button>
                         </div>
     
                         <div class="platform">
                             <h3>Y.com</h3>
-                            <p>Price: $95</p>
+                            <p>Price: $95</p> -->
                             <!-- add link -->
-                            <button class="book-btn" aria-label="Book Now on Y.com for $95">Book Now</button>
+                            <!-- <button class="book-btn" aria-label="Book Now on Y.com for $95">Book Now</button>
                         </div>
     
                         <div class="platform">
                             <h3>Z.com</h3>
-                            <p>Price: $98</p>
+                            <p>Price: $98</p> -->
                             <!-- add link -->
-                            <button class="book-btn" aria-label="Book Now on Z.com for $98">Book Now</button>
+                            <!-- <button class="book-btn" aria-label="Book Now on Z.com for $98">Book Now</button>
                         </div>
                     </div>
                 </div>
@@ -101,5 +101,251 @@
         </div>
     </div>
     
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ROAMEO - Travel Planner</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: Arial, sans-serif;
+            overflow-x: hidden;
+        }
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: #f0f0f0;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+        .nav-link {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
+        .search-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .search-bar {
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .profile-link {
+            width: 30px;
+            height: 30px;
+            background-color: #ccc;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
+        .main-content {
+            margin-top: 60px;
+            display: flex;
+            padding: 20px;
+        }
+        .left-content {
+            flex: 3;
+        }
+        /* .right-content {
+            flex: 1;
+        } */
+        .date-picker {
+            margin-bottom: 20px;
+        }
+        .hotel-comparisons {
+            border: 1px solid #ddd;
+            padding: 10px;
+        }
+        /* #budgetChart {
+            width: 200px;
+            height: 200px;
+        } */
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 60px;
+            padding: 10px 0;
+            background-color: #f8f9fa;
+        }
+        .nav-buttons button {
+            margin: 0 10px;
+            padding: 5px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .hotel-card {
+            display: flex;
+            border: 1px solid #ddd;
+            margin-bottom: 20px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .hotel-image {
+            flex: 1;
+            max-width: 200px;
+        }
+        .hotel-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+        .hotel-description {
+            flex: 2;
+            padding: 0 20px;
+        }
+        .hotel-prices {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .price-comparison {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">ROAMEO</div>
+        <div class="nav-links">
+            <a href="homepage.html" class="nav-link">Home</a>
+            <a href="social.html" class="nav-link">Community Feed</a>
+            <a href="mytrips.html" class="nav-link">My Trips</a>
+        </div>
+        <div class="search-profile">
+            <input type="text" class="search-bar" placeholder="Search...">
+            <a href="#" class="profile-link">P</a>
+        </div>
+    </div>
+    
+    <div class="nav-buttons">
+        <button>Flight</button>
+        <button>Hotel</button>
+        <button>Attractions</button>
+    </div>
+    
+    <div class="main-content">
+        <div class="left-content">
+            <div class="date-picker">
+                <label for="start-date">Start:</label>
+                <input type="date" id="start-date">
+                <label for="end-date">End:</label>
+                <input type="date" id="end-date">
+            </div>
+            
+            <div class="hotel-comparisons">
+                <h2>Hotel Comparisons</h2>
+                <div id="hotel-list"></div>
+            </div>
+        </div>
+        
+        <!-- <div class="right-content">
+            <h3>Budget Tracker</h3>
+            <canvas id="budgetChart"></canvas>
+        </div> -->
+    </div>
+
+    <script>
+        // Budget Tracker Chart
+        // const ctx = document.getElementById('budgetChart').getContext('2d');
+        // new Chart(ctx, {
+        //     type: 'doughnut',
+        //     data: {
+        //         labels: ['Spent', 'Remaining'],
+        //         datasets: [{
+        //             data: [300, 700],
+        //             backgroundColor: ['#FF6384', '#36A2EB']
+        //         }]
+        //     },
+        //     options: {
+        //         responsive: true,
+        //         maintainAspectRatio: false
+        //     }
+        // });
+
+        // Simulated hotel data (replace with actual API calls)
+        const hotelData = [
+            { 
+                name: "Hotel A", 
+                description: "A luxurious 5-star hotel in the heart of the city.",
+                tripcom: 100, 
+                bookingcom: 110, 
+                expedia: 105 
+            },
+            { 
+                name: "Hotel B", 
+                description: "Comfortable 4-star accommodation with a rooftop pool.",
+                tripcom: 150, 
+                bookingcom: 160, 
+                expedia: 155 
+            },
+            { 
+                name: "Hotel C", 
+                description: "Budget-friendly 3-star hotel near major attractions.",
+                tripcom: 200, 
+                bookingcom: 210, 
+                expedia: 205 
+            }
+        ];
+
+        // Display hotel comparisons
+        const hotelList = document.getElementById('hotel-list');
+        hotelData.forEach(hotel => {
+            const hotelDiv = document.createElement('div');
+            hotelDiv.className = 'hotel-card';
+            hotelDiv.innerHTML = `
+                <div class="hotel-image">
+                    <img src="/api/placeholder/200/150" alt="${hotel.name}">
+                </div>
+                <div class="hotel-description">
+                    <h3>${hotel.name}</h3>
+                    <p>${hotel.description}</p>
+                </div>
+                <div class="hotel-prices">
+                    <div class="price-comparison">
+                        <strong>Trip.com:</strong> $${hotel.tripcom}
+                    </div>
+                    <div class="price-comparison">
+                        <strong>Booking.com:</strong> $${hotel.bookingcom}
+                    </div>
+                    <div class="price-comparison">
+                        <strong>Expedia:</strong> $${hotel.expedia}
+                    </div>
+                </div>
+            `;
+            hotelList.appendChild(hotelDiv);
+        });
+    </script>
 </body>
 </html>
