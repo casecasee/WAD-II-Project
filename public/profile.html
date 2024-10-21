@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ROAMEO - User Profile</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: Arial, sans-serif;
+            overflow-x: hidden;
+            background-color: #f0f2f5;
+        }
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: #f0f0f0;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #00a698;
+        }
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+        .nav-link {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
+        .search-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .search-bar {
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .profile-link {
+            width: 30px;
+            height: 30px;
+            background-color: #ccc;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
+        .main-content {
+            margin-top: 60px;
+            padding: 20px;
+        }
+        .banner {
+            height: 200px;
+            background-image: url('/api/placeholder/1200/200');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            margin-top: 60px;
+        }
+        .profile-info {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .profile-picture {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 4px solid white;
+            object-fit: cover;
+        }
+        .profile-name {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .profile-location {
+            font-size: 16px;
+        }
+        .content {
+            max-width: 1200px;
+            margin: 20px auto;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #e0e0e0;
+            margin-bottom: 20px;
+        }
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+        .tab.active {
+            border-bottom: 2px solid #00a698;
+            color: #00a698;
+        }
+        .favourites-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .favourite-item {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .favourite-image {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+        .favourite-info {
+            padding: 10px;
+        }
+        .favourite-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .favourite-location, .favourite-price {
+            font-size: 14px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">ROAMEO</div>
+        <div class="nav-links">
+            <a href="homepage.html" class="nav-link">Home</a>
+            <a href="social.html" class="nav-link">Community Feed</a>
+            <a href="mytrips.html" class="nav-link">My Trips</a>
+        </div>
+        <div class="search-profile">
+            <input type="text" class="search-bar" placeholder="Search...">
+            <a href="#" class="profile-link">P</a>
+        </div>
+    </div>
+
+    <div class="banner">
+        <div class="profile-info">
+            <img src="/api/placeholder/100/100" alt="Profile Picture" class="profile-picture">
+            <div>
+                <div class="profile-name">John Traveler</div>
+                <div class="profile-location">New York, USA</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="content">
+            <div class="tabs">
+                <div class="tab active">Timeline</div>
+                <div class="tab">Booking History (5)</div>
+                <div class="tab">New Bookings (2)</div>
+                <div class="tab">My Favourites (7)</div>
+                <div class="tab">Account Settings</div>
+            </div>
+
+            <h2>My Favourites (7)</h2>
+            <div class="favourites-grid">
+                <div class="favourite-item">
+                    <img src="/api/placeholder/250/150" alt="Maldives Resort" class="favourite-image">
+                    <div class="favourite-info">
+                        <div class="favourite-name">Maldives Resort</div>
+                        <div class="favourite-location">Maldives</div>
+                        <div class="favourite-price">$200 per night</div>
+                    </div>
+                </div>
+                <div class="favourite-item">
+                    <img src="/api/placeholder/250/150" alt="Dubai Hotel" class="favourite-image">
+                    <div class="favourite-info">
+                        <div class="favourite-name">Dubai Luxury Hotel</div>
+                        <div class="favourite-location">Dubai, UAE</div>
+                        <div class="favourite-price">$350 per night</div>
+                    </div>
+                </div>
+                <!-- Add more favourite items here -->
+            </div>
+        </div>
+    </div>
+</body>
+</html>
