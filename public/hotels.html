@@ -1,109 +1,3 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-    <link rel="stylesheet" href="hotels.css">
-    <title>Hotels</title>
-
-<body> -->
-    <!-- main nav bar
-    <nav class="navbar navbar-expand-lg navbar-light">
-        <a class="navbar-brand" href="#">ROAMEO</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="homepage.html">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="social.html">Community Feed</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="mytrips.html">My Trip</a>
-                </li>
-            </ul>
-        </div>
-      </nav>
-
-
-    <div class="container-fluid">
-        <h1 class="title">Hotels</h1>
-         start and end date -->
-        <!-- <div class="top-section">
-            <div class="date-picker">
-                <label for="start-date">Check-in Date: </label>
-                <input type="date" id="start-date">
-                <label for="end-date">Check-out Date: </label>
-                <input type="date" id="end-date">
-            </div> -->
-
-            <!-- budget tracker -->
-            <!-- <div class="wrapper">
-                <div class="budget-tracker-section">
-                <div class="progress-ring">
-                    <div class="progress-ring-circle">
-                    <div class="progress-text">
-                        <span id="progress-value">0%</span>
-                    </div>
-                    </div>
-                </div>
-                <div class="input-section">
-                    <label for="budget">Budget: $</label>
-                    <input type="number" id="budget" value="1000">
-                    <label for="spending">Spending: $</label>
-                    <input type="number" id="spending" value="200">
-                    <button onclick="updateBudget()">Update Tracker</button>
-                </div>
-            </div>
-            <script src="budget.js"></script>
-        </div>
-    </div> -->
-        
-
-        <!-- comparions: -->
-        <!-- one hotel: e.g. -->
-    <!-- <div class="container-fluid">
-        <div class="bottom-section">
-            <div class="hotel-card">
-                <div class="hotel-image">
-                    <img src="https://lh3.googleusercontent.com/p/AF1QipM9owYxuTgWK549HGcJXSyTJLrKdWj_OhJINU10=s1360-w1360-h1020" alt="hotel 1" class="hotel-img">
-                </div>
-                <div class="hotel-details">
-                    <h2>Hotel 1</h2>
-                    <div class="comparison-table">
-                        <div class="platform">
-                            <h3>X.com</h3>
-                            <p>Price: $100</p> -->
-                            <!-- add link -->
-                            <!-- <button class="book-btn" aria-label="Book Now on X.com for $100">Book Now</button>
-                        </div>
-    
-                        <div class="platform">
-                            <h3>Y.com</h3>
-                            <p>Price: $95</p> -->
-                            <!-- add link -->
-                            <!-- <button class="book-btn" aria-label="Book Now on Y.com for $95">Book Now</button>
-                        </div>
-    
-                        <div class="platform">
-                            <h3>Z.com</h3>
-                            <p>Price: $98</p> -->
-                            <!-- add link -->
-                            <!-- <button class="book-btn" aria-label="Book Now on Z.com for $98">Book Now</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-</body>
-</html> -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -116,7 +10,7 @@
             margin: 0;
             padding: 0;
             height: 100%;
-            font-family: Arial, sans-serif;
+            font-family: 'Montserrat', sans-serif;
             overflow-x: hidden;
         }
         .header {
@@ -124,30 +18,43 @@
             top: 0;
             left: 0;
             right: 0;
-            background-color: #f0f0f0;
-            padding: 10px 20px;
+            background-color: #fff;
             display: flex;
             justify-content: space-between;
             align-items: center;
             z-index: 1000;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px; 
+            padding: 15px 30px;
         }
         .logo {
-            font-size: 24px;
-            font-weight: bold;
+            font-size: 30px;
+            font-weight: 700;
+            color: #764F37;
+            font-family: 'Playfair Display', serif;
+            margin-left: 15px;
         }
         .nav-links {
             display: flex;
             gap: 20px;
+            margin-right: 15px;
         }
         .nav-link {
             text-decoration: none;
-            color: #333;
-            font-weight: bold;
+            color: #764F37;
+            font-weight: 500;
+            font-size: 18px;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .nav-link:hover {
+            color: #edc9af;
+            text-decoration: underline;
         }
         .search-profile {
             display: flex;
             align-items: center;
             gap: 10px;
+            margin-right: 20px;
         }
         .search-bar {
             padding: 5px 10px;
@@ -167,7 +74,6 @@
             font-weight: bold;
         }
         .main-content {
-            margin-top: 60px;
             display: flex;
             padding: 20px;
         }
@@ -189,20 +95,27 @@
             height: 200px;
         } */
         .nav-buttons {
-            display: flex;
-            justify-content: center;
-            margin-top: 60px;
-            padding: 10px 0;
-            background-color: #f8f9fa;
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        padding: 10px 0;
         }
-        .nav-buttons button {
-            margin: 0 10px;
-            padding: 5px 15px;
-            background-color: #007bff;
+        /* Style for <a> tags that look like buttons */
+        .nav-buttons a.button {
+            padding: 8px 20px;
+            background-color: #4285f4;
             color: white;
-            border: none;
+            text-decoration: none;
             border-radius: 5px;
             cursor: pointer;
+            transition: background-color 0.3s;
+            border: none;
+            font-size: 16px;
+            display: inline-block;
+        }
+
+        .nav-buttons a.button:hover {
+            background-color: #3367d6;
         }
         .hotel-card {
             display: flex;
@@ -248,11 +161,11 @@
             <a href="#" class="profile-link">P</a>
         </div>
     </div>
-    
+
     <div class="nav-buttons">
-        <button>Flight</button>
-        <button>Hotel</button>
-        <button>Attractions</button>
+        <a href="addflightinfo.html" class="button">Flight</a>
+        <a href="hotels.html" class="button">Hotel</a>
+        <a href="attractions.html" class="button">Attractions</a>
     </div>
     
     <div class="main-content">
