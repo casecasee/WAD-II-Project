@@ -79,6 +79,33 @@
             margin-top: 60px;
             padding: 20px;
         }
+        .photo-item {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        .photo-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+        .photo-caption {
+            margin-top: 8px;
+            padding: 8px;
+            color: #666;
+            font-size: 14px;
+            line-height: 1.4;
+            text-align: center;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .modal-caption {
+            padding: 15px;
+            color: #666;
+            font-size: 15px;
+            line-height: 1.5;
+            text-align: center;
+            border-top: 1px solid #eee;
+            margin-top: 15px;
+        }
         .photo-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -148,7 +175,10 @@
         <main class="main-content">
             <div class="photo-grid">
                 <div v-for="photo in displayedPhotos" :key="photo.id" class="photo-item">
-                    <img :src="photo.src" :alt="photo.alt" @click="openModal(photo)">
+                    <div class="photo-container" @click="openModal(photo)">
+                        <img :src="photo.src" :alt="photo.alt">
+                    </div>
+                    <div class="photo-caption">{{ photo.desc }}</div>
                 </div>
             </div>
 
@@ -216,15 +246,15 @@
             el: '#app',
             data: {
                 photos: [
-                { id: 1, src: "https://www.trafalgar.com/real-word/wp-content/uploads/sites/3/2018/04/Toledo-Spain-www.istockphoto.com_gb_photo_toledo-spain-gm464975554-58756952-SeanPavonePhoto.jpg", alt: "Spain" },
+                { id: 1, src: "https://www.trafalgar.com/real-word/wp-content/uploads/sites/3/2018/04/Toledo-Spain-www.istockphoto.com_gb_photo_toledo-spain-gm464975554-58756952-SeanPavonePhoto.jpg", alt: "Spain", desc:"hello spain" },
                     { id: 2, src: "https://www.planetware.com/wpimages/2020/02/france-in-pictures-beautiful-places-to-photograph-eiffel-tower.jpg", alt: "France" },
-                    { id: 3, src: "https://media.istockphoto.com/id/1380534040/photo/beautiful-view-of-amalfi-on-the-mediterranean-coast-with-lemons-in-the-foreground-italy.jpg?s=612x612&w=0&k=20&c=4UQak9WJkyvN8aEgkLEwjnV5EW2RiGfC_GZNeQaVJeo=", alt: "Italy" },
-                    { id: 4, src: "https://t3.ftcdn.net/jpg/02/65/23/70/360_F_265237090_Muthvb72m2POYFjyx7F5UCQLh9JdBtKN.jpg", alt: "Japan" },
-                    { id: 5, src: "https://plus.unsplash.com/premium_photo-1661963468634-71b9482a3efe?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8c291dGglMjBrb3JlYXxlbnwwfHwwfHx8MA%3D%3D", alt: "Korea" },
-                    { id: 6, src: "https://media.istockphoto.com/id/497572532/photo/cityscape-of-guiyang-at-night.jpg?s=612x612&w=0&k=20&c=iZ2avxaTDglVbfygFduRdxADXI-KqUO1nhX4DlPgFZs=", alt: "China" },
-                    { id: 7, src: "https://images.unsplash.com/photo-1525625293386-3f8f99389edd?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8c2luZ2Fwb3JlfGVufDB8fDB8fHww", alt: "Singapore" },
-                    { id: 8, src: "https://media.istockphoto.com/id/1201281530/photo/landscape-with-halong-bay.jpg?s=612x612&w=0&k=20&c=Kg4BgIyfMr5Egq-yaQNtBLjHP2U_db9WaLB0-4MGrb0=", alt: "Vietnam" },
-                    { id: 9, src: "https://media.istockphoto.com/id/1046543492/photo/cliffs-of-moher-in-ireland.jpg?s=612x612&w=0&k=20&c=sMDpoVewpDlKDVUDg2Y0chw9ZdkHbdXCxKmhmQS-RpU=", alt: "Ireland" },
+                    { id: 3, src: "https://media.istockphoto.com/id/1380534040/photo/beautiful-view-of-amalfi-on-the-mediterranean-coast-with-lemons-in-the-foreground-italy.jpg?s=612x612&w=0&k=20&c=4UQak9WJkyvN8aEgkLEwjnV5EW2RiGfC_GZNeQaVJeo=", alt: "Italy", desc:"hello italy" },
+                    { id: 4, src: "https://t3.ftcdn.net/jpg/02/65/23/70/360_F_265237090_Muthvb72m2POYFjyx7F5UCQLh9JdBtKN.jpg", alt: "Japan", desc:"hello Japan" },
+                    { id: 5, src: "https://plus.unsplash.com/premium_photo-1661963468634-71b9482a3efe?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8c291dGglMjBrb3JlYXxlbnwwfHwwfHx8MA%3D%3D", alt: "Korea", desc:"hello Korea"},
+                    { id: 6, src: "https://media.istockphoto.com/id/497572532/photo/cityscape-of-guiyang-at-night.jpg?s=612x612&w=0&k=20&c=iZ2avxaTDglVbfygFduRdxADXI-KqUO1nhX4DlPgFZs=", alt: "China", desc:"hello China" },
+                    { id: 7, src: "https://images.unsplash.com/photo-1525625293386-3f8f99389edd?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8c2luZ2Fwb3JlfGVufDB8fDB8fHww", alt: "Singapore", desc:"hello Singapore" },
+                    { id: 8, src: "https://media.istockphoto.com/id/1201281530/photo/landscape-with-halong-bay.jpg?s=612x612&w=0&k=20&c=Kg4BgIyfMr5Egq-yaQNtBLjHP2U_db9WaLB0-4MGrb0=", alt: "Vietnam", desc:"hello Vietnam" },
+                    { id: 9, src: "https://media.istockphoto.com/id/1046543492/photo/cliffs-of-moher-in-ireland.jpg?s=612x612&w=0&k=20&c=sMDpoVewpDlKDVUDg2Y0chw9ZdkHbdXCxKmhmQS-RpU=", alt: "Ireland", desc:"hello Ireland" },
                 ],
                 selectedPhoto: null,
                 currentPage: 1,
