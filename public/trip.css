@@ -18,14 +18,16 @@ body {
     background-color: #fff;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px; 
-    padding: 15px 0; /* Added padding for better spacing */
+    padding: 5px 0; /* Added padding for better spacing */
 }
 
 .navbar-brand {
     color: #764F37 !important;
     font-weight: 700; 
-    font-size: 30px; /* Adjusted size for better appearance */
-    font-family: 'Playfair Display', serif;
+    font-size: 40px; /* Adjusted size for better appearance */
+    font-family: "Pacifico", cursive;
+    font-weight: 200;
+    /* font-family: "Playwrite GB S", serif; */
 }
 
 .navbar-nav .nav-link {
