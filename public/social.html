@@ -1,204 +1,3 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ROAMEO - Community Feed</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
-    <script type="module" src="checkauth.js"></script>
-    <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            font-family: "Raleway", Arial, sans-serif;
-            overflow-x: hidden;
-        }
-        .header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background-color: #f0f0f0;
-            padding: 10px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 1000;
-        }
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-        }
-        .nav-links {
-            display: flex;
-            gap: 20px;
-        }
-        .nav-link {
-            text-decoration: none;
-            color: #333;
-            font-weight: bold;
-        }
-        .search-profile {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .search-bar {
-            padding: 5px 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        .profile-link {
-            width: 30px;
-            height: 30px;
-            background-color: #ccc;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-decoration: none;
-            color: #333;
-            font-weight: bold;
-        }
-        .main-content {
-            margin-top: 60px;
-            padding: 20px;
-        }
-        .photo-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-        }
-        .photo-item img {
-            width: 100%;
-            height: 200px; /* Fixed height for uniformity */
-            object-fit: cover; /* Ensures the image covers the area without distortion */
-            cursor: pointer;
-            transition: opacity 0.3s;
-        }
-        .photo-item img:hover {
-            opacity: 0.8;
-        }
-        @media (max-width: 1200px) {
-            .photo-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-        }
-        @media (max-width: 768px) {
-            .photo-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-        @media (max-width: 480px) {
-            .photo-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div id="app">
-        <header class="header">
-            <div class="logo">ROAMEO</div>
-            <nav class="nav-links">
-                <a href="homepage.html" class="nav-link">Home</a>
-                <a href="social.html" class="nav-link">Community Feed</a>
-                <a href="mytrips.html" class="nav-link">My Trips</a>
-            </nav>
-            <div class="search-profile">
-                <input type="text" class="search-bar" placeholder="Search...">
-                <a href="#" class="profile-link">P</a>
-            </div>
-        </header>
-
-        <main class="main-content">
-            <div class="photo-grid">
-                <div v-for="photo in displayedPhotos" :key="photo.id" class="photo-item">
-                    <img :src="photo.src" :alt="photo.alt" @click="openModal(photo)">
-                </div>
-            </div>
-
-            <nav aria-label="Page navigation" class="mt-4">
-                <ul class="pagination justify-content-center">
-                    <li class="page-item" :class="{ disabled: currentPage === 1 }">
-                        <a class="page-link" href="#" @click.prevent="changePage(currentPage - 1)">Previous</a>
-                    </li>
-                    <li v-for="page in totalPages" :key="page" class="page-item" :class="{ active: currentPage === page }">
-                        <a class="page-link" href="#" @click.prevent="changePage(page)">{{ page }}</a>
-                    </li>
-                    <li class="page-item" :class="{ disabled: currentPage === totalPages }">
-                        <a class="page-link" href="#" @click.prevent="changePage(currentPage + 1)">Next</a>
-                    </li>
-                </ul>
-            </nav>
-        </main>
-
-        <div v-if="selectedPhoto" class="modal" tabindex="-1" style="display: block;">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">{{ selectedPhoto.alt }}</h5>
-                        <button type="button" class="btn-close" @click="closeModal"></button>
-                    </div>
-                    <div class="modal-body">
-                        <img :src="selectedPhoto.src" :alt="selectedPhoto.alt" class="img-fluid">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        new Vue({
-            el: '#app',
-            data: {
-                photos: [
-                    { id: 1, src: "https://www.trafalgar.com/real-word/wp-content/uploads/sites/3/2018/04/Toledo-Spain-www.istockphoto.com_gb_photo_toledo-spain-gm464975554-58756952-SeanPavonePhoto.jpg", alt: "Spain" },
-                    { id: 2, src: "https://www.planetware.com/wpimages/2020/02/france-in-pictures-beautiful-places-to-photograph-eiffel-tower.jpg", alt: "France" },
-                    { id: 3, src: "https://media.istockphoto.com/id/1380534040/photo/beautiful-view-of-amalfi-on-the-mediterranean-coast-with-lemons-in-the-foreground-italy.jpg?s=612x612&w=0&k=20&c=4UQak9WJkyvN8aEgkLEwjnV5EW2RiGfC_GZNeQaVJeo=", alt: "Italy" },
-                    { id: 4, src: "https://t3.ftcdn.net/jpg/02/65/23/70/360_F_265237090_Muthvb72m2POYFjyx7F5UCQLh9JdBtKN.jpg", alt: "Japan" },
-                    { id: 5, src: "https://plus.unsplash.com/premium_photo-1661963468634-71b9482a3efe?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8c291dGglMjBrb3JlYXxlbnwwfHwwfHx8MA%3D%3D", alt: "Korea" },
-                    { id: 6, src: "https://media.istockphoto.com/id/497572532/photo/cityscape-of-guiyang-at-night.jpg?s=612x612&w=0&k=20&c=iZ2avxaTDglVbfygFduRdxADXI-KqUO1nhX4DlPgFZs=", alt: "China" },
-                    { id: 7, src: "https://images.unsplash.com/photo-1525625293386-3f8f99389edd?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8c2luZ2Fwb3JlfGVufDB8fDB8fHww", alt: "Singapore" },
-                    { id: 8, src: "https://media.istockphoto.com/id/1201281530/photo/landscape-with-halong-bay.jpg?s=612x612&w=0&k=20&c=Kg4BgIyfMr5Egq-yaQNtBLjHP2U_db9WaLB0-4MGrb0=", alt: "Vietnam" },
-                    { id: 9, src: "https://media.istockphoto.com/id/1046543492/photo/cliffs-of-moher-in-ireland.jpg?s=612x612&w=0&k=20&c=sMDpoVewpDlKDVUDg2Y0chw9ZdkHbdXCxKmhmQS-RpU=", alt: "Ireland" },
-                    // Add more photos here to test pagination
-                ],
-                selectedPhoto: null,
-                currentPage: 1,
-                photosPerPage: 8
-            },
-            computed: {
-                displayedPhotos() {
-                    const start = (this.currentPage - 1) * this.photosPerPage;
-                    const end = start + this.photosPerPage;
-                    return this.photos.slice(start, end);
-                },
-                totalPages() {
-                    return Math.ceil(this.photos.length / this.photosPerPage);
-                }
-            },
-            methods: {
-                openModal(photo) {
-                    this.selectedPhoto = photo;
-                },
-                closeModal() {
-                    this.selectedPhoto = null;
-                },
-                changePage(page) {
-                    if (page >= 1 && page <= this.totalPages) {
-                        this.currentPage = page;
-                    }
-                }
-            }
-        });
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
-</body>
-</html> -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -213,7 +12,7 @@
             margin: 0;
             padding: 0;
             height: 100%;
-            font-family: "Raleway", Arial, sans-serif;
+            font-family: 'Montserrat', sans-serif;
             overflow-x: hidden;
         }
         .header {
@@ -221,30 +20,43 @@
             top: 0;
             left: 0;
             right: 0;
-            background-color: #f0f0f0;
-            padding: 10px 20px;
+            background-color: #fff;
             display: flex;
             justify-content: space-between;
             align-items: center;
             z-index: 1000;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px; 
+            padding: 15px 30px;
         }
         .logo {
-            font-size: 24px;
-            font-weight: bold;
+            font-size: 30px;
+            font-weight: 700;
+            color: #764F37;
+            font-family: 'Playfair Display', serif;
+            margin-left: 15px;
         }
         .nav-links {
             display: flex;
             gap: 20px;
+            margin-right: 15px;
         }
         .nav-link {
             text-decoration: none;
-            color: #333;
-            font-weight: bold;
+            color: #764F37;
+            font-weight: 500;
+            font-size: 18px;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .nav-link:hover {
+            color: #edc9af;
+            text-decoration: underline;
         }
         .search-profile {
             display: flex;
             align-items: center;
             gap: 10px;
+            margin-right: 20px;
         }
         .search-bar {
             padding: 5px 10px;
@@ -266,6 +78,33 @@
         .main-content {
             margin-top: 60px;
             padding: 20px;
+        }
+        .photo-item {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        .photo-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+        .photo-caption {
+            margin-top: 8px;
+            padding: 8px;
+            color: #666;
+            font-size: 14px;
+            line-height: 1.4;
+            text-align: center;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .modal-caption {
+            padding: 15px;
+            color: #666;
+            font-size: 15px;
+            line-height: 1.5;
+            text-align: center;
+            border-top: 1px solid #eee;
+            margin-top: 15px;
         }
         .photo-grid {
             display: grid;
@@ -329,14 +168,17 @@
             </nav>
             <div class="search-profile">
                 <input type="text" class="search-bar" placeholder="Search...">
-                <a href="#" class="profile-link">P</a>
+                <a href="profile.html" class="profile-link">P</a>
             </div>
         </header>
 
         <main class="main-content">
             <div class="photo-grid">
                 <div v-for="photo in displayedPhotos" :key="photo.id" class="photo-item">
-                    <img :src="photo.src" :alt="photo.alt" @click="openModal(photo)">
+                    <div class="photo-container" @click="openModal(photo)">
+                        <img :src="photo.src" :alt="photo.alt">
+                    </div>
+                    <div class="photo-caption">{{ photo.desc }}</div>
                 </div>
             </div>
 
@@ -404,15 +246,15 @@
             el: '#app',
             data: {
                 photos: [
-                { id: 1, src: "https://www.trafalgar.com/real-word/wp-content/uploads/sites/3/2018/04/Toledo-Spain-www.istockphoto.com_gb_photo_toledo-spain-gm464975554-58756952-SeanPavonePhoto.jpg", alt: "Spain" },
+                { id: 1, src: "https://www.trafalgar.com/real-word/wp-content/uploads/sites/3/2018/04/Toledo-Spain-www.istockphoto.com_gb_photo_toledo-spain-gm464975554-58756952-SeanPavonePhoto.jpg", alt: "Spain", desc:"hello spain" },
                     { id: 2, src: "https://www.planetware.com/wpimages/2020/02/france-in-pictures-beautiful-places-to-photograph-eiffel-tower.jpg", alt: "France" },
-                    { id: 3, src: "https://media.istockphoto.com/id/1380534040/photo/beautiful-view-of-amalfi-on-the-mediterranean-coast-with-lemons-in-the-foreground-italy.jpg?s=612x612&w=0&k=20&c=4UQak9WJkyvN8aEgkLEwjnV5EW2RiGfC_GZNeQaVJeo=", alt: "Italy" },
-                    { id: 4, src: "https://t3.ftcdn.net/jpg/02/65/23/70/360_F_265237090_Muthvb72m2POYFjyx7F5UCQLh9JdBtKN.jpg", alt: "Japan" },
-                    { id: 5, src: "https://plus.unsplash.com/premium_photo-1661963468634-71b9482a3efe?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8c291dGglMjBrb3JlYXxlbnwwfHwwfHx8MA%3D%3D", alt: "Korea" },
-                    { id: 6, src: "https://media.istockphoto.com/id/497572532/photo/cityscape-of-guiyang-at-night.jpg?s=612x612&w=0&k=20&c=iZ2avxaTDglVbfygFduRdxADXI-KqUO1nhX4DlPgFZs=", alt: "China" },
-                    { id: 7, src: "https://images.unsplash.com/photo-1525625293386-3f8f99389edd?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8c2luZ2Fwb3JlfGVufDB8fDB8fHww", alt: "Singapore" },
-                    { id: 8, src: "https://media.istockphoto.com/id/1201281530/photo/landscape-with-halong-bay.jpg?s=612x612&w=0&k=20&c=Kg4BgIyfMr5Egq-yaQNtBLjHP2U_db9WaLB0-4MGrb0=", alt: "Vietnam" },
-                    { id: 9, src: "https://media.istockphoto.com/id/1046543492/photo/cliffs-of-moher-in-ireland.jpg?s=612x612&w=0&k=20&c=sMDpoVewpDlKDVUDg2Y0chw9ZdkHbdXCxKmhmQS-RpU=", alt: "Ireland" },
+                    { id: 3, src: "https://media.istockphoto.com/id/1380534040/photo/beautiful-view-of-amalfi-on-the-mediterranean-coast-with-lemons-in-the-foreground-italy.jpg?s=612x612&w=0&k=20&c=4UQak9WJkyvN8aEgkLEwjnV5EW2RiGfC_GZNeQaVJeo=", alt: "Italy", desc:"hello italy" },
+                    { id: 4, src: "https://t3.ftcdn.net/jpg/02/65/23/70/360_F_265237090_Muthvb72m2POYFjyx7F5UCQLh9JdBtKN.jpg", alt: "Japan", desc:"hello Japan" },
+                    { id: 5, src: "https://plus.unsplash.com/premium_photo-1661963468634-71b9482a3efe?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8c291dGglMjBrb3JlYXxlbnwwfHwwfHx8MA%3D%3D", alt: "Korea", desc:"hello Korea"},
+                    { id: 6, src: "https://media.istockphoto.com/id/497572532/photo/cityscape-of-guiyang-at-night.jpg?s=612x612&w=0&k=20&c=iZ2avxaTDglVbfygFduRdxADXI-KqUO1nhX4DlPgFZs=", alt: "China", desc:"hello China" },
+                    { id: 7, src: "https://images.unsplash.com/photo-1525625293386-3f8f99389edd?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8c2luZ2Fwb3JlfGVufDB8fDB8fHww", alt: "Singapore", desc:"hello Singapore" },
+                    { id: 8, src: "https://media.istockphoto.com/id/1201281530/photo/landscape-with-halong-bay.jpg?s=612x612&w=0&k=20&c=Kg4BgIyfMr5Egq-yaQNtBLjHP2U_db9WaLB0-4MGrb0=", alt: "Vietnam", desc:"hello Vietnam" },
+                    { id: 9, src: "https://media.istockphoto.com/id/1046543492/photo/cliffs-of-moher-in-ireland.jpg?s=612x612&w=0&k=20&c=sMDpoVewpDlKDVUDg2Y0chw9ZdkHbdXCxKmhmQS-RpU=", alt: "Ireland", desc:"hello Ireland" },
                 ],
                 selectedPhoto: null,
                 currentPage: 1,
