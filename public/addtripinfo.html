@@ -7,93 +7,15 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src='https://unpkg.com/axios/dist/axios.min.js'></script>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Roboto+Slab:wght@400;700&display=swap">
-    
-    <style>
-        body {
-            margin: 0;
-            font-family: 'Montserrat', sans-serif;
-            background-color: #BDC6C2;
-        }
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Pacifico&family=Playwrite+GB+S:ital,wght@0,100..400;1,100..400&display=swap" rel="stylesheet">    <!-- Axios -->
 
-        .title {
-            text-align: center;
-            color: #764F37; 
-            font-size: 50px;
-            font-family: 'Playfair Display', serif; 
-            font-weight: 700;
-            margin: 30px 0; /* Adjusted margin for better spacing */
-        }
+    <link rel = "stylesheet" href = "trip.css">
 
-        .form-container {
-            padding: 30px;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.9); 
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4); 
-            max-width: 600px; 
-            margin: 0 auto; 
-        }
-
-        .btn {
-            background-color: #B5855B;
-            color: white;
-            font-family: 'Lora', serif; 
-            font-weight: bold;
-            border: none;
-        }
-
-        .btn:hover {
-            background-color: #DCB287;
-            transition: background-color 0.3s;
-        }
-
-        /* Nav bar */
-        .navbar {
-            background-color: #fff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px; 
-            padding: 15px 0; /* Added padding for better spacing */
-        }
-
-        .navbar-brand {
-            color: #764F37 !important;
-            font-weight: 700; 
-            font-size: 30px; /* Adjusted size for better appearance */
-            font-family: 'Playfair Display', serif;
-        }
-
-        .navbar-nav .nav-link {
-            color: #764F37;
-            font-weight: 500;
-            margin-left: 15px;
-            font-size: 18px; /* Adjusted font size */
-            font-family: 'Montserrat', sans-serif;
-        }
-
-        .navbar-nav .nav-link:hover {
-            color: #edc9af;
-            text-decoration: underline;
-        }
-
-        footer {
-            text-align: center;
-            padding: 20px;
-            background-color: #fff;
-            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
-            margin-top: 30px;
-            font-family: 'Montserrat', sans-serif; 
-        }
-
-        label {
-            font-family: 'Lora', serif; 
-            font-weight: 700; 
-        }
-    </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container">
-            <a class="navbar-brand" href="homepage.html">ROAMEO</a>
+            <a class="navbar-brand" href="homepage.html">Roameo</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -109,6 +31,10 @@
                         <a class="nav-link" href="mytrips.html">My Trip</a>
                     </li>
                 </ul>
+            </div>
+            <div class="search-profile">
+                <input type="text" class="search-bar" placeholder="Search...">
+                <a href="profile.html" class="profile-link">P</a>
             </div>
         </div>
     </nav>
@@ -140,11 +66,8 @@
                     <div class="form-group">
                         <label for="budget">Budget:</label>
                         <div class="row">
-                            <div class="col-md-6">
-                                <input type="number" id="minBudget" name="minBudget" class="form-control" placeholder="Min Budget" required>
-                            </div>
-                            <div class="col-md-6">
-                                <input type="number" id="maxBudget" name="maxBudget" class="form-control" placeholder="Max Budget" required>
+                            <div class="col-md">
+                                <input type="number" id="budget" name="budget" class="form-control" placeholder="Budget" required>
                             </div>
                         </div>
                     </div>
