@@ -1,18 +1,17 @@
 const app = Vue.createApp({ 
     data() { 
         return { 
-              attractions : [],
-              all : []
+              all : [] // list of nearby attractions gotten using google place api
         };
     }, // data
     computed: { 
-        country() {
+        country() { // for use to display header and to pass in to google place api
             const selectedCountry = localStorage.getItem('selectedCountry');
             return selectedCountry;
         } 
     }, // computed
 
-    async mounted() { 
+    async mounted() {  // in mounted because we need to use it after we have selected country
 
         const info = await getCoordinates(this.country);
         const lat = info.lat;
@@ -27,11 +26,12 @@ const app = Vue.createApp({
             type: ['tourist_attraction'], 
         };
 
-        service.nearbySearch(request, (results, status) => this.all = results);
+        service.nearbySearch(request, (results, status) => this.all = results); // set list of attractions
 
     }
 });
 
+//loop through attractions and for each attraction render this component
 app.component('country-images', { 
     props: [ 'a_name' ],
 
@@ -60,13 +60,13 @@ app.component('country-images', {
     },
     
     template: `
-        <card class='card' v-if=imgurl>
+        <div class='card' v-if=imgurl>
             <img :src=imgurl></img>
             <div class='caption'> 
                 {{ a_name }} 
-                <div class='description'> {{ desc}} <div>
+                <div class='description'> {{ desc}} </div>
             </div>
-        </card>
+        </div>
     `
     });
     // component must be declared before app.mount(...)
