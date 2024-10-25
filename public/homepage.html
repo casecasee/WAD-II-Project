@@ -1,9 +1,3 @@
-    <!-- vue CDN -->
-    <!-- <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-    
-    <script type="module" src="checkauth.js"></script> -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,55 +5,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ROAMEO</title>
     <!-- vue CDN -->
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
         
     <script type="module" src="checkauth.js"></script>
 
     <style>
-        body, html {
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+        }
+        body, html {
             height: 100%;
-            font-family: 'Montserrat', sans-serif;
-            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* Prevents scrolling */
         }
-        .header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
+        .navbar {
             background-color: #fff;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 1000;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px; 
-            padding: 15px 30px;
+            padding: 0px 0;
         }
-        .logo {
-            font-size: 30px;
-            font-weight: 700;
-            color: #764F37;
-            font-family: 'Playfair Display', serif;
-            margin-left: 15px;
+
+        .navbar-brand { 
+            color: white !important; 
+            font-weight: 700;  
+            font-size: 40px; /* Adjusted size for better appearance */ 
+            font-family: "Pacifico", cursive; 
+            font-weight: 200; 
+            /* font-family: "Playwrite GB S", serif;  */
         }
-        .nav-links {
-            display: flex;
-            gap: 20px;
-            margin-right: 15px;
+
+        .nav-item{
+            margin: 0px 20px;
+            color: white;
         }
-        .nav-link {
-            text-decoration: none;
-            color: #764F37;
-            font-weight: 500;
+
+        .navbar .nav-item .nav-link{
+            color: white;
             font-size: 18px;
-            font-family: 'Montserrat', sans-serif;
+            border-radius: 25px;
+            font-family: "Playwrite GB S", serif;
+            font-family: "SF Pro Text";
+            font-weight: 700;
         }
-        .nav-link:hover {
-            color: #edc9af;
-            text-decoration: underline;
+
+        .navbar-nav .nav-link:hover {
+            background-color: #DCB287;
+            color:black;
         }
         .search-profile {
             display: flex;
@@ -72,7 +66,7 @@
             border: 1px solid #ccc;
             border-radius: 5px;
         }
-        .profile-link {
+        .profile-pic {
             width: 30px;
             height: 30px;
             background-color: #ccc;
@@ -85,9 +79,11 @@
             font-weight: bold;
         }
         .carousel {
-            height: 100%;
+            height: 100%; 
             display: flex;
             transition: transform 0.5s ease;
+            margin: 0;
+            padding: 0;
         }
         .slide {
             position: relative;
@@ -99,6 +95,7 @@
             align-items: center;
             padding: 60px 20px 40px;
             box-sizing: border-box;
+            overflow: hidden;
         }
         .title {
             font-size: 28px;
@@ -106,7 +103,8 @@
         }
         .info-box {
             position: absolute;
-            border: 2px solid #000;
+            /* border: 2px solid #000; */
+            background-color: rgba(255, 255, 255, 0.7);  /* Translucent white background */
             width: 200px;
             height: 200px;
             display: flex;
@@ -114,6 +112,13 @@
             align-items: center;
             font-size: 18px;
             margin-bottom: 20px;
+            color: black;
+            margin: 20px;
+            border-radius: 10px;
+            z-index: 2;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(5px);
         }
         .add-trip {
             position: absolute;
@@ -123,6 +128,7 @@
             font-size: 16px;
             cursor: pointer;
             transition: background-color 0.3s, color 0.3s;
+            z-index: 2;
         }
         .add-trip:hover {
             background-color: #000;
@@ -168,18 +174,39 @@
     </style>
 </head>
 <body>
-    <div class="header">
-        <div class="logo">ROAMEO</div>
-        <div class="nav-links">
-            <a href="homepage.html" class="nav-link">Home</a>
-            <a href="social.html" class="nav-link">Community Feed</a>
-            <a href="mytrips.html" class="nav-link">My Trips</a>
+    <nav class="navbar navbar-light navbar-expand-md" style="background-color: #764F37;">
+        <div class="container">
+
+            <div class="d-flex col-3">
+                <a href="homepage.html" class="navbar-brand">Roameo</a>
+            </div>
+    
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+    
+            <div class="collapse navbar-collapse col-6 justify-content-center" id="navbarSupportedContent">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="homepage.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="communityFeed.html">Community Feed</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="mytrips.html">My Trip</a>
+                    </li>
+                </ul>
+            </div>
+    
+            <div class="d-flex col-3 justify-content-end">
+                <input type="text" class="search-bar" placeholder="Search...">
+                <a href="profile.html">
+                    <img src="dp.png" alt="Profile" class="profile-pic">
+                </a>
+            </div>
         </div>
-        <div class="search-profile">
-            <input type="text" class="search-bar" placeholder="Search...">
-            <a href="profile.html" class="profile-link">P</a>
-        </div>
-    </div>
+    </nav>
     
     <div class="carousel">
         <div class="slide">
