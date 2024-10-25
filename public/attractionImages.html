@@ -4,13 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Explore Attractions</title>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBqbv7BqX1_7CcpPT80locaYJ3fnsdC-Sg&libraries=places,marker&callback=getImgs" defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBqbv7BqX1_7CcpPT80locaYJ3fnsdC-Sg&libraries=places,marker" defer></script>
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Pacifico&family=Playwrite+GB+S:ital,wght@0,100..400;1,100..400&display=swap" rel="stylesheet">    <!-- Axios -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Pacifico&family=Playwrite+GB+S:ital,wght@0,100..400;1,100..400&display=swap" rel="stylesheet">    
+    <!-- Axios -->
     <script src='https://unpkg.com/axios/dist/axios.min.js'></script>
+    <!-- Vue 3 -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    
 
     <link rel = "stylesheet" href = "trip.css">
 
@@ -39,8 +43,10 @@
     </nav>
 
     <div id="app">
-        <h1 id="countryName"></h1>
-        <div id="imgs"></div>
+        <h1>Attractions in {{ country }}</h1>
+        <div id="imgs">
+        <country-images v-for="attraction in all" :a_name="attraction.name"> </countryImages>
+        </div>
     </div>
 
     <script src = "attractionImages.js"></script>

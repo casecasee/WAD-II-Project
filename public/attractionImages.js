@@ -1,94 +1,169 @@
+const app = Vue.createApp({ 
+    data() { 
+        return { 
+              attractions : [],
+              all : []
+        };
+    }, // data
+    computed: { 
+        country() {
+            const selectedCountry = localStorage.getItem('selectedCountry');
+            return selectedCountry;
+        } 
+    }, // computed
+
+    async mounted() { 
+
+        const info = await getCoordinates(this.country);
+        const lat = info.lat;
+        const long = info.long;
+
+        var loc = new google.maps.LatLng(lat, long);
+        const service = new google.maps.places.PlacesService(document.createElement('div'));
+
+        const request = {
+            location: loc,
+            radius: '5000',
+            type: ['tourist_attraction'], 
+        };
+
+        service.nearbySearch(request, (results, status) => this.all = results);
+
+    }
+});
+
+app.component('country-images', { 
+    props: [ 'a_name' ],
+
+    data() {
+        return {
+            imgurl : '',
+            desc : ''
+        }
+    }, // data
+
+    async mounted() {
+        const url = 'https://api.wikimedia.org/core/v1/wikipedia/en/search/page';
+        const params = { q: this.a_name, limit: 1 };
+        response = await axios.get(url, { params: params } );
+        const result = response.data.pages;
+        if (result[0]) { // checks if the wiki page exists
+            const thumbimage = result[0].thumbnail?.url; // Optional chaining for handling missing thumbnails
+            const description = result[0].description || "No description available";
+    
+            if (thumbimage) {
+                const image = thumbimage.replace('/thumb', '').replace(/\/\d+px-.+$/, '');
+                this.imgurl = image;
+                this.desc = description         
+            }
+        }
+    },
+    
+    template: `
+        <card class='card' v-if=imgurl>
+            <img :src=imgurl></img>
+            <div class='caption'> 
+                {{ a_name }} 
+                <div class='description'> {{ desc}} <div>
+            </div>
+        </card>
+    `
+    });
+    // component must be declared before app.mount(...)
+    
+    const vm = app.mount('#app'); 
+
+// when created we have to get all the attractions and all the info
+
 async function getCoordinates(name) {
     const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(name)}&key=AIzaSyBqbv7BqX1_7CcpPT80locaYJ3fnsdC-Sg`;
 
     const response = await fetch(url);
     const data = await response.json();
-
     const location = data.results[0].geometry.location;
+    
     return {
         lat: location.lat,
         long: location.lng
     };
 }
 
-async function getImgs() {
-    const selectedCountry = localStorage.getItem('selectedCountry');
-    document.getElementById('countryName').innerText = `Attractions in ${selectedCountry}`;
+// async function getImgs() {
 
-    const info = await getCoordinates(selectedCountry);
-    const lat = info.lat;
-    const long = info.long;
+//     const info = await getCoordinates(selectedCountry);
+//     const lat = info.lat;
+//     const long = info.long;
 
-    var loc = new google.maps.LatLng(lat, long);
-    const service = new google.maps.places.PlacesService(document.createElement('div'));
+//     var loc = new google.maps.LatLng(lat, long);
+//     const service = new google.maps.places.PlacesService(document.createElement('div'));
 
-    const request = {
-        location: loc,
-        radius: '100000',
-        type: ['tourist_attraction', 'museum', 'stadium', 'landmark', 'natural_feature'], 
-    };
+//     const request = {
+//         location: loc,
+//         radius: '20000',
+//         type: ['tourist_attraction'], 
+//     };
 
-    service.nearbySearch(request, (results, status) => handleResponse(results, status, selectedCountry));
-}
+//     service.nearbySearch(request, (results, status) => handleResponse(results, status, selectedCountry));
+// }
 
-async function handleResponse(results, status, country) {
-    const destination = document.getElementById('imgs');
-    destination.innerHTML = '';
-    const displayedNames = new Set(); 
+// async function handleResponse(results, status, country) {
+    // const destination = document.getElementById('imgs');
+    // destination.innerHTML = '';
+    // const displayedNames = new Set(); 
 
-    if (status === google.maps.places.PlacesServiceStatus.OK) {
-        results.forEach(attraction => {
-            const name = attraction.name;
-            console.log(name);
+    // if (status === google.maps.places.PlacesServiceStatus.OK) {
+    //     results.forEach(attraction => {
+    //         const name = attraction.name;
+    //         console.log(name);
 
-            if (displayedNames.has(name)) {
-                return; 
-            }
-            displayedNames.add(name); 
+    //         if (displayedNames.has(name)) {
+    //             return; 
+    //         }
+    //         displayedNames.add(name); 
 
-            // Wikipedia API to get both image and description
-            const url = 'https://api.wikimedia.org/core/v1/wikipedia/en/search/page';
+    //         // Wikipedia API to get both image and description
+    //         const url = 'https://api.wikimedia.org/core/v1/wikipedia/en/search/page';
 
-            axios.get(url, { params: { q: name, limit: 1 } })
-                .then(response => {
-                    const result = response.data.pages;
-                    if (result[0]) { // checks if the wiki page exists
-                        const thumbimage = result[0].thumbnail?.url; // Optional chaining for handling missing thumbnails
-                        const description = result[0].description || "No description available"; // Fallback for missing descriptions
+    //         axios.get(url, { params: { q: name, limit: 1 } })
+    //             .then(response => {
+    //                 const result = response.data.pages;
+    //                 if (result[0]) { // checks if the wiki page exists
+    //                     const thumbimage = result[0].thumbnail?.url; // Optional chaining for handling missing thumbnails
+    //                     const description = result[0].description || "No description available"; // Fallback for missing descriptions
 
-                        if (thumbimage) {
-                            const image = thumbimage.replace('/thumb', '').replace(/\/\d+px-.+$/, '');
+    //                     if (thumbimage) {
+    //                         const image = thumbimage.replace('/thumb', '').replace(/\/\d+px-.+$/, '');
 
-                            const card = document.createElement('div');
-                            card.className = 'card';
+    //                         const card = document.createElement('div');
+    //                         card.className = 'card';
 
-                            const imgElement = document.createElement('img');
-                            imgElement.setAttribute('src', image);
+    //                         const imgElement = document.createElement('img');
+    //                         imgElement.setAttribute('src', image);
 
-                            const caption = document.createElement('div');
-                            caption.className = 'caption';
-                            caption.innerText = name;
+    //                         const caption = document.createElement('div');
+//                             caption.className = 'caption';
+//                             caption.innerText = name;
 
-                            const descriptionElement = document.createElement('div');
-                            descriptionElement.className = 'description';
-                            descriptionElement.innerText = description;
+//                             const descriptionElement = document.createElement('div');
+//                             descriptionElement.className = 'description';
+//                             descriptionElement.innerText = description;
 
-                            card.appendChild(imgElement);
-                            caption.appendChild(descriptionElement); // Append description to caption
-                            card.appendChild(caption);
+//                             card.appendChild(imgElement);
+//                             caption.appendChild(descriptionElement); // Append description to caption
+//                             card.appendChild(caption);
 
-                            destination.appendChild(card);
-                        }
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-        });
-    }
-}
+//                             destination.appendChild(card);
+//                         }
+//                     }
+//                 })
+//                 .catch(error => {
+//                     console.error('Error:', error);
+//                 });
+//         });
+//     }
+// }
 
-// -------------------------------------------- without description ---------------------------------------------------------------------------------
+// ------------------------------------- without description ----------------------------------------------------------------------
 // async function getCoordinates(name) {
 //     const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(name)}&key=AIzaSyBqbv7BqX1_7CcpPT80locaYJ3fnsdC-Sg`;
 
