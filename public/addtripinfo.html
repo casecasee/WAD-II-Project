@@ -15,7 +15,7 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container">
-            <a class="navbar-brand" href="homepage.html">ROAMEO</a>
+            <a class="navbar-brand" href="homepage.html">Roameo</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -31,6 +31,10 @@
                         <a class="nav-link" href="mytrips.html">My Trip</a>
                     </li>
                 </ul>
+            </div>
+            <div class="search-profile">
+                <input type="text" class="search-bar" placeholder="Search...">
+                <a href="profile.html" class="profile-link">P</a>
             </div>
         </div>
     </nav>
@@ -62,11 +66,8 @@
                     <div class="form-group">
                         <label for="budget">Budget:</label>
                         <div class="row">
-                            <div class="col-md-6">
-                                <input type="number" id="minBudget" name="minBudget" class="form-control" placeholder="Min Budget" required>
-                            </div>
-                            <div class="col-md-6">
-                                <input type="number" id="maxBudget" name="maxBudget" class="form-control" placeholder="Max Budget" required>
+                            <div class="col-md">
+                                <input type="number" id="budget" name="budget" class="form-control" placeholder="Budget" required>
                             </div>
                         </div>
                     </div>

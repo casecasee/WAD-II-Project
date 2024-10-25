@@ -1,6 +1,6 @@
 body {
     margin: 0;
-    font-family: 'Montserrat', sans-serif;
+    font-family: "SF Pro Text";
     background-color: #BDC6C2;
 }
 
@@ -8,7 +8,7 @@ body {
     text-align: center;
     color: #764F37; 
     font-size: 50px;
-    font-family: 'Playfair Display', serif; 
+    font-family: "SF Pro Text";
     font-weight: 700;
     margin: 30px 0; /* Adjusted margin for better spacing */
 }
@@ -25,7 +25,7 @@ body {
     color: #764F37 !important;
     font-weight: 700; 
     font-size: 40px; /* Adjusted size for better appearance */
-    font-family: "Pacifico", cursive;
+    font-family: "Pacifico", cursive !important;
     font-weight: 200;
     /* font-family: "Playwrite GB S", serif; */
 }
@@ -35,7 +35,7 @@ body {
     font-weight: 500;
     margin-left: 15px;
     font-size: 18px; /* Adjusted font size */
-    font-family: 'Montserrat', sans-serif;
+    font-family: "SF Pro Text";
 }
 
 .navbar-nav .nav-link:hover {
@@ -49,11 +49,11 @@ footer {
     background-color: #fff;
     box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
     margin-top: 30px;
-    font-family: 'Montserrat', sans-serif; 
+    font-family: "SF Pro Text";
 }
 
 label {
-    font-family: 'Lora', serif; 
+    font-family: "SF Pro Text"; 
     font-weight: 700; 
 }
 
@@ -62,7 +62,7 @@ label {
 .addtripbtn {
     background-color: #B5855B;
     color: white;
-    font-family: 'Lora', serif; 
+    font-family: "SF Pro Text"; 
     font-weight: bold;
     border: none;
 }
