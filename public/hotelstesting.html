@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Trip Information</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.2/axios.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen p-8">
+    <div class="max-w-2xl mx-auto bg-white rounded-lg shadow-md p-6">
+        <h1 class="text-2xl font-bold mb-6">Hotel Information</h1>
+        
+        <!-- Trip Information Form -->
+        <form id="tripForm" class="space-y-4">
+            <div>
+                <label for="destination" class="block text-sm font-medium text-gray-700">Destination</label>
+                <input type="text" id="destination" name="destination" required
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+            </div>
+
+            <div>
+                <label for="startDate" class="block text-sm font-medium text-gray-700">Start Date</label>
+                <input type="date" id="startDate" name="startDate" required
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+            </div>
+
+            <div>
+                <label for="endDate" class="block text-sm font-medium text-gray-700">End Date</label>
+                <input type="date" id="endDate" name="endDate" required
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+            </div>
+
+            <button type="submit" 
+                class="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                Search Hotels
+            </button>
+        </form>
+
+        <!-- Loading Indicator -->
+        <div id="loadingIndicator" class="hidden mt-4">
+            <div class="flex items-center justify-center">
+                <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+                <span class="ml-2">Searching hotels...</span>
+            </div>
+        </div>
+
+        <!-- Hotel Results Section -->
+        <div id="hotelResults" class="mt-6 space-y-4 hidden">
+            <h2 class="text-xl font-semibold mb-4">Available Hotels</h2>
+            <div id="hotelList" class="space-y-4">
+                <!-- Hotels will be populated here -->
+            </div>
+        </div>
+
+        <!-- Error Message -->
+        <div id="errorMessage" class="hidden mt-4 p-4 bg-red-100 text-red-700 rounded-md">
+        </div>
+    </div>
+
+    <script>
+        const RAPIDAPI_KEY = '7bb272beafmshf057635e1f360f4p10cef0jsn822b6e337760'; // Replace with your actual API key
+        
+        document.getElementById('tripForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const destination = document.getElementById('destination').value;
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+            
+            // Show loading indicator
+            document.getElementById('loadingIndicator').classList.remove('hidden');
+            document.getElementById('hotelResults').classList.add('hidden');
+            document.getElementById('errorMessage').classList.add('hidden');
+
+            try {
+                // Make API request to Hotels.com
+                const options = {
+                    method: 'GET',
+                    url: 'https://hotels4.p.rapidapi.com/locations/v3/search',
+                    params: {
+                        q: destination,
+                        locale: 'en_US',
+                        langid: '1033',
+                        siteid: '300000001'
+                    },
+                    headers: {
+                        'X-RapidAPI-Key': 'NOKEY',
+                        'X-RapidAPI-Host': 'NOHOST'
+                    }
+                };
+
+                const response = await axios.request(options);
+                
+                // Process and display results
+                const hotelList = document.getElementById('hotelList');
+                hotelList.innerHTML = ''; // Clear previous results
+                
+                if (response.data.sr) {
+                    response.data.sr.forEach(hotel => {
+                        if (hotel.type === 'HOTEL') {
+                            const hotelElement = createHotelElement(hotel);
+                            hotelList.appendChild(hotelElement);
+                        }
+                    });
+                    
+                    document.getElementById('hotelResults').classList.remove('hidden');
+                } else {
+                    throw new Error('No hotels found for this destination');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                const errorMessage = document.getElementById('errorMessage');
+                errorMessage.textContent = 'Error searching for hotels. Please try again.';
+                errorMessage.classList.remove('hidden');
+            } finally {
+                document.getElementById('loadingIndicator').classList.add('hidden');
+            }
+        });
+
+        function createHotelElement(hotel) {
+            const div = document.createElement('div');
+            div.className = 'border rounded-lg p-4 hover:shadow-md transition-shadow';
+            
+            div.innerHTML = `
+                <h3 class="font-semibold text-lg">${hotel.regionNames.primaryDisplayName}</h3>
+                <p class="text-gray-600 text-sm">${hotel.hotelAddress?.street || ''}</p>
+                <div class="mt-2 flex justify-between items-center">
+                    <span class="text-sm text-gray-500">${hotel.hotelAddress?.city || ''}, ${hotel.hotelAddress?.province || ''}</span>
+                    <button onclick="selectHotel('${hotel.gaiaId}')" 
+                        class="text-blue-500 hover:text-blue-600 text-sm font-medium">
+                        Select Hotel
+                    </button>
+                </div>
+            `;
+            
+            return div;
+        }
+
+        function selectHotel(hotelId) {
+            // Add your logic here to handle hotel selection
+            console.log('Selected hotel:', hotelId);
+            // You could store this in localStorage, send it to another page, etc.
+        }
+
+        // Set minimum date as today for date inputs
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('startDate').min = today;
+        document.getElementById('endDate').min = today;
+        
+        // Update end date minimum when start date changes
+        document.getElementById('startDate').addEventListener('change', function() {
+            document.getElementById('endDate').min = this.value;
+        });
+    </script>
+</body>
+</html>
