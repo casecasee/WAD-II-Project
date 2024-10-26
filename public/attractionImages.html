@@ -43,10 +43,10 @@
 
     <div id="app">
         <h1>Attractions in {{ country }}</h1>
-        <div id="imgs">
-        <country-images v-for="attraction in all" :a_name="attraction.name" @popup="popup(attraction.name)"> </country-images>
-        </div>
-        <pop-up :display_it=display_it :a_name="selected_a" @close="close()"></pop-up>
+
+        <country-images v-for="attraction in all" :a_name="attraction.name" @popup="popup($event, attraction.name)"> </country-images>
+        
+        <pop-up :display_it=display_it :a_name="selected_a" :by_img="imgurl" @close="close()"></pop-up>
     </div>
 
     <script src = "attractionImages.js"></script>
