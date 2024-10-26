@@ -45,7 +45,7 @@
             background-color: #DCB287;
             color:black;
         }
-        .search-profile {
+        /* .search-profile {
             display: flex;
             align-items: center;
             gap: 10px;
@@ -55,7 +55,7 @@
             padding: 5px 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
-        }
+        } */
         .profile-pic {
             width: 30px;
             height: 30px;
@@ -161,7 +161,7 @@
                         <a class="nav-link" href="homepage.html">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="communityFeed.html">Community Feed</a>
+                        <a class="nav-link" href="social.html">Community Feed</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="mytrips.html">My Trip</a>
@@ -197,31 +197,9 @@
                 <div id="hotel-list"></div>
             </div>
         </div>
-        
-        <!-- <div class="right-content">
-            <h3>Budget Tracker</h3>
-            <canvas id="budgetChart"></canvas>
-        </div> -->
     </div>
 
     <script>
-        // Budget Tracker Chart
-        // const ctx = document.getElementById('budgetChart').getContext('2d');
-        // new Chart(ctx, {
-        //     type: 'doughnut',
-        //     data: {
-        //         labels: ['Spent', 'Remaining'],
-        //         datasets: [{
-        //             data: [300, 700],
-        //             backgroundColor: ['#FF6384', '#36A2EB']
-        //         }]
-        //     },
-        //     options: {
-        //         responsive: true,
-        //         maintainAspectRatio: false
-        //     }
-        // });
-
         // Simulated hotel data (replace with actual API calls)
         const hotelData = [
             { 
@@ -277,3 +255,4 @@
     </script>
 </body>
 </html>
+
