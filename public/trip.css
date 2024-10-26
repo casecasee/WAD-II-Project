@@ -130,6 +130,26 @@ h1 {
     font-weight: 400;
 }
 
+.pop { /* background */
+    display: block;
+    position: fixed; 
+    z-index: 1; /* Sit on top */
+    left: 0;
+    bottom: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgba(0,0,0,0.4); 
+}
+
+.content {
+    background-color: #fefefe;
+    margin: 15% auto; 
+    padding: 20px;
+    border: 1px solid #888;
+    width: 50%;
+}
+
 /* options.html */
 
 .buttons-container {

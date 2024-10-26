@@ -1,7 +1,9 @@
 const app = Vue.createApp({ 
     data() { 
         return { 
-              all : [] // list of nearby attractions gotten using google place api
+              all : [], // list of nearby attractions gotten using google place api
+              display_it: false,
+              selected_a: ''
         };
     }, // data
     computed: { 
@@ -10,6 +12,18 @@ const app = Vue.createApp({
             return selectedCountry;
         } 
     }, // computed
+
+    methods: {
+        popup(a_name) {
+            console.log(a_name)
+            this.display_it = true;
+            this.selected_a = a_name;
+            // change display_it to true and pass it to the component
+        }, 
+        close() {
+            this.display_it = false;
+        }
+    }, 
 
     async mounted() {  // in mounted because we need to use it after we have selected country
 
@@ -27,7 +41,6 @@ const app = Vue.createApp({
         };
 
         service.nearbySearch(request, (results, status) => this.all = results); // set list of attractions
-
     }
 });
 
@@ -47,9 +60,12 @@ app.component('country-images', {
         const params = { q: this.a_name, limit: 1 };
         response = await axios.get(url, { params: params } );
         const result = response.data.pages;
+
         if (result[0]) { // checks if the wiki page exists
             const thumbimage = result[0].thumbnail?.url; // Optional chaining for handling missing thumbnails
             const description = result[0].description || "No description available";
+            // [ ] check if wiki page consists of coords
+
     
             if (thumbimage) {
                 const image = thumbimage.replace('/thumb', '').replace(/\/\d+px-.+$/, '');
@@ -60,14 +76,44 @@ app.component('country-images', {
     },
     
     template: `
-        <div class='card' v-if=imgurl>
+        <div class='card' v-if=imgurl @click=$emit('popup')>
             <img :src=imgurl></img>
             <div class='caption'> 
                 {{ a_name }} 
-                <div class='description'> {{ desc}} </div>
+                <div class='description'> {{ desc }} </div>
             </div>
         </div>
     `
+    });
+    // component must be declared before app.mount(...)
+
+    // [ ] to add trip to database idk if component is gud idea
+    //
+    app.component('pop-up', { 
+        props: [ 'a_name', 'display_it' ],
+        
+        data() {
+            return {
+            }
+        }, // data
+        
+        methods: {
+            methodName() {
+                
+            }
+        }, // methods
+        
+        template: `
+            <div v-if="display_it" class='pop'>
+                <div class='content'>
+                    <p>{{ a_name }}</p>
+                    <p @click=$emit('close')>&times;</p>
+                </div>
+
+
+            </div>
+        
+        `
     });
     // component must be declared before app.mount(...)
     
@@ -87,81 +133,6 @@ async function getCoordinates(name) {
         long: location.lng
     };
 }
-
-// async function getImgs() {
-
-//     const info = await getCoordinates(selectedCountry);
-//     const lat = info.lat;
-//     const long = info.long;
-
-//     var loc = new google.maps.LatLng(lat, long);
-//     const service = new google.maps.places.PlacesService(document.createElement('div'));
-
-//     const request = {
-//         location: loc,
-//         radius: '20000',
-//         type: ['tourist_attraction'], 
-//     };
-
-//     service.nearbySearch(request, (results, status) => handleResponse(results, status, selectedCountry));
-// }
-
-// async function handleResponse(results, status, country) {
-    // const destination = document.getElementById('imgs');
-    // destination.innerHTML = '';
-    // const displayedNames = new Set(); 
-
-    // if (status === google.maps.places.PlacesServiceStatus.OK) {
-    //     results.forEach(attraction => {
-    //         const name = attraction.name;
-    //         console.log(name);
-
-    //         if (displayedNames.has(name)) {
-    //             return; 
-    //         }
-    //         displayedNames.add(name); 
-
-    //         // Wikipedia API to get both image and description
-    //         const url = 'https://api.wikimedia.org/core/v1/wikipedia/en/search/page';
-
-    //         axios.get(url, { params: { q: name, limit: 1 } })
-    //             .then(response => {
-    //                 const result = response.data.pages;
-    //                 if (result[0]) { // checks if the wiki page exists
-    //                     const thumbimage = result[0].thumbnail?.url; // Optional chaining for handling missing thumbnails
-    //                     const description = result[0].description || "No description available"; // Fallback for missing descriptions
-
-    //                     if (thumbimage) {
-    //                         const image = thumbimage.replace('/thumb', '').replace(/\/\d+px-.+$/, '');
-
-    //                         const card = document.createElement('div');
-    //                         card.className = 'card';
-
-    //                         const imgElement = document.createElement('img');
-    //                         imgElement.setAttribute('src', image);
-
-    //                         const caption = document.createElement('div');
-//                             caption.className = 'caption';
-//                             caption.innerText = name;
-
-//                             const descriptionElement = document.createElement('div');
-//                             descriptionElement.className = 'description';
-//                             descriptionElement.innerText = description;
-
-//                             card.appendChild(imgElement);
-//                             caption.appendChild(descriptionElement); // Append description to caption
-//                             card.appendChild(caption);
-
-//                             destination.appendChild(card);
-//                         }
-//                     }
-//                 })
-//                 .catch(error => {
-//                     console.error('Error:', error);
-//                 });
-//         });
-//     }
-// }
 
 // ------------------------------------- without description ----------------------------------------------------------------------
 // async function getCoordinates(name) {
@@ -321,6 +292,3 @@ async function getCoordinates(name) {
     //     console.error('PlacesService search failed due to:', status);
     // }
 // ---------------------------------------- end -----------------------------------------------------------------------
-
-
-
