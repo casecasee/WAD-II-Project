@@ -46,7 +46,7 @@
 
         <country-images v-for="attraction in all" :a_name="attraction.name" @popup="popup($event, attraction.name)"> </country-images>
         
-        <pop-up :display_it=display_it :a_name="selected_a" :by_img="imgurl" @close="close()"></pop-up>
+        <pop-up :display_it=display_it :a_name="selected_a" :bg_img="imgurl" @close="close()"></pop-up>
     </div>
 
     <script src = "attractionImages.js"></script>
