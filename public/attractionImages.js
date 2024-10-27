@@ -76,7 +76,6 @@ app.component('country-images', {
             }
         }
     },
-    // TODO make it a form lol
     template: `
         <div class='card' v-if=imgurl @click="$emit('popup', this.imgurl)">
             <img :src=imgurl></img>
@@ -88,42 +87,49 @@ app.component('country-images', {
     `
     });
 
-    // [ ] to add trip to database idk if component is gud idea
+    // TODO make the form better bruh
     app.component('pop-up', { 
         props: [ 'a_name', 'display_it', 'bg_img' ],
         
         template: `
-            <div v-if="display_it" class='pop'>
-                <div class='content'>
+            <div v-if="display_it" id='pop'>
 
-                    <p>{{ a_name }}</p>
-                    <span id="cancel" @click="$emit('close')">&times;</span>
+                <div id='content'>
 
-                    <div class='form-container'>
-                        <form id="attractionForm">
+                    <img :src=bg_img id='bg_img'>
 
-                            <div class="form-group">
-                                <label for="dateSelect">Date:</label>
-                                <div class="row">
-                                    <div class="col">
-                                        <input type="date" id="startDate" name="startDate" class="form-control" required>
-                                    </div>
-                                </div>
-                            </div>
+                    <h1 id='attraction_title'>{{ a_name }}</h1>
                     
-                            <div class="form-group">
-                                <label for="cost">Cost:</label>
-                                <div class="row">
-                                    <div class="col-md">
-                                        <input type="number" id="cost" name="cost" class="form-control" placeholder="Cost" required>
+                    <div id="cancel" @click="$emit('close')">&times;</div>
+
+                    <div id='a_form'>
+
+                        <div class='form-container'>
+                            <form id="attractionForm">
+
+                                <div class="form-group">
+                                    <label for="dateSelect">Date:</label>
+                                    <div class="row">
+                                        <div class="col">
+                                            <input type="date" id="startDate" name="startDate" class="form-control" required>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                        
+                                <div class="form-group">
+                                    <label for="cost">Cost:</label>
+                                    <div class="row">
+                                        <div class="col-md">
+                                            <input type="number" id="cost" name="cost" class="form-control" placeholder="Cost" required>
+                                        </div>
+                                    </div>
+                                </div>
 
-
-                        </form>
+                            </form>
+                            
+                        </div>
+                        
                     </div>
-
 
                 </div>
 
