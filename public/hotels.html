@@ -105,6 +105,46 @@
         gap: 20px;
         padding: 10px 0;
         }
+        /* options */
+        .buttons-container {
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.9); 
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); 
+            margin: 50px auto;
+            max-width: 500px; 
+        }
+
+        .btn {
+            background-color: #B5855B; 
+            color: white;
+            font-weight: bold;
+            padding: 15px 30px;
+            margin: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 19px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 8px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn:hover {
+            background-color: #DCB287;
+            transform: translateY(-2px);
+        }
+
+        .btn img {
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 40px;
+            color: #764F37;
+            margin-bottom: 30px;
+        }
         /* Style for <a> tags that look like buttons */
         .nav-buttons a.button {
             padding: 8px 20px;
@@ -188,9 +228,9 @@
     </nav>
 
     <div class="nav-buttons">
-        <a href="addflightinfo.html" class="button">Flight</a>
-        <a href="hotels.html" class="button">Hotel</a>
-        <a href="attractions.html" class="button">Attractions</a>
+        <a href="flights.html"><button id="flight" class="btn"><img src="countryPics/ticket_sign.png" alt="Flight Icon">FLIGHT</button></a>
+        <a href="hotels.html"><button id="hotel" class="btn"><img src="countryPics/hotel_sign.png" alt="Hotel Icon">HOTEL</button></a>
+        <button id="attractions" class="btn" @click="goToAttractions"><img src="countryPics/attraction_sign.png" alt="Attractions Icon">ATTRACTIONS</button>
     </div>
     
     <div class="main-content">
