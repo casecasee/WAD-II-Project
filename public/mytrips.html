@@ -5,15 +5,66 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Trips</title>
 
-    <script type="module" src="checkauth.js"></script>
+    <!-- VUE -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    
+    <!-- Axios and API -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBqbv7BqX1_7CcpPT80locaYJ3fnsdC-Sg&libraries=places"></script>
 
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Pacifico&family=Playwrite+GB+S:ital,wght@0,100..400;1,100..400&display=swap" rel="stylesheet">    
+    <link rel = "stylesheet" href = "mytrips.css">
+    
 </head>
 <body>
 
-    <!-- cards of current trips -->
+    <nav></nav> <!--include the nav bar-->
 
 
-    <!-- add new trip button -> addtripinfo.html  -->
+    <div id="app">
+        <h1 class="title">My Trips</h1>
+        
+        <!-- Current Trips Carousel -->
+        <h2>Current Trips</h2>
+        <div class="carousel-container">
+            <button class="carousel-btn left" @click="scrollLeft('current')">‹</button>
+            <div class="carousel-track" :style="{ transform: `translateX(${scrollPosition.current}px)` }">
+                <div v-for="trip in currentTrips" :key="trip.id" class="trip-item">
+                    <img :src="trip.image" alt="Trip Image" class="trip-image">
+                    <div class="trip-details">
+                        <h3>{{ trip.destination }}</h3>
+                        <p>{{ trip.flightInfo }}</p>
+                        <button class="details-button">View Details</button>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-btn right" @click="scrollRight('current')">›</button>
+        </div>
+
+        <!-- Old Trips Carousel -->
+        <h2>Past Trips</h2>
+        <div class="carousel-container mb-4">
+            <button class="carousel-btn left" @click="scrollLeft('old')">‹</button>
+            <div class="carousel-track" :style="{ transform: `translateX(${scrollPosition.old}px)` }">
+                <div v-for="trip in oldTrips" :key="trip.id" class="trip-item">
+                    <img :src="trip.image" alt="Old Trip Image" class="trip-image">
+                    <div class="trip-details">
+                        <h3>{{ trip.destination }}</h3>
+                        <p>Date: {{ trip.date }}, Flight {{ trip.flightNumber }}</p>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-btn right" @click="scrollRight('old')">›</button>
+        </div>
+    </div>
+
+    <script src = "mytrips.js"></script>
     
+
+    <footer>
+        &copy; 2024 ROAMEO. All Rights Reserved.
+    </footer>
 </body>
 </html>
