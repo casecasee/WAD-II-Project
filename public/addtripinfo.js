@@ -1,8 +1,6 @@
 import { cities } from './allcities.js';
 import { firebaseApp } from './stuff.js';
-import { add_info_trips, update_trips_users } from './functions.js';
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
-
+import { UID, add_info_trips, update_trips_users } from './functions.js';
 
 const app = Vue.createApp({ 
     data() { 
@@ -16,14 +14,9 @@ const app = Vue.createApp({
             budget: ''
         };
     }, 
-    mounted() { 
+    async mounted() { 
         this.fetchCountries();
-        const auth = getAuth(firebaseApp);
-        onAuthStateChanged(auth, user => {
-                if (user) {
-                    this.UID = user.uid;
-                }
-            })
+        this.UID = await UID();
     },
     methods: {
         async fetchCountries() {
@@ -49,8 +42,8 @@ const app = Vue.createApp({
         },
         async submit() {
             // TODO some sort of check that the selected country/city is valid
-            const tripID = await add_info_trips(firebaseApp, this.selectedCountry, this.start, this.end, this.budget); 
-            await update_trips_users(firebaseApp, this.UID, tripID);
+            const tripID = await add_info_trips(this.selectedCountry, this.start, this.end, this.budget); 
+            await update_trips_users(this.UID, tripID);
 
             window.location.href = 'options.html?country=' + this.entry; 
             localStorage.setItem('selectedCountry', this.selectedCountry);

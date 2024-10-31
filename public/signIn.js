@@ -33,7 +33,7 @@
                 const user = userCredentials.user;
                 const UID = user['uid'];
 
-                await add_info_users(firebaseApp, UID, email, name);
+                await add_info_users(UID, email, name);
                 alert('Welcome ' + user['email']);
                 window.location.href = 'homepage.html';
               }

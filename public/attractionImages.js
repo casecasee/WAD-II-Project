@@ -66,8 +66,7 @@ app.component('country-images', {
         if (result[0]) { // checks if the wiki page exists
             const thumbimage = result[0].thumbnail?.url; // Optional chaining for handling missing thumbnails
             const description = result[0].description || "No description available";
-            // TODO check if wiki page consists of coords
-
+            // TODO check if wiki page consists of coords DOESNT WORK ISTG!!!!!!
     
             if (thumbimage) {
                 const image = thumbimage.replace('/thumb', '').replace(/\/\d+px-.+$/, ''); // get big image
@@ -88,6 +87,7 @@ app.component('country-images', {
     });
 
     // TODO make the form better bruh
+    // TODO limit date selection to trip dates
     app.component('pop-up', { 
         props: [ 'a_name', 'display_it', 'bg_img' ],
         
@@ -130,6 +130,8 @@ app.component('country-images', {
                         </div>
                         
                     </div>
+
+                    <button class='btn btn-primary' id='add_attraction_btn'>Add Attraction!</button>
 
                 </div>
 
