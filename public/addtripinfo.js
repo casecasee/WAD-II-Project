@@ -1,4 +1,8 @@
 import { cities } from './allcities.js';
+import { firebaseApp } from './stuff.js';
+import { add_info_trips, update_trips_users } from './functions.js';
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
+
 
 const app = Vue.createApp({ 
     data() { 
@@ -6,15 +10,23 @@ const app = Vue.createApp({
             countries: [],
             filteredCountries: [],
             selectedCountry: '',
-            entry: ''
+            entry: '', 
+            start: '', 
+            end: '', 
+            budget: ''
         };
     }, 
     mounted() { 
         this.fetchCountries();
+        const auth = getAuth(firebaseApp);
+        onAuthStateChanged(auth, user => {
+                if (user) {
+                    this.UID = user.uid;
+                }
+            })
     },
     methods: {
         async fetchCountries() {
-            
             try {
                 const response = await axios.get('https://restcountries.com/v3.1/all');
                 this.countries = response.data.map(country => country.name.common);
@@ -35,13 +47,17 @@ const app = Vue.createApp({
                 );
             }
         },
-        submit() {
+        async submit() {
+            // TODO some sort of check that the selected country/city is valid
+            const tripID = await add_info_trips(firebaseApp, this.selectedCountry, this.start, this.end, this.budget); 
+            await update_trips_users(firebaseApp, this.UID, tripID);
+
             window.location.href = 'options.html?country=' + this.entry; 
             localStorage.setItem('selectedCountry', this.selectedCountry);
         },
         change() {
             this.entry = this.selectedCountry;
-        }
+        }, 
     }
 });
 const vm = app.mount('#app');

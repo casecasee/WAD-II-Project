@@ -7,8 +7,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src='https://unpkg.com/axios/dist/axios.min.js'></script>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Pacifico&family=Playwrite+GB+S:ital,wght@0,100..400;1,100..400&display=swap" rel="stylesheet">    <!-- Axios -->
-
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Pacifico&family=Playwrite+GB+S:ital,wght@0,100..400;1,100..400&display=swap" rel="stylesheet">    
     <link rel = "stylesheet" href = "trip.css">
 
 </head>
@@ -64,10 +63,10 @@
                         <label for="dateSelect">Dates:</label>
                         <div class="row">
                             <div class="col-md-6">
-                                <input type="date" id="startDate" name="startDate" class="form-control" required>
+                                <input v-model='start' type="date" id="startDate" name="startDate" class="form-control" required>
                             </div>
                             <div class="col-md-6">
-                                <input type="date" id="endDate" name="endDate" class="form-control" required>
+                                <input v-model='end' type="date" id="endDate" name="endDate" class="form-control" required>
                             </div>
                         </div>
                     </div>
@@ -75,7 +74,7 @@
                         <label for="budget">Budget:</label>
                         <div class="row">
                             <div class="col-md">
-                                <input type="number" id="budget" name="budget" class="form-control" placeholder="Budget" required>
+                                <input v-model='budget' type="number" id="budget" name="budget" class="form-control" placeholder="Budget" required>
                             </div>
                         </div>
                     </div>
@@ -93,7 +92,8 @@
     <script src = "addtripinfo.js"  type="module"></script>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-6BZzzbKoKsQNMz3wcp3KE/oq6uc+WhPpYzQhjjY+KpFbc4MM3VRu8AY5QaMOgYnx" crossorigin="anonymous"></script>
+    <!-- why this gives error -->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-6BZzzbKoKsQNMz3wcp3KE/oq6uc+WhPpYzQhjjY+KpFbc4MM3VRu8AY5QaMOgYnx" crossorigin="anonymous"></script> 
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
