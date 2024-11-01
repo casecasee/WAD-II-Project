@@ -1,5 +1,3 @@
-const { createApp } = Vue;
-
 // Check if the app is already mounted and unmount if it is
 const existingApp = document.getElementById('navbar-app').__vue_app__;
 if (existingApp) {
@@ -7,7 +5,7 @@ if (existingApp) {
 }
 
 // Create and mount the Vue app
-createApp({
+Vue.createApp({
     components: {
         'navbar-component': {
             template: `
