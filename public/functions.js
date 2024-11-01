@@ -106,7 +106,7 @@ async function get_trips_users(docref) {
     try {
         const doc_snap = await getDoc(docref);
         const trips = doc_snap.data().trips;
-        return trips // response is trips array
+        return trips
     }
     
     catch(error) {
@@ -125,7 +125,6 @@ export const get_info = async function get_info_trips(UID) {
     for (let trip of trips) {
         const info = await trip_info(trip);
         info['tripID'] = trip;
-        console.log(info);
         rt.push(info);
     }
     return rt
@@ -134,7 +133,6 @@ export const get_info = async function get_info_trips(UID) {
 async function trip_info(docID) {
     const doc_ref = doc(db, "trips", docID);
     const doc_snap = await getDoc(doc_ref);
-    console.log(doc_snap.data());
     return doc_snap.data()
 }
 // -------------------------------------------------------- END ------------------------------------------------------------------
@@ -146,32 +144,57 @@ export const add_hotel = async function add_hotel(tripID, hotel_name, checkin, c
     const checkin_t = convert_to_timestamp(checkin);
     const checkout_t = convert_to_timestamp(checkout);
     const doc_ref = doc(db, "trips", tripID);
+
     const new_data = {
         'h_name' : hotel_name, 
         'checkin' : checkin_t,
         'checkout' : checkout_t,
-        'price' : cost
+        'cost' : cost
     };
     const doc_snap =  await getDoc(doc_ref);
     const h_list = doc_snap.data().hotels;
     h_list.push(new_data);
 
     await updateDoc(doc_ref, {'hotels' : h_list});
-
 }
-
 // --------------------------------------------------------- END ------------------------------------------------------------------
 
 
 //------------------------------------------------- add attraction to attraction arr ----------------------------------------------
-export const add_attraction = async function add_attraction(tripID) {
+export const add_attraction = async function add_attraction(tripID, a_name, date, cost) {
+    const datee = convert_to_timestamp(date);
+    const doc_ref = doc(db, "trips", tripID);
 
+    const new_data = {
+        'a_name' : a_name, 
+        'date' : datee, 
+        'cost' : cost
+    };
+    const doc_snap =  await getDoc(doc_ref);
+    const a_list = doc_snap.data().attractions;
+    a_list.push(new_data);
+
+    await updateDoc(doc_ref, {'attractions' : a_list});
 }
 // --------------------------------------------------------- END ------------------------------------------------------------------
 
-
 //------------------------------------------------- add hotel to hotel arr --------------------------------------------------------
-export const add_flight = async function add_flight(tripID) {
+export const add_flight = async function add_flight(tripID, arr_city, dept_city, dept_date, flight_no, seat_no, cost) {
+    const dept = convert_to_timestamp(dept_date);
+    const doc_ref = doc(db, "trips", tripID);
+    
+    const new_data = {
+        'arrival_city' : arr_city,
+        'departure_city' : dept_city,
+        'departure_date' : dept, 
+        'flight_no' : flight_no,
+        'seat_no' : seat_no,
+        'cost' : cost
+    };
+    const doc_snap = await getDoc(doc_ref);
+    const f_list = doc_snap.data().flights;
+    f_list.push(new_data);
 
+    await updateDoc(doc_ref, {'flights' : f_list});
 }
 // --------------------------------------------------------- END ------------------------------------------------------------------
