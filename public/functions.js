@@ -23,18 +23,8 @@ export const UID = function UID() {
                 window.location.href = 'index.html'; // Redirect if no user
                 reject("No user signed in");
             }
-        })})
-
-
-        // onAuthStateChanged(auth, user => {
-        //         if (user) {
-        //             console.log(user.uid);
-        //             return user.uid;
-        //         }
-        //         else {
-        //             window.location.href = 'index.html';
-        //         }
-        //     })
+        })
+    })
 }
 //-------------------------------------------------------- END --------------------------------------------------------------------
 
@@ -123,24 +113,19 @@ export const get_info = async function get_info_trips(UID) {
     const doc_snap = await getDoc(docref);
     const trips = doc_snap.data().trips;
 
-    trips.forEach(trip => { // for each tripid, get the trip information and push to rt 
-        rt.push(trip_info(trip));
-    
+    for (let trip of trips) {
+        const info = await trip_info(trip);
+        info['tripID'] = trip;
+        console.log(info);
+        rt.push(info);
+    }
     return rt
-
-        
-    });
-
-
 }
 
 async function trip_info(docID) {
     const doc_ref = doc(db, "trips", docID);
     const doc_snap = await getDoc(doc_ref);
-    console.log(doc_snap);
-    return doc_snap
-
+    console.log(doc_snap.data());
+    return doc_snap.data()
 }
-
-
 // -------------------------------------------------------- END ------------------------------------------------------------------
