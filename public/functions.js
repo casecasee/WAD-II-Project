@@ -4,7 +4,8 @@ import { getFirestore,
          setDoc,
          getDoc,
          doc, 
-         updateDoc } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+         updateDoc, 
+         Timestamp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
 
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
 import { firebaseApp } from "./stuff";
@@ -25,6 +26,14 @@ export const UID = function UID() {
             }
         })
     })
+}
+//-------------------------------------------------------- END --------------------------------------------------------------------
+
+//-------------------------------------- convert YYYY-MM-DD to firestore timestamp -----------------------------------------------
+function convert_to_timestamp(date) {
+    const datee = new Date(date + "T00:00:00Z"); // Adds midnight UTC time
+    const timestamp = Timestamp.fromDate(datee);
+    return timestamp
 }
 //-------------------------------------------------------- END --------------------------------------------------------------------
 
@@ -112,7 +121,7 @@ export const get_info = async function get_info_trips(UID) {
     const docref = doc(db, "users", UID);
     const doc_snap = await getDoc(docref);
     const trips = doc_snap.data().trips;
-
+    
     for (let trip of trips) {
         const info = await trip_info(trip);
         info['tripID'] = trip;
@@ -129,3 +138,40 @@ async function trip_info(docID) {
     return doc_snap.data()
 }
 // -------------------------------------------------------- END ------------------------------------------------------------------
+
+
+//------------------------------------------------------ add hotel to hotel arr ---------------------------------------------------
+export const add_hotel = async function add_hotel(tripID, hotel_name, checkin, checkout, cost) {
+    // checkin and checkout are in the form of YYYY-MM-DD 
+    const checkin_t = convert_to_timestamp(checkin);
+    const checkout_t = convert_to_timestamp(checkout);
+    const doc_ref = doc(db, "trips", tripID);
+    const new_data = {
+        'h_name' : hotel_name, 
+        'checkin' : checkin_t,
+        'checkout' : checkout_t,
+        'price' : cost
+    };
+    const doc_snap =  await getDoc(doc_ref);
+    const h_list = doc_snap.data().hotels;
+    h_list.push(new_data);
+
+    await updateDoc(doc_ref, {'hotels' : h_list});
+
+}
+
+// --------------------------------------------------------- END ------------------------------------------------------------------
+
+
+//------------------------------------------------- add attraction to attraction arr ----------------------------------------------
+export const add_attraction = async function add_attraction(tripID) {
+
+}
+// --------------------------------------------------------- END ------------------------------------------------------------------
+
+
+//------------------------------------------------- add hotel to hotel arr --------------------------------------------------------
+export const add_flight = async function add_flight(tripID) {
+
+}
+// --------------------------------------------------------- END ------------------------------------------------------------------
