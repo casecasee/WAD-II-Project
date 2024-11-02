@@ -6,47 +6,22 @@
     <title>Add Trip Info</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <script src='https://unpkg.com/axios/dist/axios.min.js'></script>
+    <script src='https://unpkg.com/axios/dist/axios.min.js'></script>  
+
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Pacifico&family=Playwrite+GB+S:ital,wght@0,100..400;1,100..400&display=swap" rel="stylesheet">    
-    <link rel = "stylesheet" href = "trip.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" /> 
+    <link rel="stylesheet" href="navbar.css">
+    <link rel = "stylesheet" href = "trip.css"> 
+
 
 </head>
 <body>
-    <nav class="navbar navbar-light navbar-expand-md" style="background-color: #764F37;">
-        <div class="container d-flex justify-content-between align-items-center">
-    
-            <div class="d-flex align-items-center">
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <a href="homepage.html" class="navbar-brand ml-2" aria-label="Go to homepage">Roameo</a>
-            </div>
-    
-            <div class="profile-icon">
-                <a href="profile.html" aria-label="Profile">
-                    <img src="dp.png" alt="Profile" class="profile-pic">
-                </a>
-            </div>
-    
-            <!-- Navbar Links -->
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="homepage.html">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="social.html">Community Feed</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="mytrips.html">My Trips</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    <div id="navbar-app">
+        <navbar-component></navbar-component>
 
-    <div id="app">
+    </div>
+
+    <div id="app1">
         <div class="container my-4">
             <h1 class="title">Choose Your Destination</h1>
             <div class="form-container">
@@ -90,6 +65,9 @@
     </footer>
 
     <script src = "addtripinfo.js"  type="module"></script>
+    <script src = "navbarLoader.js"></script>
+
+    
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <!-- why this gives error -->
