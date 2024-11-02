@@ -11,7 +11,6 @@ import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/
 import { firebaseApp } from "./stuff";
 const db = getFirestore(firebaseApp);
 
-
 //------------------------------- get UID of logged in user, else direct to signin page -------------------------------------------
 export const UID = function UID() {
     const auth = getAuth(firebaseApp);
@@ -85,10 +84,8 @@ export const add_info_trips = async function add_trip(destination, start, end, b
         const errMsg = error.message;
         console.log(errCode + errMsg);
     };
-    
-// -------------------------------------------------------- END ------------------------------------------------------------------
-
 }
+// -------------------------------------------------------- END ------------------------------------------------------------------
 
 //----------------------------------------- add newly created trip to trips DB ---------------------------------------------------
 export const update_trips_users = async function update_users(UID, tripID) {
@@ -137,6 +134,11 @@ async function trip_info(docID) {
 }
 // -------------------------------------------------------- END ------------------------------------------------------------------
 
+//------------------------------------------------------ add hotel to hotel arr ---------------------------------------------------
+export const get_trip_info = async function get_trip_info(tripID) {
+    return trip_info(tripID);
+}
+// -------------------------------------------------------- END ------------------------------------------------------------------
 
 //------------------------------------------------------ add hotel to hotel arr ---------------------------------------------------
 export const add_hotel = async function add_hotel(tripID, hotel_name, checkin, checkout, cost) {
@@ -158,7 +160,6 @@ export const add_hotel = async function add_hotel(tripID, hotel_name, checkin, c
     await updateDoc(doc_ref, {'hotels' : h_list});
 }
 // --------------------------------------------------------- END ------------------------------------------------------------------
-
 
 //------------------------------------------------- add attraction to attraction arr ----------------------------------------------
 export const add_attraction = async function add_attraction(tripID, a_name, date, cost) {
