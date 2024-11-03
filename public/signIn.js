@@ -15,6 +15,7 @@
   const app = Vue.createApp({ 
       data() { 
           return { 
+                isFlipped: false,
                 email: '',
                 pwd: '', 
                 name: ''
@@ -22,6 +23,9 @@
       },
       
       methods: {
+            flipCard() {
+                this.isFlipped = !this.isFlipped;
+            },
            async signUp() {
 
               const email = this.email;
