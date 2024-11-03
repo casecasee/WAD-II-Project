@@ -1,0 +1,132 @@
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+#app {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+  }
+
+.postcard {
+    width: 700px;
+    height: 400px;
+    perspective: 1000px;
+    position: absolute;
+    top:auto;
+    left:auto;
+
+}
+
+.side {
+    border: 1px solid black; 
+    height:100%;
+    width: 100%;
+    position:absolute;
+    top: 0;
+    left: 0;
+    backface-visibility: hidden;
+    /* z-index:1; */
+    transform-style: preserve-3d;
+    transition: transform 0.8s;
+}
+
+.stripes {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+        -45deg,           
+        #cb5a5e,        
+        #cb5a5e 12px,     
+        white 12px, 
+        white 24px,  
+        #5a88cb 24px,     
+        #5a88cb 36px,     
+        white 36px,
+        white 48px 
+        );
+    }
+    
+.container {
+    position: absolute;
+    top: 16px;
+    left:16px;
+    height :368px;
+    width: 666px !important ;
+    background-color: white;
+    border: 1px solid black;
+}
+
+#title {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+
+#header {
+    position: absolute;
+    left: 360px;
+    top: 10px;
+}
+
+#line {
+    position: absolute;
+    left: 330px;
+    top: 10px;
+    height: 350px;
+    border: 1px solid lightgray;
+}
+
+#stamp {
+    position: absolute;
+    height: 90px;
+    width:80px; 
+    right:20px;
+    top: 10px;
+    border: 2px dashed black;
+}
+
+.btn {
+    position: absolute;
+    bottom: 10px;
+    left: 30px;
+}
+
+.back {
+    transform: rotateY(180deg);
+}
+
+.postcard.flipped .front {
+    transform: rotateY(180deg);
+
+}
+  
+.postcard.flipped .back {
+transform: rotateY(360deg);
+}
+
+.form-container {
+    position: absolute;
+    left: 350px;
+    top:110px;
+    width: 280px;
+    height:250px;
+}
+
+#signUp {
+    position: absolute;
+    bottom:0px;
+    right:0px;
+    width:120px
+}
+
+#image {
+    width:100%;
+    position:relative;
+    z-index: 0;
+    opacity: 0.9;
+}
