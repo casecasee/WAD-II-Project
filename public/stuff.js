@@ -1,13 +1,12 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-app.js";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyAJDyneJxHnF10GyYuJ1fzviNQsxz6JeqM",
-    authDomain: "wad2-135ba.firebaseapp.com",
-    projectId: "wad2-135ba",
-    storageBucket: "wad2-135ba.appspot.com",
-    messagingSenderId: "515831656516",
-    appId: "1:515831656516:web:1fa01f5c40cf3a9ccd8c11",
-    measurementId: "G-T97LKQJYXG"
-  };
+  apiKey: "AIzaSyB5mhW4Fc3qXg2aFDgRw_ygdQHevo6s2ww",
+  authDomain: "wad2-pt2.firebaseapp.com",
+  projectId: "wad2-pt2",
+  storageBucket: "wad2-pt2.firebasestorage.app",
+  messagingSenderId: "712139358382",
+  appId: "1:712139358382:web:0c1ea26da3db6d11d3ad3f"
+};
 
 export const firebaseApp = initializeApp(firebaseConfig);
