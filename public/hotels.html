@@ -94,6 +94,11 @@
             margin-left: 20px;
             margin-right: 20px;
             display: flex;
+            flex-direction: column;
+        }
+
+        .hotel-comparisons h2 {
+            margin-bottom: 20px;
         }
         /* #budgetChart {
             width: 200px;
@@ -228,7 +233,7 @@
     </nav>
 
     <div class="nav-buttons">
-        <a href="flights.html"><button id="flight" class="btn"><img src="countryPics/ticket_sign.png" alt="Flight Icon">FLIGHT</button></a>
+        <a href="addflightinfo.html"><button id="flight" class="btn"><img src="countryPics/ticket_sign.png" alt="Flight Icon">FLIGHT</button></a>
         <a href="hotels.html"><button id="hotel" class="btn"><img src="countryPics/hotel_sign.png" alt="Hotel Icon">HOTEL</button></a>
         <button id="attractions" class="btn" @click="goToAttractions"><img src="countryPics/attraction_sign.png" alt="Attractions Icon">ATTRACTIONS</button>
     </div>
@@ -254,9 +259,10 @@
     </div>
 
     <script>
+        // if uw api key lmk
+        const RAPID_API_KEY =   "API KEY STILL FIGURING OUT!!!!";
+        const RAPID_API_HOST =  "API HOST STILL FIGURING OUT!!!!";
         function displayHotels() {
-            const RAPID_API_KEY = process.env.BOOKING_COM_API_KEY;
-            const RAPID_API_HOST = process.env.BOOKING_COM_HOST;
             // Get values when the function is called
             const destination = document.getElementById('destination').value;
             const startDate = document.getElementById('start-date').value;
@@ -277,8 +283,8 @@
                     locale: 'en-us'
                 },
                 headers: {
-                    'X-RapidAPI-Key': 'RAPID_API_KEY',
-                    'X-RapidAPI-Host': 'RAPID_API_HOST'
+                    'X-RapidAPI-Key': RAPID_API_KEY,
+                    'X-RapidAPI-Host': RAPID_API_HOST
                 }
             };
 
@@ -306,13 +312,16 @@
                                 page_number: '0'
                             },
                             headers: {
-                                'X-RapidAPI-Key': '7bb272beafmshf057635e1f360f4p10cef0jsn822b6e337760',
-                                'X-RapidAPI-Host': 'booking-com.p.rapidapi.com'
+                                'X-RapidAPI-Key': RAPID_API_KEY,
+                                'X-RapidAPI-Host': RAPID_API_HOST
                             }
                         };
 
                         // Clear previous results
-                        document.getElementById('hotel-list').innerHTML = '';
+                        const hotelList = document.getElementById('hotel-list');
+                        while (hotelList.firstChild) {
+                            hotelList.removeChild(hotelList.firstChild);
+                        }
                         
                         return axios.request(searchOptions);
                     } else {
@@ -324,7 +333,12 @@
                     if (response.data.result) {
                         displayHotelData(response.data.result);
                     } else {
-                        document.getElementById('hotel-list').innerHTML = 'No hotels found';
+                        const hotelList = document.getElementById('hotel-list');
+                        while (hotelList.firstChild) {
+                            hotelList.removeChild(hotelList.firstChild);
+                        }
+                        const messageText = document.createTextNode('No hotels found');
+                        hotelList.appendChild(messageText);
                     }
                 })
                 .catch(function (error) {
@@ -339,7 +353,12 @@
                         errorMessage += error.message;
                     }
                     
-                    document.getElementById('hotel-list').innerHTML = errorMessage;
+                    const hotelList = document.getElementById('hotel-list');
+                    while (hotelList.firstChild) {
+                        hotelList.removeChild(hotelList.firstChild);
+                    }
+                    const messageText = document.createTextNode(errorMessage);
+                    hotelList.appendChild(messageText);
                 });
         }
 
@@ -347,29 +366,67 @@
             const hotelList = document.getElementById('hotel-list');
             
             if (!Array.isArray(hotels) || hotels.length === 0) {
-                hotelList.innerHTML = 'No hotels found for this destination';
+                const noHotelsText = document.createTextNode('No hotels found for this destination');
+                hotelList.appendChild(noHotelsText);
                 return;
             }
             
             hotels.forEach(hotel => {
+                // Create main hotel card div
                 const hotelDiv = document.createElement('div');
                 hotelDiv.className = 'hotel-card';
-                hotelDiv.innerHTML = `
-                    <div class="hotel-image">
-                        <img src="${hotel.max_photo_url || 'placeholder-image.jpg'}" alt="${hotel.hotel_name}">
-                    </div>
-                    <div class="hotel-description">
-                        <h3>${hotel.hotel_name}</h3>
-                        <p>${hotel.address || 'Address not available'}</p>
-                        <p>Rating: ${hotel.review_score || 'N/A'}/10</p>
-                    </div>
-                    <div class="hotel-prices">
-                        <p>Price: ${hotel.min_total_price ? 'SGD ' + hotel.min_total_price : 'Price not available'}</p>
-                    </div>
-                    <div class="add-button">
-                        <button onclick="addHotel('${hotel.hotel_id}')">Add</button>
-                    </div>
-                `;
+
+                // Create and append image section
+                const imageDiv = document.createElement('div');
+                imageDiv.className = 'hotel-image';
+                const img = document.createElement('img');
+                img.src = hotel.max_photo_url || 'placeholder-image.jpg';
+                img.alt = hotel.hotel_name;
+                imageDiv.appendChild(img);
+
+                // Create and append description section
+                const descriptionDiv = document.createElement('div');
+                descriptionDiv.className = 'hotel-description';
+                
+                const hotelName = document.createElement('h3');
+                hotelName.textContent = hotel.hotel_name;
+                
+                const address = document.createElement('p');
+                address.textContent = hotel.address || 'Address not available';
+                
+                const rating = document.createElement('p');
+                rating.textContent = `Rating: ${hotel.review_score || 'N/A'}/10`;
+                
+                descriptionDiv.appendChild(hotelName);
+                descriptionDiv.appendChild(address);
+                descriptionDiv.appendChild(rating);
+
+                // Create and append prices section
+                const pricesDiv = document.createElement('div');
+                pricesDiv.className = 'hotel-prices';
+                
+                const price = document.createElement('p');
+                price.textContent = hotel.min_total_price ? 
+                    `Price: SGD ${hotel.min_total_price}` : 
+                    'Price not available';
+                pricesDiv.appendChild(price);
+
+                // Create and append add button section
+                const addButtonDiv = document.createElement('div');
+                addButtonDiv.className = 'add-button';
+                
+                const addButton = document.createElement('button');
+                addButton.textContent = 'Add';
+                addButton.addEventListener('click', () => addHotel(hotel.hotel_id));
+                addButtonDiv.appendChild(addButton);
+
+                // Append all sections to hotel card
+                hotelDiv.appendChild(imageDiv);
+                hotelDiv.appendChild(descriptionDiv);
+                hotelDiv.appendChild(pricesDiv);
+                hotelDiv.appendChild(addButtonDiv);
+
+                // Append hotel card to list
                 hotelList.appendChild(hotelDiv);
             });
         }
