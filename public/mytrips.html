@@ -110,38 +110,38 @@
         <!-- Current Trips Carousel -->
         <h2>Current Trips</h2>
         <div class="carousel-container">
-            <button class="carousel-btn left" @click="scrollLeft('current')">‹</button>
+            <button v-if="showCurrentButtons" class="carousel-btn left" @click="scrollLeft('current')">‹</button>
             <div class="carousel-track" :style="{ transform: `translateX(${scrollPosition.current}px)` }">
                 <div v-for="trip in currentTrips" :key="trip.id" class="trip-item">
                     <img :src="trip.image" alt="Trip Image" class="trip-image">
                     <div class="trip-details">
                         <h3>{{ trip.destination }}</h3>
                         <p>{{ trip.flightInfo }}</p>
-                        <button class="details-button">View Details</button>
+                        <button @click = "viewDetails(trip.id)" class="details-button">View Details</button>
                     </div>
                 </div>
             </div>
-            <button class="carousel-btn right" @click="scrollRight('current')">›</button>
+            <button v-if="showCurrentButtons" class="carousel-btn right" @click="scrollRight('current')">›</button>
         </div>
 
         <!-- Old Trips Carousel -->
         <h2>Past Trips</h2>
         <div class="carousel-container mb-4">
-            <button class="carousel-btn left" @click="scrollLeft('old')">‹</button>
+            <button v-if="showOldButtons" class="carousel-btn left" @click="scrollLeft('old')">‹</button>
             <div class="carousel-track" :style="{ transform: `translateX(${scrollPosition.old}px)` }">
                 <div v-for="trip in oldTrips" :key="trip.id" class="trip-item">
                     <img :src="trip.image" alt="Old Trip Image" class="trip-image">
                     <div class="trip-details">
                         <h3>{{ trip.destination }}</h3>
-                        <p>Date: {{ trip.date }}, Flight {{ trip.flightNumber }}</p>
+                        <p>{{ trip.startdate }} to {{ trip.enddate }}</p>
                     </div>
                 </div>
             </div>
-            <button class="carousel-btn right" @click="scrollRight('old')">›</button>
+            <button v-if="showOldButtons" class="carousel-btn right" @click="scrollRight('old')">›</button>
         </div>
     </div>
 
-    <script src = "mytrips.js"></script>
+    <script type = "module" src = "mytrips.js"></script>
     
 
     <footer>

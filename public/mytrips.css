@@ -8,16 +8,28 @@ body {
     color: #764F37;
     font-size: 40px;
     font-family: 'Playfair Display', serif;
-    font-weight: 700;
+    /* font-weight: 700; */
+    position: relative;
     margin: 40px 0;
+}
+
+.title::after{
+    content: '';
+    position: absolute;
+    bottom: -10px; 
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px; 
+    height: 3px; 
+    background-color: #DCB287; 
 }
 
 h2{
     text-align: left;
     color: #764F37;
-    font-size: 35px;
+    font-size: 30px;
     font-family: 'Playfair Display', serif;
-    font-weight: 700;
+    /* font-weight: 700; */
     margin: 20px 8%;
 }
 
@@ -79,6 +91,7 @@ h2{
 }
 
 .trip-item:hover {
+    border-radius: 15px;
     transform: scale(1.05);
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
