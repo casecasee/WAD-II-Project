@@ -179,23 +179,39 @@ export const add_attraction = async function add_attraction(tripID, a_name, date
 }
 // --------------------------------------------------------- END ------------------------------------------------------------------
 
-//------------------------------------------------- add hotel to hotel arr --------------------------------------------------------
-export const add_flight = async function add_flight(tripID, arr_city, dept_city, dept_date, flight_no, seat_no, cost) {
-    const dept = convert_to_timestamp(dept_date);
-    const doc_ref = doc(db, "trips", tripID);
+//------------------------------------------------- add flight to flight arr --------------------------------------------------------
+// export const add_flight = async function add_flight(tripID, fromCity, toCity, departureDate, departureTime, flightNumber, seatNumber, cost) {
+//     const dept = convert_to_timestamp(departureDate);
+//     const doc_ref = doc(db, "trips", tripID);
     
-    const new_data = {
-        'arrival_city' : arr_city,
-        'departure_city' : dept_city,
-        'departure_date' : dept, 
-        'flight_no' : flight_no,
-        'seat_no' : seat_no,
-        'cost' : cost
-    };
-    const doc_snap = await getDoc(doc_ref);
-    const f_list = doc_snap.data().flights;
-    f_list.push(new_data);
+//     const new_data = {
+//         'arrival_city' : toCity,
+//         'departure_city' : fromCity,
+//         'departure_date' : dept, 
+//         'flight_no' : flightNumber,
+//         'seat_no' : seatNumber || null,
+//         'cost' : cost
+//     };
+//     const doc_snap = await getDoc(doc_ref);
+//     const f_list = doc_snap.data().flights;
+//     f_list.push(new_data);
 
-    await updateDoc(doc_ref, {'flights' : f_list});
-}
+//     await updateDoc(doc_ref, {'flights' : f_list});
+// }
+
+export const add_flights_to_trip = async function add_flights_to_trip(tripID, flights) {
+    const docRef = doc(db, "trips", tripID);
+
+    const newFlights = flights.map(flight => ({
+        arrival_city: flight.toCity,
+        departure_city: flight.fromCity,
+        departure_date: convert_to_timestamp(`${flight.departureDate} ${flight.departureTime}`),
+        flight_no: flight.flightNumber,
+        seat_no: flight.seatNumber || null
+    }));
+
+    // Save flights array to Firebase under the tripID
+    await setDoc(docRef, { 'flights' : newFlights }, { merge: true });
+};
+
 // --------------------------------------------------------- END ------------------------------------------------------------------
