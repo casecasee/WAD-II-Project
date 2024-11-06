@@ -8,65 +8,13 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Roboto+Slab:wght@400;700&display=swap">
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Pacifico&family=Playwrite+GB+S:ital,wght@0,100..400;1,100..400&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Pacifico&family=Playwrite+GB+S:ital,wght@0,100..400;1,100..400&display=swap" rel="stylesheet">    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" /> 
+    <link rel="stylesheet" href="navbar.css">
+    <link rel = "stylesheet" href = "trip.css"> 
+
     <style>
-        /* Nav bar */
-        .navbar {
-            background-color: #fff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px; 
-            padding: 0px 0;
-        }
 
-        .navbar-brand { 
-            color: white !important; 
-            font-weight: 700;  
-            font-size: 40px; /* Adjusted size for better appearance */ 
-            font-family: "Pacifico", cursive; 
-            font-weight: 200; 
-            /* font-family: "Playwrite GB S", serif;  */
-        }
-
-        .nav-item{
-            margin: 0px 20px;
-            color: white;
-        }
-
-        .navbar .nav-item .nav-link{
-            color: white;
-            font-size: 18px;
-            border-radius: 25px;
-            font-family: "Playwrite GB S", serif;
-            font-family: "SF Pro Text";
-            font-weight: 700;
-        }
-
-        .navbar-nav .nav-link:hover {
-            background-color: #DCB287;
-            color:black;
-        }
-        /* .search-profile {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-right: 20px;
-        }
-        .search-bar {
-            padding: 5px 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        } */
-        .profile-pic {
-            width: 30px;
-            height: 30px;
-            background-color: #ccc;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-decoration: none;
-            color: #333;
-            font-weight: bold;
-        }
         .main-content {
             display: flex;
             padding: 20px;
@@ -196,41 +144,170 @@
         .price-comparison {
             margin-bottom: 10px;
         }
+
+        /* Add responsive styles */
+        @media screen and (max-width: 480px) {
+            .main-content {
+                flex-direction: column;
+                padding: 10px;
+            }
+
+            .destination, .date-picker, .search-button {
+                width: 100%;
+                margin: 5px 0;
+            }
+
+            .hotel-comparisons {
+                margin: 10px;
+            }
+
+            .hotel-card {
+                flex-direction: column;
+                padding: 15px;
+            }
+
+            .hotel-image {
+                max-width: 100%;
+                margin-bottom: 10px;
+            }
+
+            .hotel-description {
+                padding: 10px 0;
+            }
+
+            .hotel-prices {
+                text-align: center;
+                margin: 10px 0;
+            }
+
+            .nav-buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .btn {
+                width: 100%;
+                margin: 5px 0;
+                padding: 10px;
+                font-size: 16px;
+            }
+
+            .btn img {
+                height: 30px;
+            }
+
+            input[type="text"],
+            input[type="date"] {
+                width: 100%;
+                margin: 5px 0;
+            }
+
+            #search-button {
+                width: 100%;
+                margin-top: 10px;
+            }
+
+            /* Update navbar styles for mobile */
+            .navbar {
+                padding: 10px 0;
+            }
+
+            .navbar-brand {
+                font-size: 30px; /* Smaller font size for mobile */
+            }
+
+            .navbar-toggler {
+                display: block;  /* Ensure hamburger menu is visible */
+                border-color: white;  /* Make hamburger icon visible */
+            }
+
+            .navbar-toggler-icon {
+                background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='white' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+            }
+
+            .navbar .container {
+                padding: 0 15px;  /* Add some padding */
+            }
+
+            .navbar-collapse {
+                background-color: #764F37;  /* Match navbar background */
+                padding: 10px;
+                border-radius: 0 0 8px 8px;
+            }
+
+            .nav-item {
+                margin: 5px 0;  /* Adjust spacing between nav items */
+            }
+        }
+
+        /* Add this CSS for the popup */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            text-align: center;
+            animation: fadeIn 0.3s;
+        }
+
+        .popup-content {
+            margin-bottom: 15px;
+        }
+
+        .popup h3 {
+            color: #764F37;
+            margin-bottom: 10px;
+        }
+
+        .popup p {
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        .popup-button {
+            background-color: #B5855B;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .popup-button:hover {
+            background-color: #DCB287;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-light navbar-expand-md" style="background-color: #764F37;">
-        <div class="container">
 
-            <div class="d-flex col-3">
-                <a href="homepage.html" class="navbar-brand">Roameo</a>
-            </div>
-    
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-    
-            <div class="collapse navbar-collapse col-6 justify-content-center" id="navbarSupportedContent">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="homepage.html">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="social.html">Community Feed</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="mytrips.html">My Trip</a>
-                    </li>
-                </ul>
-            </div>
-    
-            <div class="d-flex col-3 justify-content-end">
-                <a href="profile.html">
-                    <img src="dp.png" alt="Profile" class="profile-pic">
-                </a>
-            </div>
-        </div>
-    </nav>
+    <div id="navbar-app"> 
+        <navbar-component></navbar-component> 
+  </div> 
+   
+  <script src = "navbarLoader.js"></script>
 
     <div class="nav-buttons">
         <a href="addflightinfo.html"><button id="flight" class="btn"><img src="countryPics/ticket_sign.png" alt="Flight Icon">FLIGHT</button></a>
@@ -254,14 +331,23 @@
         </div>
     </div>
     <div class="hotel-comparisons">
-        <h2>Hotel Comparisons</h2>
+        <h2>Hotels</h2>
         <div id="hotel-list"></div>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+    <div class="popup" id="successPopup">
+        <div class="popup-content">
+            <h3>Success!</h3>
+            <p>Hotel has been added to your trip successfully.</p>
+            <button class="popup-button" onclick="closePopup()">OK</button>
+        </div>
     </div>
 
     <script>
         // if uw api key lmk
-        const RAPID_API_KEY =   "API KEY STILL FIGURING OUT!!!!";
-        const RAPID_API_HOST =  "API HOST STILL FIGURING OUT!!!!";
+        const RAPID_API_KEY =   import.meta.env.VITE_RAPID_API_KEY;
+        const RAPID_API_HOST =  import.meta.env.VITE_RAPID_API_HOST;
         function displayHotels() {
             // Get values when the function is called
             const destination = document.getElementById('destination').value;
@@ -431,9 +517,42 @@
             });
         }
 
+        function showPopup() {
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('successPopup').style.display = 'block';
+        }
+
+        function closePopup() {
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('successPopup').style.display = 'none';
+        }
+
         function addHotel(hotelId) {
-            // Implement your add hotel functionality here
-            console.log('Adding hotel with ID:', hotelId);
+            const hotel = hotels.find(h => h.hotel_id === hotelId);
+            if (hotel) {
+                const hotelData = {
+                    id: hotel.hotel_id,
+                    name: hotel.hotel_name,
+                    price: parseFloat(hotel.min_total_price),
+                    startDate: document.getElementById('start-date').value,
+                    endDate: document.getElementById('end-date').value
+                };
+
+                // Get the mytripinfo Vue instance
+                const mytripinfoApp = window.opener ? window.opener.document.querySelector('.trip-container').__vue__ : null;
+                
+                if (mytripinfoApp) {
+                    // Add the hotel expense to the budget tracker
+                    mytripinfoApp.addHotelExpense(hotelData);
+                    showPopup();  // Show the popup instead of alert
+                } else {
+                    // Store the hotel data in localStorage if mytripinfo page is not open
+                    const savedHotels = JSON.parse(localStorage.getItem('pendingHotels') || '[]');
+                    savedHotels.push(hotelData);
+                    localStorage.setItem('pendingHotels', JSON.stringify(savedHotels));
+                    showPopup();  // Show the popup instead of alert
+                }
+            }
         }
     </script>
 </body>
