@@ -179,7 +179,7 @@ export const add_attraction = async function add_attraction(tripID, a_name, date
 }
 // --------------------------------------------------------- END ------------------------------------------------------------------
 
-//------------------------------------------------- add hotel to hotel arr --------------------------------------------------------
+//------------------------------------------------- add flight to flights arr ----------------------------------------------------
 export const add_flight = async function add_flight(tripID, arr_city, dept_city, dept_date, flight_no, seat_no, cost) {
     const dept = convert_to_timestamp(dept_date);
     const doc_ref = doc(db, "trips", tripID);

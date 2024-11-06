@@ -1,29 +1,42 @@
+import { add_attraction } from "./functions";
+
 const app = Vue.createApp({ 
     data() { 
         return { 
               all : [], // list of nearby attractions gotten using google place api
               display_it: false,
               selected_a: '', 
-              imgurl: ''
+              imgurl: '', 
         };
     }, // data
     computed: { 
         country() { // for us to display header and to pass in to google place api
             const selectedCountry = localStorage.getItem('selectedCountry');
             return selectedCountry;
-        } 
+        } ,
+
+        tripID() {
+            // const id = localStorage.getItem('tripID');
+            // return id;
+            return 'ZI1IlYYOwUncoQZ2OztJ'
+        }
     }, // computed
 
     methods: {
         popup(imgurl, a_name) {
-            console.log(a_name)
             this.display_it = true;
             this.selected_a = a_name;
-            console.log(imgurl);
             this.imgurl = imgurl;
         }, 
         close() {
             this.display_it = false;
+        }, 
+        async addattract(a_name, date, cost) {
+            console.log(date);
+            console.log(cost);
+            await add_attraction(this.tripID, a_name, date, cost);
+            this.close();
+            alert('attraction successfully added');
         }
     }, 
 
@@ -58,22 +71,25 @@ app.component('country-images', {
     }, // data
 
     async mounted() {
-        const url = 'https://api.wikimedia.org/core/v1/wikipedia/en/search/page';
-        const params = { q: this.a_name, limit: 1 };
-        response = await axios.get(url, { params: params } );
-        const result = response.data.pages;
+        // const url = 'https://api.wikimedia.org/core/v1/wikipedia/en/search/page';
+        // const params = { q: this.a_name, limit: 1 };
+        // response = await axios.get(url, { params: params } );
+        // const result = response.data.pages;
 
-        if (result[0]) { // checks if the wiki page exists
-            const thumbimage = result[0].thumbnail?.url; // Optional chaining for handling missing thumbnails
-            const description = result[0].description || "No description available";
+        this.imgurl = 'countryPics/paris.jpg';
+        this.desc = 'placeholder description';
+
+        // if (result[0]) { // checks if the wiki page exists
+            // const thumbimage = result[0].thumbnail?.url; // Optional chaining for handling missing thumbnails
+            // const description = result[0].description || "No description available";
             // TODO check if wiki page consists of coords DOESNT WORK ISTG!!!!!!
     
-            if (thumbimage) {
-                const image = thumbimage.replace('/thumb', '').replace(/\/\d+px-.+$/, ''); // get big image
-                this.imgurl = image;
-                this.desc = description         
-            }
-        }
+            // if (thumbimage) {
+                // const image = thumbimage.replace('/thumb', '').replace(/\/\d+px-.+$/, ''); // get big image
+                // this.imgurl = image;
+                // this.desc = description         
+            // }
+        // }
     },
     template: `
         <div class='card' v-if=imgurl @click="$emit('popup', this.imgurl)">
@@ -90,6 +106,20 @@ app.component('country-images', {
     // TODO limit date selection to trip dates
     app.component('pop-up', { 
         props: [ 'a_name', 'display_it', 'bg_img' ],
+
+        data() {
+            return {
+                date: '',
+                cost: null
+            };
+        },
+
+        methods: {
+            addAttraction() {
+                // Emit the form data to the parent
+                this.$emit('add', this.a_name, this.date, this.cost);
+            }
+        },
         
         template: `
             <div v-if="display_it" id='pop'>
@@ -111,7 +141,7 @@ app.component('country-images', {
                                     <label for="dateSelect">Date:</label>
                                     <div class="row">
                                         <div class="col">
-                                            <input type="date" id="startDate" name="startDate" class="form-control" required>
+                                            <input v-model="date" type="date" id="startDate" name="startDate" class="form-control" required>
                                         </div>
                                     </div>
                                 </div>
@@ -120,7 +150,7 @@ app.component('country-images', {
                                     <label for="cost">Cost:</label>
                                     <div class="row">
                                         <div class="col-md">
-                                            <input type="number" id="cost" name="cost" class="form-control" placeholder="Cost" required>
+                                            <input v-model="cost" type="number" id="cost" name="cost" class="form-control" placeholder="Cost" required>
                                         </div>
                                     </div>
                                 </div>
@@ -130,11 +160,9 @@ app.component('country-images', {
                         </div>
                         
                     </div>
-
-                    <button class='btn btn-primary' id='add_attraction_btn'>Add Attraction!</button>
+                    <button class='btn btn-primary' id='add_attraction_btn' @click="addAttraction()">Add Attraction!</button>
 
                 </div>
-
             </div> 
         `
     });
@@ -154,42 +182,3 @@ async function getCoordinates(name) {
         long: location.lng
     };
 }
-
-// ---------------------------------------- using unsplash api --------------------------------------------
-
-            // const url = `https://api.unsplash.com/search/photos?query=${country}%20${name}&client_id=v8ob4JtC_zfA0-jXKJUC2UEjpBQEgb4tAFDSbIaQa9s`;
-            // axios.get(url)
-            //     .then(response => {
-            //         // console.log(response.data);
-            //         data = response.data;
-            //         if (data.results.length > 0) {
-            //             // num = getRandomInt(0, 10);
-            //             const firstImageUrl = data.results[0].urls.full;
-            //             console.log('First image URL:', firstImageUrl);
-            //             // console.log()
-            //             const card = document.createElement('div');
-            //             card.className = 'card'; 
-
-            //             const imgElement = document.createElement('img');
-            //             imgElement.setAttribute('src', firstImageUrl);
-
-            //             const caption = document.createElement('div');
-            //             caption.className = 'caption'; 
-            //             caption.innerText = name; 
-
-            //             card.appendChild(imgElement);
-            //             card.appendChild(caption);
-
-            //             destination.appendChild(card);
-            //         }
-            //         else {
-            //             console.log('No images found for this query.');
-            //         }
-            //     })
-            //     .catch( error => {
-            //         console.log(error.message);
-            //     });
-
-            // })};
-                
-// ---------------------------------------- end -----------------------------------------------------------------------
