@@ -30,7 +30,7 @@
         <div class='container'>
             <div class='row row-cols-4'>
                 <div class="col" v-for="attraction in all">
-                    <country-images @click="popup('countryPics/paris.jpg', attraction.name)" :a_name="attraction.name"></country-images>
+                    <country-images @popup="(imgurl) => popup(imgurl, attraction.name)" :a_name="attraction.name"></country-images>
                 </div>
             </div>
         </div>
