@@ -70,85 +70,356 @@
             margin-top: 60px;
             padding: 20px;
         }
-        .banner {
-            height: 200px;
-            background-image: url('/api/placeholder/1200/200');
-            background-size: cover;
-            background-position: center;
-            position: relative;
-            margin-top: 60px;
-        }
-        .profile-info {
-            position: absolute;
-            bottom: 20px;
-            left: 20px;
-            color: white;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-        .profile-picture {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            border: 4px solid white;
-            object-fit: cover;
-        }
-        .profile-name {
-            font-size: 24px;
-            font-weight: bold;
-        }
-        .profile-location {
-            font-size: 16px;
-        }
-        .content {
+
+        /* gpt from here */
+        /* Profile Container Styles */
+        .profile-container {
             max-width: 1200px;
             margin: 20px auto;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             padding: 20px;
-        }
-        .tabs {
-            display: flex;
-            border-bottom: 1px solid #e0e0e0;
-            margin-bottom: 20px;
-        }
-        .tab {
-            padding: 10px 20px;
-            cursor: pointer;
-        }
-        .tab.active {
-            border-bottom: 2px solid #00a698;
-            color: #00a698;
-        }
-        .favourites-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
+            grid-template-columns: 300px 1fr;
+            gap: 30px;
         }
-        .favourite-item {
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            overflow: hidden;
+
+        /* Sidebar Styles */
+        .sidebar {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
-        .favourite-image {
-            width: 100%;
+
+        .user-info {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .user-info img {
+            width: 150px;
             height: 150px;
-            object-fit: cover;
+            border-radius: 50%;
+            margin-bottom: 15px;
         }
-        .favourite-info {
+
+        .settings-menu a {
+            display: block;
             padding: 10px;
-        }
-        .favourite-name {
-            font-weight: bold;
+            color: #764F37;
+            text-decoration: none;
+            border-radius: 5px;
             margin-bottom: 5px;
         }
-        .favourite-location, .favourite-price {
-            font-size: 14px;
+
+        .settings-menu a:hover {
+            background-color: #DCB287;
+            color: white;
+        }
+
+        /* Main Content Styles */
+        .main-section {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        /* Game Section Styles */
+        .language-game {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .game-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .game-input-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        .game-input-group input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            max-width: 300px;
+        }
+
+        .game-input-group button {
+            white-space: nowrap;
+        }
+
+        /* Badges Section */
+        .badges-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .badge {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .badge-image {
+            width: 100%;
+            height: 120px;
+            margin-bottom: 10px;
+        }
+
+        .badge-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .badge-info {
+            text-align: center;
+        }
+
+        .badge-info h4 {
+            color: #764F37;
+            margin-bottom: 5px;
+        }
+
+        .badge-info p {
             color: #666;
+            font-size: 0.9em;
+            margin: 0;
+        }
+
+        /* Leaderboard Styles */
+        .leaderboard {
+            margin-top: 20px;
+        }
+
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .rank {
+            width: 30px;
+            font-weight: bold;
+            color: #764F37;
+        }
+
+        .player-info {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+        }
+
+        .player-info img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .score {
+            font-weight: bold;
+            color: #B5855B;
+        }
+
+        /* Tab Styles */
+        .tab-buttons {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        .tab-button {
+            padding: 10px 20px;
+            background: none;
+            border: none;
+            border-bottom: 2px solid transparent;
+            cursor: pointer;
+            color: #764F37;
+        }
+
+        .tab-button.active {
+            border-bottom-color: #B5855B;
+            font-weight: bold;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
         }
     </style>
+
+    <!-- gpt from here -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script>
+        import { initializeApp } from "firebase/app";
+        import { getAuth } from "firebase/auth";
+        import { getFirestore } from "firebase/firestore";
+        // Your Firebase configuration
+        const firebaseConfig = {
+            // Your config object from Firebase console
+            apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+            authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+            projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+            storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+            messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+            appId: import.meta.env.VITE_FIREBASE_APP_ID,
+        };
+        
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+    </script>
+    <script>
+        // Get current user data when page loads
+        document.addEventListener('DOMContentLoaded', async () => {
+            const user = auth.currentUser;
+            if (user) {
+                try {
+                    const userDoc = await db.collection('users').doc(user.uid).get();
+                    if (userDoc.exists) {
+                        const userData = userDoc.data();
+                        document.getElementById('username').value = userData.username || '';
+                        document.getElementById('email').value = userData.email || '';
+                        document.getElementById('language').value = userData.preferredLanguage || 'en';
+                    }
+                } catch (error) {
+                    console.error('Error loading user data:', error);
+                    alert('Error loading user data. Please try again.');
+                }
+            } else {
+                window.location.href = 'login.html'; // Redirect if not logged in
+            }
+        });
+
+        // Handle form submission
+        document.getElementById('settings-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const user = auth.currentUser;
+            if (!user) {
+                alert('Please log in to save settings');
+                return;
+            }
+
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const language = document.getElementById('language').value;
+
+            try {
+                // Update email in Firebase Auth if it changed
+                if (email !== user.email) {
+                    await user.updateEmail(email);
+                }
+
+                // Update user data in Firestore
+                await db.collection('users').doc(user.uid).update({
+                    username: username,
+                    email: email,
+                    preferredLanguage: language,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                alert('Settings updated successfully!');
+            } catch (error) {
+                console.error('Error updating settings:', error);
+                alert('Error updating settings: ' + error.message);
+            }
+        });
+
+        // Add password change functionality
+        async function changePassword() {
+            const user = auth.currentUser;
+            const oldPassword = document.getElementById('oldPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+
+            try {
+                // Reauthenticate user
+                const credential = firebase.auth.EmailAuthProvider.credential(
+                    user.email, 
+                    oldPassword
+                );
+                await user.reauthenticateWithCredential(credential);
+                
+                // Update password
+                await user.updatePassword(newPassword);
+                alert('Password updated successfully!');
+            } catch (error) {
+                console.error('Error changing password:', error);
+                alert('Error changing password: ' + error.message);
+            }
+        }
+
+        // Add profile picture update functionality
+        async function updateProfilePicture(file) {
+            const user = auth.currentUser;
+            if (!user || !file) return;
+
+            try {
+                const storageRef = firebase.storage().ref();
+                const profilePicRef = storageRef.child(`profile-pics/${user.uid}`);
+                
+                // Upload file
+                await profilePicRef.put(file);
+                
+                // Get download URL
+                const downloadURL = await profilePicRef.getDownloadURL();
+                
+                // Update user profile
+                await user.updateProfile({
+                    photoURL: downloadURL
+                });
+                
+                // Update in Firestore
+                await db.collection('users').doc(user.uid).update({
+                    photoURL: downloadURL
+                });
+
+                // Update display
+                document.querySelector('.user-info img').src = downloadURL;
+                alert('Profile picture updated successfully!');
+            } catch (error) {
+                console.error('Error updating profile picture:', error);
+                alert('Error updating profile picture: ' + error.message);
+            }
+        }
+
+        // Add logout functionality
+        function logout() {
+            auth.signOut().then(() => {
+                window.location.href = 'login.html';
+            }).catch((error) => {
+                console.error('Error logging out:', error);
+                alert('Error logging out: ' + error.message);
+            });
+        }
+    </script>
 </head>
 <body>
     <nav class="navbar navbar-light navbar-expand-md" style="background-color: #764F37;">
@@ -184,47 +455,289 @@
         </div>
     </nav>
 
-    <div class="banner">
-        <div class="profile-info">
-            <img src="/api/placeholder/100/100" alt="Profile Picture" class="profile-picture">
-            <div>
-                <div class="profile-name">John Traveler</div>
-                <div class="profile-location">New York, USA</div>
+    <!-- gpt from here -->
+    <div class="profile-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="user-info">
+                <img src="dp.png" alt="Profile Picture">
+                <h3>John Doe</h3>
+                <p>Travel Enthusiast</p>
+            </div>
+            <div class="settings-menu">
+                <a href="#" onclick="showTab('account')">Account Settings</a>
+                <a href="#" onclick="showTab('game')">Language Game</a>
+                <a href="#" onclick="showTab('badges')">My Badges</a>
+                <a href="#" onclick="showTab('leaderboard')">Leaderboard</a>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-section">
+            <!-- Account Settings Tab -->
+            <div id="account" class="tab-content">
+                <h2>Account Settings</h2>
+                <form id="settings-form">
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="username" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="language" class="form-label">Preferred Language</label>
+                        <select class="form-control" id="language">
+                            <option value="en">English</option>
+                            <option value="es">Spanish</option>
+                            <option value="fr">French</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </form>
+
+                <hr>
+
+                <h3>Change Password</h3>
+                <form id="password-form" onsubmit="event.preventDefault(); changePassword();">
+                    <div class="mb-3">
+                        <label for="oldPassword" class="form-label">Current Password</label>
+                        <input type="password" class="form-control" id="oldPassword" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="newPassword" class="form-label">New Password</label>
+                        <input type="password" class="form-control" id="newPassword" required>
+                    </div>
+                    <button type="submit" class="btn btn-warning">Change Password</button>
+                </form>
+
+                <hr>
+
+                <h3>Profile Picture</h3>
+                <div class="mb-3">
+                    <label for="profilePic" class="form-label">Update Profile Picture</label>
+                    <input type="file" class="form-control" id="profilePic" accept="image/*" 
+                           onchange="updateProfilePicture(this.files[0])">
+                </div>
+
+                <hr>
+
+                <button onclick="logout()" class="btn btn-danger">Logout</button>
+            </div>
+
+            <!-- Language Game Tab -->
+            <div id="game" class="tab-content">
+                <h2>Language Learning Game</h2>
+                <div class="language-game">
+                    <div class="game-card">
+                        <h3>Current Word</h3>
+                        <p id="current-word">Bonjour</p>
+                        <div class="game-input-group">
+                            <input type="text" id="answer" placeholder="Type the translation">
+                            <button onclick="checkAnswer()" class="btn btn-primary">Submit</button>
+                        </div>
+                    </div>
+                    <div class="score-display">
+                        <p>Score: <span id="score">0</span></p>
+                        <p>Streak: <span id="streak">0</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Badges Tab -->
+            <div id="badges" class="tab-content">
+                <h2>My Badges</h2>
+                <div class="badges-section">
+                    <div class="badge">
+                        <div class="badge-image">
+                            <img src="https://www.shutterstock.com/shutterstock/photos/1167030424/display_1500/stock-vector-mountain-illustration-outdoor-adventure-vector-graphic-for-t-shirt-and-other-uses-1167030424.jpg" alt="Explorer Badge">
+                        </div>
+                        <div class="badge-info">
+                            <h4>Explorer</h4>
+                            <p>Visited 5 countries</p>
+                        </div>
+                    </div>
+                    <div class="badge">
+                        <div class="badge-image">
+                            <img src="https://www.shutterstock.com/image-vector/earth-globe-quote-frame-icon-260nw-1660853650.jpg" alt="Linguist Badge">
+                        </div>
+                        <div class="badge-info">
+                            <h4>Linguist</h4>
+                            <p>Learned 100 words</p>
+                        </div>
+                    </div>
+                    <div class="badge">
+                        <div class="badge-image">
+                            <img src="https://www.shutterstock.com/image-vector/photo-badge-outline-vector-illustration-260nw-400769848.jpg" alt="Photographer Badge">
+                        </div>
+                        <div class="badge-info">
+                            <h4>Photographer</h4>
+                            <p>Shared 20 photos</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Leaderboard Tab -->
+            <div id="leaderboard" class="tab-content">
+                <h2>Global Leaderboard</h2>
+                <div class="leaderboard">
+                    <div class="leaderboard-item">
+                        <span class="rank">1</span>
+                        <div class="player-info">
+                            <img src="user1.jpg" alt="User 1">
+                            <span>Sarah Chen</span>
+                        </div>
+                        <span class="score">2500</span>
+                    </div>
+                    <div class="leaderboard-item">
+                        <span class="rank">2</span>
+                        <div class="player-info">
+                            <img src="user2.jpg" alt="User 2">
+                            <span>John Smith</span>
+                        </div>
+                        <span class="score">2300</span>
+                    </div>
+                    <div class="leaderboard-item">
+                        <span class="rank">3</span>
+                        <div class="player-info">
+                            <img src="user3.jpg" alt="User 3">
+                            <span>Maria Garcia</span>
+                        </div>
+                        <span class="score">2100</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="main-content">
-        <div class="content">
-            <div class="tabs">
-                <div class="tab active">Timeline</div>
-                <div class="tab">Booking History</div>
-                <div class="tab">New Bookings</div>
-                <div class="tab">My Favourites</div>
-                <div class="tab">Account Settings</div>
-            </div>
+    <script>
+        // Tab Functionality
+        function showTab(tabId) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.style.display = 'none';
+            });
+            // Show selected tab
+            document.getElementById(tabId).style.display = 'block';
+        }
 
-            <h2>My Favourites (7)</h2>
-            <div class="favourites-grid">
-                <div class="favourite-item">
-                    <img src="/api/placeholder/250/150" alt="Maldives Resort" class="favourite-image">
-                    <div class="favourite-info">
-                        <div class="favourite-name">Maldives Resort</div>
-                        <div class="favourite-location">Maldives</div>
-                        <div class="favourite-price">$200 per night</div>
-                    </div>
-                </div>
-                <div class="favourite-item">
-                    <img src="/api/placeholder/250/150" alt="Dubai Hotel" class="favourite-image">
-                    <div class="favourite-info">
-                        <div class="favourite-name">Dubai Luxury Hotel</div>
-                        <div class="favourite-location">Dubai, UAE</div>
-                        <div class="favourite-price">$350 per night</div>
-                    </div>
-                </div>
-                <!-- Add more favourite items here -->
-            </div>
-        </div>
-    </div>
+        // Language Game Logic
+        const words = [
+            // French words
+            { word: 'Bonjour', translation: 'Hello' },
+            { word: 'Merci', translation: 'Thank you' },
+            { word: 'Au revoir', translation: 'Goodbye' },
+            { word: 'S\'il vous plaît', translation: 'Please' },
+            { word: 'De rien', translation: 'You\'re welcome' },
+            { word: 'Bonne nuit', translation: 'Good night' },
+            { word: 'Comment allez-vous', translation: 'How are you' },
+            { word: 'Enchanté', translation: 'Nice to meet you' },
+            
+            // Spanish words
+            { word: 'Hola', translation: 'Hello' },
+            { word: 'Gracias', translation: 'Thank you' },
+            { word: 'Adiós', translation: 'Goodbye' },
+            { word: 'Por favor', translation: 'Please' },
+            { word: 'De nada', translation: 'You\'re welcome' },
+            { word: 'Buenos días', translation: 'Good morning' },
+            { word: '¿Cómo estás?', translation: 'How are you' },
+            { word: 'Mucho gusto', translation: 'Nice to meet you' },
+
+            // Italian words
+            { word: 'Ciao', translation: 'Hello' },
+            { word: 'Grazie', translation: 'Thank you' },
+            { word: 'Arrivederci', translation: 'Goodbye' },
+            { word: 'Per favore', translation: 'Please' },
+            { word: 'Prego', translation: 'You\'re welcome' },
+            { word: 'Buongiorno', translation: 'Good morning' },
+            { word: 'Come stai', translation: 'How are you' },
+            { word: 'Piacere', translation: 'Nice to meet you' },
+
+            // German words
+            { word: 'Hallo', translation: 'Hello' },
+            { word: 'Danke', translation: 'Thank you' },
+            { word: 'Auf Wiedersehen', translation: 'Goodbye' },
+            { word: 'Bitte', translation: 'Please' },
+            { word: 'Gern geschehen', translation: 'You\'re welcome' },
+            { word: 'Guten Morgen', translation: 'Good morning' },
+            { word: 'Wie geht es dir', translation: 'How are you' },
+            { word: 'Freut mich', translation: 'Nice to meet you' },
+
+            // Japanese words
+            { word: 'こんにちは (Konnichiwa)', translation: 'Hello' },
+            { word: 'ありがとう (Arigatou)', translation: 'Thank you' },
+            { word: 'さようなら (Sayounara)', translation: 'Goodbye' },
+            { word: 'お願いします (Onegaishimasu)', translation: 'Please' },
+            { word: 'どういたしまして (Douitashimashite)', translation: 'You\'re welcome' },
+            { word: 'おはようございます (Ohayou gozaimasu)', translation: 'Good morning' },
+            { word: 'お元気ですか (Ogenki desu ka)', translation: 'How are you' },
+            { word: 'はじめまして (Hajimemashite)', translation: 'Nice to meet you' },
+
+            // Korean words
+            { word: '안녕하세요 (Annyeonghaseyo)', translation: 'Hello' },
+            { word: '감사합니다 (Gamsahamnida)', translation: 'Thank you' },
+            { word: '안녕히 가세요 (Annyeonghi gaseyo)', translation: 'Goodbye' },
+            { word: '부탁합니다 (Butakhamnida)', translation: 'Please' },
+            { word: '천만에요 (Cheonmaneyo)', translation: 'You\'re welcome' },
+            { word: '좋은 아침입니다 (Joeun achimimnida)', translation: 'Good morning' },
+            { word: '어떻게 지내세요 (Eotteoke jinaeseyo)', translation: 'How are you' },
+            { word: '만나서 반갑습니다 (Mannaseo bangapseumnida)', translation: 'Nice to meet you' }
+        ];
+
+        let currentWordIndex = 0;
+        let score = 0;
+        let streak = 0;
+
+        function checkAnswer() {
+            const answer = document.getElementById('answer').value.toLowerCase().trim();
+            const correctAnswer = words[currentWordIndex].translation.toLowerCase();
+
+            if (answer === correctAnswer) {
+                score += 10;
+                streak += 1;
+                // Add bonus points for streaks
+                if (streak > 5) score += 5;  // Bonus for 5+ streak
+                if (streak > 10) score += 10; // Additional bonus for 10+ streak
+                showSuccessMessage('Correct! Keep going!');
+            } else {
+                streak = 0;
+                showErrorMessage(`Wrong! The correct answer is: ${words[currentWordIndex].translation}`);
+            }
+
+            // Update display
+            document.getElementById('score').textContent = score;
+            document.getElementById('streak').textContent = streak;
+
+            // Move to next word
+            currentWordIndex = (currentWordIndex + 1) % words.length;
+            document.getElementById('current-word').textContent = words[currentWordIndex].word;
+            document.getElementById('answer').value = '';
+        }
+
+        function showSuccessMessage(message) {
+            const gameCard = document.querySelector('.game-card');
+            const messageDiv = document.createElement('div');
+            messageDiv.textContent = message;
+            messageDiv.style.color = 'green';
+            messageDiv.style.marginTop = '10px';
+            gameCard.appendChild(messageDiv);
+            setTimeout(() => messageDiv.remove(), 2000);
+        }
+
+        function showErrorMessage(message) {
+            const gameCard = document.querySelector('.game-card');
+            const messageDiv = document.createElement('div');
+            messageDiv.textContent = message;
+            messageDiv.style.color = 'red';
+            messageDiv.style.marginTop = '10px';
+            gameCard.appendChild(messageDiv);
+            setTimeout(() => messageDiv.remove(), 3000);
+        }
+
+        // Show account tab by default
+        showTab('account');
+    </script>
 </body>
 </html>

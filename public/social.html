@@ -69,8 +69,8 @@
             font-weight: bold;
         }
         .main-content {
-            margin-top: 60px;
-            padding: 20px;
+            margin-top: 10px;
+            padding: 10px;
         }
         .photo-item {
             position: relative;
@@ -106,8 +106,8 @@
         }
         .photo-item img {
             width: 100%;
-            height: 200px; /* Fixed height for uniformity */
-            object-fit: cover; /* Ensures the image covers the area without distortion */
+            height: 200px;
+            object-fit: cover;
             cursor: pointer;
             transition: opacity 0.3s;
         }
@@ -151,11 +151,128 @@
         .modal-body img {
             width: 100%;
             height: auto;
-            max-height: 80vh; /* Ensures the image doesn't exceed the viewport height */
-            object-fit: cover; /* Ensures the image covers the area without distortion */
+            max-height: 80vh;
+            object-fit: cover;
         }
         .no-scroll {
             overflow: hidden;
+        }
+        
+        /* connections added from here */
+        .travelers-section {
+            padding: 10px;
+            margin-bottom: 5px;
+            background-color: #f8f9fa;
+        }
+
+        .travelers-section h2 {
+            color: #764F37;
+            text-align: center;
+            margin-bottom: 20px;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .travelers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 10px;
+        }
+
+        .traveler-card {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .traveler-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .traveler-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .traveler-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+            object-fit: cover;
+        }
+
+        .traveler-details {
+            flex-grow: 1;
+        }
+
+        .traveler-name {
+            font-weight: bold;
+            color: #764F37;
+            margin: 0;
+        }
+
+        .traveler-location {
+            color: #666;
+            font-size: 0.9em;
+            margin: 5px 0;
+        }
+
+        .traveler-interests {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: 10px;
+        }
+
+        .interest-tag {
+            background: #DCB287;
+            color: white;
+            padding: 3px 8px;
+            border-radius: 15px;
+            font-size: 0.8em;
+        }
+
+        .connect-btn {
+            background-color: #B5855B;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            width: 100%;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .connect-btn:hover {
+            background-color: #DCB287;
+        }
+
+        .connected {
+            background-color: #28a745;
+        }
+
+        .latest-posts-header {
+            text-align: center;
+            color: #764F37;
+            font-family: 'Playfair Display', serif;
+            margin: 10px 0 10px 0;
+            padding-bottom: 5px;
+            position: relative;
+        }
+
+        .latest-posts-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background-color: #DCB287;
         }
     </style>
 </head>
@@ -194,7 +311,18 @@
             </div>
         </nav>
 
+        <!-- gpt from here, want to add anyth else?? or for show only?? -->
+        <!-- Add this right after the navbar and before the main-content -->
+        <!-- connections added from here -->
+        <div class="travelers-section">
+            <h2>Connect with Travelers</h2>
+            <div class="travelers-grid" id="travelersGrid">
+                <!-- Travelers will be dynamically added here -->
+            </div>
+        </div>
+
         <main class="main-content">
+            <h2 class="latest-posts-header">Latest Posts</h2>
             <div class="photo-grid">
                 <div v-for="photo in displayedPhotos" :key="photo.id" class="photo-item">
                     <div class="photo-container" @click="openModal(photo)">
@@ -287,7 +415,34 @@
                 currentPage: 1,
                 photosPerPage: 8,
                 showAddPhotoModal: false,
-                newPhoto: { src: '', alt: '', desc: '' }
+                newPhoto: { src: '', alt: '', desc: '' },
+                // new code for travellers
+                travelers: [
+                    {
+                        id: 1,
+                        name: "Sarah Chen",
+                        location: "Singapore",
+                        avatar: "https://randomuser.me/api/portraits/women/1.jpg",
+                        interests: ["Photography", "Food", "Culture"],
+                        connected: false
+                    },
+                    {
+                        id: 2,
+                        name: "John Smith",
+                        location: "United States",
+                        avatar: "https://randomuser.me/api/portraits/men/1.jpg",
+                        interests: ["Hiking", "Adventure", "History"],
+                        connected: false
+                    },
+                    {
+                        id: 3,
+                        name: "Maria Garcia",
+                        location: "Spain",
+                        avatar: "https://randomuser.me/api/portraits/women/2.jpg",
+                        interests: ["Art", "Museums", "Local Markets"],
+                        connected: false
+                    }
+                ]
             },
             computed: {
                 displayedPhotos() {
@@ -348,7 +503,75 @@
                     if (event.key === 'Escape' && this.selectedPhoto) {
                         this.closeModal();
                     }
+                },
+                // new code
+                displayTravelers() {
+                    const travelersGrid = document.getElementById('travelersGrid');
+                    while (travelersGrid.firstChild) {
+                        travelersGrid.removeChild(travelersGrid.firstChild);
+                    }
+
+                    this.travelers.forEach(traveler => {
+                        const travelerCard = document.createElement('div');
+                        travelerCard.className = 'traveler-card';
+
+                        const travelerInfo = document.createElement('div');
+                        travelerInfo.className = 'traveler-info';
+
+                        const avatar = document.createElement('img');
+                        avatar.src = traveler.avatar;
+                        avatar.alt = traveler.name;
+                        avatar.className = 'traveler-avatar';
+
+                        const details = document.createElement('div');
+                        details.className = 'traveler-details';
+
+                        const name = document.createElement('h3');
+                        name.className = 'traveler-name';
+                        name.textContent = traveler.name;
+
+                        const location = document.createElement('p');
+                        location.className = 'traveler-location';
+                        location.textContent = traveler.location;
+
+                        details.appendChild(name);
+                        details.appendChild(location);
+                        travelerInfo.appendChild(avatar);
+                        travelerInfo.appendChild(details);
+
+                        const interests = document.createElement('div');
+                        interests.className = 'traveler-interests';
+                        traveler.interests.forEach(interest => {
+                            const tag = document.createElement('span');
+                            tag.className = 'interest-tag';
+                            tag.textContent = interest;
+                            interests.appendChild(tag);
+                        });
+
+                        const connectBtn = document.createElement('button');
+                        connectBtn.className = 'connect-btn';
+                        connectBtn.textContent = traveler.connected ? 'Connected' : 'Connect';
+                        if (traveler.connected) {
+                            connectBtn.classList.add('connected');
+                        }
+                        connectBtn.addEventListener('click', () => this.toggleConnect(traveler.id));
+
+                        travelerCard.appendChild(travelerInfo);
+                        travelerCard.appendChild(interests);
+                        travelerCard.appendChild(connectBtn);
+                        travelersGrid.appendChild(travelerCard);
+                    });
+                },
+                toggleConnect(travelerId) {
+                    const traveler = this.travelers.find(t => t.id === travelerId);
+                    if (traveler) {
+                        traveler.connected = !traveler.connected;
+                        this.displayTravelers();
+                    }
                 }
+            },
+            mounted() {
+                this.displayTravelers();
             }
         });
     </script>
