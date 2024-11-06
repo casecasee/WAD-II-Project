@@ -24,18 +24,23 @@
         <navbar-component></navbar-component>
     </div>
 
-    <script src = "navbarLoader.js"></script>
-
     <div id="app">
         <h1>Attractions in {{ country }}</h1>
 
-        <country-images v-for="attraction in all" :a_name="attraction.name" @popup="popup($event, attraction.name)"> </country-images>
+        <div class='container'>
+            <div class='row row-cols-4'>
+                <div class="col" v-for="attraction in all">
+                    <country-images @click="popup('countryPics/paris.jpg', attraction.name)" :a_name="attraction.name"></country-images>
+                </div>
+            </div>
+        </div>
         
-        <pop-up :display_it=display_it :a_name="selected_a" :bg_img="imgurl" @close="close()"></pop-up>
+        <pop-up :display_it=display_it :a_name="selected_a" :bg_img="this.imgurl" @close="close()" @add="addattract"></pop-up>
     </div>
-
-    <script src = "attractionImages.js"></script>
-
+        
+    <script src = "attractionImages.js" type="module"></script>
+    <script src = "navbarLoader.js"></script>
+    
     <footer>
         <p>&copy; 2024 ROAMEO. All Rights Reserved.</p>
     </footer>
