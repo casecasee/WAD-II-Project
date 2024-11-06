@@ -53,7 +53,7 @@ export const add_info_users = async function addUserToTable(UID, email, name) {
     catch (error) {
         const errCode = error.code;
         const errMsg = error.message;
-        console.log(errCode + errMsg);
+        alert(errCode + errMsg);
     };
 }
 //------------------------------------------------------------ END ---------------------------------------------------------------
