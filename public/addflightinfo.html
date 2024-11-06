@@ -17,7 +17,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Pacifico&family=Playwrite+GB+S:ital,wght@0,100..400;1,100..400&display=swap" rel="stylesheet">    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" /> 
     <link rel="stylesheet" href="navbar.css">
-    <link rel = "stylesheet" href = "trip.css"> 
 
 </head>
 <body>
@@ -30,7 +29,8 @@
         <div class="row justify-content-center">
             <!-- Input Form Section -->
             <div class="form-container col-10 col-lg-5 mx-4">
-                <h3 class="title">✈️ Enter Flight Details ✈️</h3>
+                <h3 class="title">✈️ Enter Flight Details</h3>
+                
                 <form>
                     <div class="mb-4">
                         <label for="from-city" class="form-label">Departure</label>
@@ -56,12 +56,16 @@
                         <label for="seat-number" class="form-label">Seat Number (Optional)</label>
                         <input type="text" class="form-control" v-model="seatNumber" placeholder="Enter Seat Number">
                     </div>
+                    <div class="mb-4">
+                        <label for="flight-cost" class="form-label">Cost Of Flight ($)</label>
+                        <input type="text" class="form-control" v-model="flightCost" placeholder="Enter Cost">
+                    </div>
                     <button type="submit" class="btn btn-primary w-100" @click.prevent="addFlight">Confirm</button>
                 </form>
             </div>
             
             <div class="form-container col-10 col-lg-5 mx-4">
-                <h3 class="title">🛫 Flights 🛬</h3>
+                <h3 class="title">🛫 Flights</h3>
                 <div v-if="flights.length === 0" class="no-flights">No flights added.</div>
                 
                 <div class="row justify-content-center">
@@ -100,9 +104,7 @@
                     </div>
                     
                     <div class="text-center mt-4">
-                        <a href="mytripinfo.html">
-                            <button type="button" class="btn btn-primary w-100" v-if="flights.length > 0">Add Flights To Trip!</button>
-                        </a>
+                            <button type="button" class="btn btn-primary w-100" v-if="flights.length @click.prevent='addAllFlightToTrip'> 0">Add Flights To Trip!</button>
                     </div>
                 </div>
             </div>
@@ -118,15 +120,19 @@
     <script src = "navbarLoader.js"></script>
      
     <script>
+        import { add_flights_to_trip } from 'functions.js';
+
         const app = Vue.createApp({
             data() {
                 return {
+                    tripID: 'ZI1IlYYOwUncoQZ2OztJ',
                     fromCity: '',
                     toCity: '',
                     departureDate: '',
                     departureTime: '',
                     flightNumber: '',
                     seatNumber: '',
+                    flightCost: '',
                     flights: [] 
                 };
             },
@@ -139,10 +145,22 @@
                         departureDate: this.departureDate,
                         departureTime: this.departureTime,
                         flightNumber: this.flightNumber,
-                        seatNumber: this.seatNumber
+                        seatNumber: this.seatNumber,
+                        flightCost: this.flightCost
                     });
 
                     this.resetForm();
+                },
+                async addAllFlightsToTrip() {
+                    try {
+                        // Pass all flights at once to Firebase under a single tripID
+                        await add_flights_to_trip(this.tripID, this.flights);
+                        this.flights = [];  // Clear the array after saving
+                        alert("All flights have been added to the trip successfully!");
+                        window.location.href = "mytripinfo.html";
+                    } catch (error) {
+                        console.error("Error adding flights to Firebase:", error);
+                    }
                 },
                 resetForm() {
                     this.fromCity = '';
@@ -151,6 +169,7 @@
                     this.departureTime = '';
                     this.flightNumber = '';
                     this.seatNumber = '';
+                    this.flightCost = '';
                 }
             }
         });

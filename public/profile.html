@@ -140,6 +140,26 @@
             margin-bottom: 20px;
         }
 
+        .game-input-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        .game-input-group input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            max-width: 300px;
+        }
+
+        .game-input-group button {
+            white-space: nowrap;
+        }
+
         /* Badges Section */
         .badges-section {
             display: grid;
@@ -153,12 +173,38 @@
             padding: 15px;
             border-radius: 8px;
             text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
         }
 
-        .badge img {
-            width: 60px;
-            height: 60px;
+        .badge-image {
+            width: 100%;
+            height: 120px;
             margin-bottom: 10px;
+        }
+
+        .badge-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .badge-info {
+            text-align: center;
+        }
+
+        .badge-info h4 {
+            color: #764F37;
+            margin-bottom: 5px;
+        }
+
+        .badge-info p {
+            color: #666;
+            font-size: 0.9em;
+            margin: 0;
         }
 
         /* Leaderboard Styles */
@@ -231,9 +277,18 @@
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
     <script>
+        import { initializeApp } from "firebase/app";
+        import { getAuth } from "firebase/auth";
+        import { getFirestore } from "firebase/firestore";
         // Your Firebase configuration
         const firebaseConfig = {
             // Your config object from Firebase console
+            apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+            authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+            projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+            storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+            messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+            appId: import.meta.env.VITE_FIREBASE_APP_ID,
         };
         
         // Initialize Firebase
@@ -478,8 +533,10 @@
                     <div class="game-card">
                         <h3>Current Word</h3>
                         <p id="current-word">Bonjour</p>
-                        <input type="text" id="answer" placeholder="Type the translation">
-                        <button onclick="checkAnswer()" class="btn btn-primary mt-3">Submit</button>
+                        <div class="game-input-group">
+                            <input type="text" id="answer" placeholder="Type the translation">
+                            <button onclick="checkAnswer()" class="btn btn-primary">Submit</button>
+                        </div>
                     </div>
                     <div class="score-display">
                         <p>Score: <span id="score">0</span></p>
@@ -493,19 +550,31 @@
                 <h2>My Badges</h2>
                 <div class="badges-section">
                     <div class="badge">
-                        <img src="badges/explorer.png" alt="Explorer Badge">
-                        <h4>Explorer</h4>
-                        <p>Visited 5 countries</p>
+                        <div class="badge-image">
+                            <img src="https://www.shutterstock.com/shutterstock/photos/1167030424/display_1500/stock-vector-mountain-illustration-outdoor-adventure-vector-graphic-for-t-shirt-and-other-uses-1167030424.jpg" alt="Explorer Badge">
+                        </div>
+                        <div class="badge-info">
+                            <h4>Explorer</h4>
+                            <p>Visited 5 countries</p>
+                        </div>
                     </div>
                     <div class="badge">
-                        <img src="badges/linguist.png" alt="Linguist Badge">
-                        <h4>Linguist</h4>
-                        <p>Learned 100 words</p>
+                        <div class="badge-image">
+                            <img src="https://www.shutterstock.com/image-vector/earth-globe-quote-frame-icon-260nw-1660853650.jpg" alt="Linguist Badge">
+                        </div>
+                        <div class="badge-info">
+                            <h4>Linguist</h4>
+                            <p>Learned 100 words</p>
+                        </div>
                     </div>
                     <div class="badge">
-                        <img src="badges/photographer.png" alt="Photographer Badge">
-                        <h4>Photographer</h4>
-                        <p>Shared 20 photos</p>
+                        <div class="badge-image">
+                            <img src="https://www.shutterstock.com/image-vector/photo-badge-outline-vector-illustration-260nw-400769848.jpg" alt="Photographer Badge">
+                        </div>
+                        <div class="badge-info">
+                            <h4>Photographer</h4>
+                            <p>Shared 20 photos</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -556,25 +625,85 @@
 
         // Language Game Logic
         const words = [
+            // French words
             { word: 'Bonjour', translation: 'Hello' },
             { word: 'Merci', translation: 'Thank you' },
-            { word: 'Au revoir', translation: 'Goodbye' }
+            { word: 'Au revoir', translation: 'Goodbye' },
+            { word: 'S\'il vous plaît', translation: 'Please' },
+            { word: 'De rien', translation: 'You\'re welcome' },
+            { word: 'Bonne nuit', translation: 'Good night' },
+            { word: 'Comment allez-vous', translation: 'How are you' },
+            { word: 'Enchanté', translation: 'Nice to meet you' },
+            
+            // Spanish words
+            { word: 'Hola', translation: 'Hello' },
+            { word: 'Gracias', translation: 'Thank you' },
+            { word: 'Adiós', translation: 'Goodbye' },
+            { word: 'Por favor', translation: 'Please' },
+            { word: 'De nada', translation: 'You\'re welcome' },
+            { word: 'Buenos días', translation: 'Good morning' },
+            { word: '¿Cómo estás?', translation: 'How are you' },
+            { word: 'Mucho gusto', translation: 'Nice to meet you' },
+
+            // Italian words
+            { word: 'Ciao', translation: 'Hello' },
+            { word: 'Grazie', translation: 'Thank you' },
+            { word: 'Arrivederci', translation: 'Goodbye' },
+            { word: 'Per favore', translation: 'Please' },
+            { word: 'Prego', translation: 'You\'re welcome' },
+            { word: 'Buongiorno', translation: 'Good morning' },
+            { word: 'Come stai', translation: 'How are you' },
+            { word: 'Piacere', translation: 'Nice to meet you' },
+
+            // German words
+            { word: 'Hallo', translation: 'Hello' },
+            { word: 'Danke', translation: 'Thank you' },
+            { word: 'Auf Wiedersehen', translation: 'Goodbye' },
+            { word: 'Bitte', translation: 'Please' },
+            { word: 'Gern geschehen', translation: 'You\'re welcome' },
+            { word: 'Guten Morgen', translation: 'Good morning' },
+            { word: 'Wie geht es dir', translation: 'How are you' },
+            { word: 'Freut mich', translation: 'Nice to meet you' },
+
+            // Japanese words
+            { word: 'こんにちは (Konnichiwa)', translation: 'Hello' },
+            { word: 'ありがとう (Arigatou)', translation: 'Thank you' },
+            { word: 'さようなら (Sayounara)', translation: 'Goodbye' },
+            { word: 'お願いします (Onegaishimasu)', translation: 'Please' },
+            { word: 'どういたしまして (Douitashimashite)', translation: 'You\'re welcome' },
+            { word: 'おはようございます (Ohayou gozaimasu)', translation: 'Good morning' },
+            { word: 'お元気ですか (Ogenki desu ka)', translation: 'How are you' },
+            { word: 'はじめまして (Hajimemashite)', translation: 'Nice to meet you' },
+
+            // Korean words
+            { word: '안녕하세요 (Annyeonghaseyo)', translation: 'Hello' },
+            { word: '감사합니다 (Gamsahamnida)', translation: 'Thank you' },
+            { word: '안녕히 가세요 (Annyeonghi gaseyo)', translation: 'Goodbye' },
+            { word: '부탁합니다 (Butakhamnida)', translation: 'Please' },
+            { word: '천만에요 (Cheonmaneyo)', translation: 'You\'re welcome' },
+            { word: '좋은 아침입니다 (Joeun achimimnida)', translation: 'Good morning' },
+            { word: '어떻게 지내세요 (Eotteoke jinaeseyo)', translation: 'How are you' },
+            { word: '만나서 반갑습니다 (Mannaseo bangapseumnida)', translation: 'Nice to meet you' }
         ];
+
         let currentWordIndex = 0;
         let score = 0;
         let streak = 0;
 
         function checkAnswer() {
-            const answer = document.getElementById('answer').value.toLowerCase();
+            const answer = document.getElementById('answer').value.toLowerCase().trim();
             const correctAnswer = words[currentWordIndex].translation.toLowerCase();
 
             if (answer === correctAnswer) {
                 score += 10;
                 streak += 1;
-                alert('Correct!');
+                // Add bonus points for streaks
+                if (streak > 5) score += 5;  // Bonus for 5+ streak
+                if (streak > 10) score += 10; // Additional bonus for 10+ streak
+                showSuccessMessage('Correct! Keep going!');
             } else {
                 streak = 0;
-                alert('Wrong! The correct answer is: ' + words[currentWordIndex].translation);
+                showErrorMessage(`Wrong! The correct answer is: ${words[currentWordIndex].translation}`);
             }
 
             // Update display
@@ -585,6 +714,26 @@
             currentWordIndex = (currentWordIndex + 1) % words.length;
             document.getElementById('current-word').textContent = words[currentWordIndex].word;
             document.getElementById('answer').value = '';
+        }
+
+        function showSuccessMessage(message) {
+            const gameCard = document.querySelector('.game-card');
+            const messageDiv = document.createElement('div');
+            messageDiv.textContent = message;
+            messageDiv.style.color = 'green';
+            messageDiv.style.marginTop = '10px';
+            gameCard.appendChild(messageDiv);
+            setTimeout(() => messageDiv.remove(), 2000);
+        }
+
+        function showErrorMessage(message) {
+            const gameCard = document.querySelector('.game-card');
+            const messageDiv = document.createElement('div');
+            messageDiv.textContent = message;
+            messageDiv.style.color = 'red';
+            messageDiv.style.marginTop = '10px';
+            gameCard.appendChild(messageDiv);
+            setTimeout(() => messageDiv.remove(), 3000);
         }
 
         // Show account tab by default
