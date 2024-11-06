@@ -204,8 +204,8 @@ header{
         width:200px;
         right: 2rem;
         top: 60px;
-        background: rgba(255, 255, 255, 0.1); 
-        backdrop-filter: blur(15px);
+        /* background: rgba(255, 255, 255, 0.8); 
+        backdrop-filter: blur(15px); */
         border-radius: 8px;
         overflow: hidden;
         transition: height 0.3s ease, opacity 0.3s ease;
@@ -230,7 +230,7 @@ header{
         text-align: center;
         padding: 0.7rem;
         cursor: pointer; 
-        color: #764F37;
+        color: #fefefe;
         transition: background-color 0.3s ease;        
         text-decoration: none;
     }
