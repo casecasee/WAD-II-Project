@@ -71,25 +71,25 @@ app.component('country-images', {
     }, // data
 
     async mounted() {
-        // const url = 'https://api.wikimedia.org/core/v1/wikipedia/en/search/page';
-        // const params = { q: this.a_name, limit: 1 };
-        // response = await axios.get(url, { params: params } );
-        // const result = response.data.pages;
+        const url = 'https://api.wikimedia.org/core/v1/wikipedia/en/search/page';
+        const params = { q: this.a_name, limit: 1 };
+        const response = await axios.get(url, { params: params } );
+        const result = response.data.pages;
 
-        this.imgurl = 'countryPics/paris.jpg';
-        this.desc = 'placeholder description';
+        // this.imgurl = 'countryPics/paris.jpg';
+        // this.desc = 'placeholder description';
 
-        // if (result[0]) { // checks if the wiki page exists
-            // const thumbimage = result[0].thumbnail?.url; // Optional chaining for handling missing thumbnails
-            // const description = result[0].description || "No description available";
+        if (result[0]) { // checks if the wiki page exists
+            const thumbimage = result[0].thumbnail?.url; // Optional chaining for handling missing thumbnails
+            const description = result[0].description || "No description available";
             // TODO check if wiki page consists of coords DOESNT WORK ISTG!!!!!!
     
-            // if (thumbimage) {
-                // const image = thumbimage.replace('/thumb', '').replace(/\/\d+px-.+$/, ''); // get big image
-                // this.imgurl = image;
-                // this.desc = description         
-            // }
-        // }
+            if (thumbimage) {
+                const image = thumbimage.replace('/thumb', '').replace(/\/\d+px-.+$/, ''); // get big image
+                this.imgurl = image;
+                this.desc = description         
+            }
+        }
     },
     template: `
         <div class='card' v-if=imgurl @click="$emit('popup', this.imgurl)">

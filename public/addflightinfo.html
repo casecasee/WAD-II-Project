@@ -66,9 +66,8 @@
             
             <div class="form-container col-10 col-lg-5 mx-4">
                 <h3 class="title">🛫 Flights</h3>
-                <div v-if="flights.length === 0" class="no-flights">No flights added.</div>
-                
-                <div class="row justify-content-center">
+                <div v-if="flights.length === 0" class="no-flights text-center mb-4">No flights added.</div>
+                <div class="row justify-content-center" v-if="flights.length > 0">
                     <div v-for="(flight, index) in flights" :key="index" class="ticket col-12 col-sm-6 col-lg-4 my-2">
                         <div class="ticket-header">
                             <div class="head-logo">Roameo</div>
@@ -76,17 +75,21 @@
                         </div>
                         <div class="ticket-body">
                             <div class="locations">
-                                <div class="loc-depart">{{ flight.fromCity || "From" }}
+                                <div class="loc-depart">
+                                    {{ flight.fromCity || "From" }}
                                     <h1>{{ flight.fromCity ? flight.fromCity.slice(0, 3).toUpperCase() : "---" }}</h1>
                                 </div>
                                 <div class="loc-direction">
-                                    <img src="plane.png" class="loc-direction">
+                                    <img src="plane.png" alt="Plane Icon" class="loc-direction">
                                 </div>
-                                <div class="loc-arrive">{{ flight.toCity || "To" }}
+                                <div class="loc-arrive">
+                                    {{ flight.toCity || "To" }}
                                     <h1>{{ flight.toCity ? flight.toCity.slice(0, 3).toUpperCase() : "---" }}</h1>
                                 </div>
                             </div>
-                            <div class="passenger-name"><h4>Passenger's Name</h4></div>
+                            <div class="passenger-name">
+                                <h4>Passenger's Name</h4>
+                            </div>
                             <div class="body-info">
                                 <div class="flight-info">
                                     <div>Flight <h4>{{ flight.flightNumber || "-" }}</h4></div>
@@ -102,11 +105,20 @@
                             <div class="depart-barcode"></div>
                         </div>
                     </div>
-                    
-                    <div class="text-center mt-4">
-                            <button type="button" class="btn btn-primary w-100" v-if="flights.length @click.prevent='addAllFlightToTrip'> 0">Add Flights To Trip!</button>
-                    </div>
                 </div>
+            
+                <!-- Add Flights button -->
+                <div class="text-center mt-4">
+                    <button 
+                        type="button" 
+                        class="btn btn-primary w-100" 
+                        v-if="flights.length > 0" 
+                        @click="addAllFlightsToTrip"
+                    >
+                        Add Flights To Trip!
+                    </button>
+                </div>
+                
             </div>
             
         </div>
@@ -119,9 +131,9 @@
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src = "navbarLoader.js"></script>
      
-    <script>
-        import { add_flights_to_trip } from 'functions.js';
-
+    <script type="module">
+        import { add_flights_to_trip } from './functions.js';
+    
         const app = Vue.createApp({
             data() {
                 return {
@@ -138,7 +150,6 @@
             },
             methods: {
                 addFlight() {
-                    
                     this.flights.push({
                         fromCity: this.fromCity,
                         toCity: this.toCity,
@@ -148,16 +159,16 @@
                         seatNumber: this.seatNumber,
                         flightCost: this.flightCost
                     });
-
+    
                     this.resetForm();
                 },
                 async addAllFlightsToTrip() {
                     try {
-                        // Pass all flights at once to Firebase under a single tripID
+                        // Save flights to Firestore
                         await add_flights_to_trip(this.tripID, this.flights);
-                        this.flights = [];  // Clear the array after saving
+                        this.flights = []; // Clear local flights array
                         alert("All flights have been added to the trip successfully!");
-                        window.location.href = "mytripinfo.html";
+                        window.location.href = `mytripinfo.html?tripID=${this.tripID}`; // Redirect after success
                     } catch (error) {
                         console.error("Error adding flights to Firebase:", error);
                     }
@@ -173,7 +184,7 @@
                 }
             }
         });
-
+    
         app.mount('#app');
     </script>
     

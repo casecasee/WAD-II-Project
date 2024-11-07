@@ -8,66 +8,15 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Roboto+Slab:wght@400;700&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Pacifico&family=Playwrite+GB+S:ital,wght@0,100..400;1,100..400&display=swap">
-    <script type="module" src="checkauth.js"></script>
+
+    <!-- fonts and navbar -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Pacifico&family=Playwrite+GB+S:ital,wght@0,100..400;1,100..400&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Pacifico&family=Playwrite+GB+S:ital,wght@0,100..400;1,100..400&display=swap" rel="stylesheet">    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" /> 
+    <link rel="stylesheet" href="navbar.css">
+    <link rel = "stylesheet" href = "trip.css"> 
+
     <style>
-         /* Nav bar */
-         .navbar {
-            background-color: #fff;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px; 
-            padding: 0px 0;
-        }
-
-        .navbar-brand { 
-            color: white !important; 
-            font-weight: 700;  
-            font-size: 40px; /* Adjusted size for better appearance */ 
-            font-family: "Pacifico", cursive; 
-            font-weight: 200; 
-            /* font-family: "Playwrite GB S", serif;  */
-        }
-
-        .nav-item{
-            margin: 0px 20px;
-            color: white;
-        }
-
-        .navbar .nav-item .nav-link{
-            color: white;
-            font-size: 18px;
-            border-radius: 25px;
-            font-family: "Playwrite GB S", serif;
-            font-family: "SF Pro Text";
-            font-weight: 700;
-        }
-
-        .navbar-nav .nav-link:hover {
-            background-color: #DCB287;
-            color:black;
-        }
-        /* .search-profile {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-right: 20px;
-        }
-        .search-bar {
-            padding: 5px 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        } */
-        .profile-pic {
-            width: 30px;
-            height: 30px;
-            background-color: #ccc;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-decoration: none;
-            color: #333;
-            font-weight: bold;
-        }
         .main-content {
             margin-top: 10px;
             padding: 10px;
@@ -162,7 +111,7 @@
         .travelers-section {
             padding: 10px;
             margin-bottom: 5px;
-            background-color: #f8f9fa;
+            background-color: #BDC6C2;
         }
 
         .travelers-section h2 {
@@ -278,38 +227,9 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-light navbar-expand-md" style="background-color: #764F37;">
-            <div class="container">
-    
-                <div class="d-flex col-3">
-                    <a href="homepage.html" class="navbar-brand">Roameo</a>
-                </div>
-        
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-        
-                <div class="collapse navbar-collapse col-6 justify-content-center" id="navbarSupportedContent">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link" href="homepage.html">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="social.html">Community Feed</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="mytrips.html">My Trip</a>
-                        </li>
-                    </ul>
-                </div>
-        
-                <div class="d-flex col-3 justify-content-end">
-                    <a href="profile.html">
-                        <img src="dp.png" alt="Profile" class="profile-pic">
-                    </a>
-                </div>
-            </div>
-        </nav>
+        <div id="navbar-app"> 
+            <navbar-component></navbar-component> 
+        </div> 
 
         <!-- gpt from here, want to add anyth else?? or for show only?? -->
         <!-- Add this right after the navbar and before the main-content -->
@@ -575,6 +495,8 @@
             }
         });
     </script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src = "navbarLoader.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
 </body>
