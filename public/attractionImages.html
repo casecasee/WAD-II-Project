@@ -1,31 +1,118 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Explore Attractions</title>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCDZX8FC6DFwa9EQvCIxoCLgN_oz41wB98&libraries=places,marker" defer></script>
-    <!-- Bootstrap -->
+    <title>My Trips</title>
+
+    <!-- VUE -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    
+    <!-- Axios and API -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBqbv7BqX1_7CcpPT80locaYJ3fnsdC-Sg&libraries=places"></script>
+
+    <!-- CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Pacifico&family=Playwrite+GB+S:ital,wght@0,100..400;1,100..400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="navbar.css">
-    <!-- Axios -->
-    <script src='https://unpkg.com/axios/dist/axios.min.js'></script>
-    <!-- Vue 3 -->
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <link rel = "stylesheet" href = "trip.css">
 
-</head>
+    <!-- GSAP and ScrollToPlugin -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/ScrollToPlugin.min.js"></script>
+    <!-- <script src = "addtripinfo.js"  type="module"></script> -->
 
+
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #e1e7e4;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            position: relative;
+            height: 60vh;
+            background-image: url('countryPics/mountains.jpg') !important; /* Add a vibrant travel image */
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        .header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5); /* Dark overlay */
+            background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.2)); /* Gradient effect */
+        }
+        .header-content {
+            position: relative;
+            text-align: center;
+            z-index: 1;
+        }
+        .header-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 48px;
+            font-weight: 700;
+            margin: 0;
+            color: white;
+        }
+        .header-subtitle {
+            font-size: 18px;
+            margin-top: 10px;
+        }
+        .explore-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 24px;
+            font-size: 16px;
+            color: #764F37;
+            background-color: #DCB287;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            text-decoration: none;
+        }
+        .explore-button:hover {
+            background-color: #764F37;
+            color: white;
+        }
+        #navbar-app{
+            position: absolute; 
+            top: 0; 
+            width: 100%; 
+            z-index: 2;      
+        }
+
+    </style>
+
+
+</head>
 <body>
-    <div id="navbar-app">
-        <navbar-component></navbar-component>
+
+    <div class="header">
+        <div id="navbar-app">
+            <navbar-component></navbar-component>
+        </div>
+    
+        <script src = "navbarLoader.js"></script>
+        <div class="header-content">
+            <h1 class="header-title">Discover Your Next Adventure</h1>
+            <p class="header-subtitle">Plan, explore, and experience unforgettable trips</p>
+            <a href="addtripinfo.html" class="explore-button" @click="scrollToForm()">Plan Now</a>
+        </div>
     </div>
 
     <div id="app">
-        <h1>Attractions in {{ country }}</h1>
+        <h1 class = "content-title">Attractions in {{ country }}</h1>
 
         <div class='container'>
             <div class='row row-cols-4'>
