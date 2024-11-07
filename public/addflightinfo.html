@@ -104,7 +104,7 @@
                     </div>
                     
                     <div class="text-center mt-4">
-                            <button type="button" class="btn btn-primary w-100" v-if="flights.length > 0">Add Flights To Trip!</button>
+                            <button type="button" class="btn btn-primary w-100" v-if="flights.length > 0" @click.prevent="addAllFlightsToTrip">Add Flights To Trip!</button>
                     </div>
                 </div>
             </div>
@@ -119,7 +119,9 @@
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src = "navbarLoader.js"></script>
      
-    <script>
+    <script type="module">
+        import {add_flight_to_trip} from './functions.js';
+
         const app = Vue.createApp({
             data() {
                 return {
@@ -149,17 +151,17 @@
 
                     this.resetForm();
                 },
-                // async addAllFlightsToTrip() {
-                //     try {
-                //         // Pass all flights at once to Firebase under a single tripID
-                //         await add_flights_to_trip(this.tripID, this.flights);
-                //         this.flights = [];  // Clear the array after saving
-                //         alert("All flights have been added to the trip successfully!");
-                //         window.location.href = "mytripinfo.html";
-                //     } catch (error) {
-                //         console.error("Error adding flights to Firebase:", error);
-                //     }
-                // },
+                async addAllFlightsToTrip() {
+                    try {
+                        // Pass all flights at once to Firebase under a single tripID
+                        await add_flights_to_trip(this.tripID, this.flights);
+                        this.flights = [];  // Clear the array after saving
+                        alert("All flights have been added to the trip successfully!");
+                        window.location.href = "mytripinfo.html";
+                    } catch (error) {
+                        console.error("Error adding flights to Firebase:", error);
+                    }
+                },
                 resetForm() {
                     this.fromCity = '';
                     this.toCity = '';
