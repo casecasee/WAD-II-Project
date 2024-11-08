@@ -17,7 +17,6 @@
 
 
     <style>
-        /* navbar */
         body { 
             font-family: 'Montserrat', sans-serif; 
             background-color: #e1e7e4; 
@@ -78,10 +77,10 @@
             color: white; 
         } 
         #navbar-app{ 
-            position: relative; 
-            width: 100%; 
+            position: absolute;  
+            top: 0;  
+            width: 100%;  
             z-index: 2;       
-            margin-bottom: 10px; 
         }
         .main-content {
             margin-top: 10px;
@@ -153,23 +152,25 @@
             }
         }
         .add-photo-button {
-            background-color: #B5855B;
-            color: white;
-            padding: 12px 30px;
-            border: none;
-            border-radius: 25px;
+            display: inline-block;
+            padding: 12px 24px;
             font-size: 16px;
-            font-weight: 600;
-            transition: all 0.3s ease;
+            color: #764F37;
+            background-color: #DCB287;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            text-decoration: none;
             margin: 20px auto;
             display: block;
-            font-family: 'Montserrat', sans-serif;
         }
 
         .add-photo-button:hover {
-            background-color: #DCB287;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            background-color: #764F37;
+            color: white;
+            transform: none;
+            box-shadow: none;
         }
 
         .activities-list {
@@ -266,26 +267,6 @@
             border-radius: 15px;
             font-size: 0.8em;
         }
-
-        /* .connect-btn {
-            background-color: #B5855B;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 5px;
-            width: 100%;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .connect-btn:hover {
-            background-color: #DCB287;
-        }
-
-        .connected {
-            background-color: #28a745;
-        } */
-
         .latest-posts-header {
             text-align: center;
             color: #764F37;
@@ -508,38 +489,17 @@
 </head>
 <body>
     <div id="app">
-        <div id="navbar-app"> 
-            <navbar-component></navbar-component> 
-        </div> 
-
-        <!-- Add this right after the navbar and before the main-content -->
-        <!-- connections added from here -->
-        <!-- <div class="travelers-section">
-            <h2>Connect with Travelers</h2>
-            <div class="travelers-grid">
-                <div v-for="traveler in travelers" :key="traveler.id" class="traveler-card">
-                    <div class="traveler-info">
-                        <img :src="traveler.avatar" :alt="traveler.name" class="traveler-avatar">
-                        <div class="traveler-details">
-                            <h3 class="traveler-name">{{ traveler.name }}</h3>
-                            <p class="traveler-location">{{ traveler.location }}</p>
-                        </div>
-                    </div>
-                    <div class="traveler-interests">
-                        <span v-for="interest in traveler.interests" 
-                              :key="interest" 
-                              class="interest-tag">
-                            {{ interest }}
-                        </span>
-                    </div>
-                    <button class="connect-btn" 
-                            :class="{ connected: traveler.connected }"
-                            @click="toggleConnect(traveler.id)">
-                        {{ traveler.connected ? 'Connected' : 'Connect' }}
-                    </button>
-                </div>
-            </div>
-        </div> -->
+        <div class="header"> 
+            <div id="navbar-app"> 
+                <navbar-component></navbar-component> 
+            </div> 
+         
+            <div class="header-content"> 
+                <h1 class="header-title">Discover Your Next Adventure</h1> 
+                <p class="header-subtitle">Plan, explore, and experience unforgettable trips</p> 
+                <a href="addtripinfo.html" class="explore-button">Plan Now</a> 
+            </div> 
+        </div>
 
         <main class="main-content">
             <h2 class="latest-posts-header">Latest Posts</h2>

@@ -22,7 +22,7 @@
         } 
         .header { 
             position: relative; 
-            height: 60vh; 
+            height: 45vh; 
             background-image: url('./countryPics/mountains.jpg') !important; 
             background-size: cover; 
             background-position: center; 
@@ -69,15 +69,16 @@
             color: white; 
         } 
         #navbar-app{ 
-            position: relative;  /* Change from fixed to relative */
+            position: absolute;  
+            top: 0;  
             width: 100%;  
-            z-index: 1000;
-        } 
+            z-index: 2;       
+        }  
         .main-content {
             display: flex;
             padding: 20px;
             position: absolute;
-            top: 250px;
+            top: 200px;
             left: 0;
             right: 0;
             justify-content: center;
@@ -101,9 +102,6 @@
             display: flex;
             align-items: center;
         }
-        /* .right-content {
-            flex: 1;
-        } */
         .date-picker {
             display: flex;
             align-items: center;
@@ -149,64 +147,29 @@
             padding: 20px 0;
             z-index: 100;
         }
-        /* options */
-        .buttons-container {
-            text-align: center;
-            background-color: rgba(255, 255, 255, 0.9); 
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); 
-            margin: 50px auto;
-            max-width: 500px; 
+        .btn:hover {
+            background-color: #764F37;
+            color: white;
         }
 
         .btn {
-            background-color: rgba(181, 133, 91, 0.9);  /* Semi-transparent background */
-            backdrop-filter: blur(5px);  /* Slight blur effect */
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            color: white;
-            font-weight: bold;
-            padding: 15px 30px;
-            margin: 15px;
-            border: none;
-            border-radius: 10px;
+            display: inline-block;
+            padding: 12px 24px;
             font-size: 19px;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            box-shadow: 0 8px 10px rgba(0, 0, 0, 0.1);
+            color: #764F37;
+            background-color: #DCB287;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            text-decoration: none;
+            transition: all 0.3s ease;
         }
-
-        .btn:hover {
-            background-color: rgba(220, 178, 135, 0.9);
-            transform: translateY(-2px);
-        }
-
-        .btn img {
-            height: 50px;
-            margin-right: 10px;
-        }
-
         h1 {
             font-family: 'Playfair Display', serif;
             font-size: 40px;
             color: #764F37;
             margin-bottom: 30px;
-        }
-        /* Style for <a> tags that look like buttons */
-        .nav-buttons a.button {
-            padding: 8px 20px;
-            background-color: #4285f4;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            border: none;
-            font-size: 16px;
-            display: inline-block;
-        }
-
-        .nav-buttons a.button:hover {
-            background-color: #3367d6;
         }
         .hotel-card {
             background-color: rgba(255, 255, 255, 0.9);  /* Semi-transparent white background */
@@ -234,9 +197,8 @@
             border-left: 4px solid #DCB287;
         }
 
-        /* Add hover effect */
+        /* hover effect */
         .hotel-card:hover {
-            transform: translateX(5px);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
@@ -263,7 +225,7 @@
             margin-bottom: 10px;
         }
 
-        /* Add responsive styles */
+        /* responsive styles */
         @media screen and (max-width: 480px) {
             .main-content {
                 flex-direction: column;
@@ -420,47 +382,42 @@
 
         /* Style for the search button */
         .search-button button {
-            background-color: #B5855B;
-            color: white;
-            padding: 12px 30px;
-            border: none;
-            border-radius: 25px;
+            display: inline-block;
+            padding: 12px 24px;
             font-size: 16px;
-            font-weight: 600;
+            color: #764F37;
+            background-color: #DCB287;
+            border: none;
+            border-radius: 5px;
             cursor: pointer;
+            font-weight: bold;
+            text-decoration: none;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            font-family: 'Montserrat', sans-serif;
-            letter-spacing: 1px;
         }
 
         .search-button button:hover {
             background-color: #764F37;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            color: white;
         }
 
         /* Style for the add button in hotel cards */
         .add-button button {
+            display: inline-block;
+            padding: 12px 24px;
+            font-size: 16px;
+            color: #764F37;
             background-color: #DCB287;
-            color: white;
-            padding: 10px 25px;
             border: none;
-            border-radius: 20px;
-            font-size: 15px;
-            font-weight: 500;
+            border-radius: 5px;
             cursor: pointer;
+            font-weight: bold;
+            text-decoration: none;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            font-family: 'Montserrat', sans-serif;
-            letter-spacing: 1px;
-            margin-top: 10px;
         }
 
         .add-button button:hover {
-            background-color: #B5855B;
-            transform: scale(1.05);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            background-color: #764F37;
+            color: white;
         }
 
         /* Style for input fields */
@@ -500,12 +457,16 @@
         .date-picker input:first-of-type {
             margin-right: 10px;
         }
-        #navbar-app{ 
-            position: absolute;  
-            top: 0;  
-            width: 100%;  
-            z-index: 2;       
-        } 
+        footer { 
+            text-align: center; 
+            padding: 20px; 
+            color: white; 
+            background-color: #764F37;  
+            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1); 
+            font-family: 'Montserrat', sans-serif; 
+            width: 100%; 
+            position: fixed; 
+        }   
     </style>
 
     <!-- Add these scripts right before your closing </head> tag -->
@@ -525,9 +486,9 @@
         </div>
 
         <div class="nav-buttons">
-            <a href="addflightinfo.html"><button id="flight" class="btn"><img src="countryPics/ticket_sign.png" alt="Flight Icon">FLIGHT</button></a>
-            <a href="hotels.html"><button id="hotel" class="btn"><img src="countryPics/hotel_sign.png" alt="Hotel Icon">HOTEL</button></a>
-            <a href="attractionImages.html"><button id="attractions" class="btn"><img src="countryPics/attraction_sign.png" alt="Attractions Icon">ATTRACTIONS</button></a>
+            <a href="addflightinfo.html"><button id="flight" class="btn">Flight</button></a>
+            <a href="hotels.html"><button id="hotel" class="btn">Hotel</button></a>
+            <a href="attractionImages.html"><button id="attractions" class="btn">Attractions</button></a>
         </div>
         
         <div class="main-content">
@@ -668,5 +629,9 @@
         }
     }).mount('#app')
     </script>
+
+    <footer>
+        <p>&copy; 2024 ROAMEO. All Rights Reserved.</p>
+    </footer>
 </body>
 </html>
