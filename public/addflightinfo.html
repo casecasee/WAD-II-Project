@@ -137,7 +137,7 @@
         const app = Vue.createApp({
             data() {
                 return {
-                    tripID: '',
+                    tripID: '0NrjHRi6YuqasmSxBrMJ',
                     fromCity: '',
                     toCity: '',
                     departureDate: '',
@@ -165,6 +165,7 @@
                 async addAllFlightsToTrip() {
                     try {
                         // Save flights to Firestore
+                        console.log(this.flights);
                         await add_flights_to_trip(this.tripID, this.flights);
                         this.flights = []; // Clear local flights array
                         alert("All flights have been added to the trip successfully!");

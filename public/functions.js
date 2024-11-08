@@ -8,7 +8,7 @@ import { getFirestore,
          Timestamp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
 
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
-import { firebaseApp } from "./stuff";
+import { firebaseApp } from "./stuff.js";
 const db = getFirestore(firebaseApp);
 
 //------------------------------- get UID of logged in user, else direct to signin page -------------------------------------------
@@ -29,6 +29,13 @@ export const UID = function UID() {
 //-------------------------------------------------------- END --------------------------------------------------------------------
 
 //-------------------------------------- convert YYYY-MM-DD to firestore timestamp -----------------------------------------------
+// function convert_to_timestamp(date, time) {
+
+//     const datee = new Date(`${dateInput}T${timeInput}:00`); // Adds midnight UTC time
+//     const timestamp = Timestamp.fromDate(datee);
+//     return timestamp
+// }
+
 function convert_to_timestamp(date) {
     const datee = new Date(date + "T00:00:00Z"); // Adds midnight UTC time
     const timestamp = Timestamp.fromDate(datee);
@@ -205,13 +212,12 @@ export const add_flights_to_trip = async function add_flights_to_trip(tripID, fl
     const newFlights = flights.map(flight => ({
         arrival_city: flight.toCity,
         departure_city: flight.fromCity,
-        departure_date: convert_to_timestamp(`${flight.departureDate} ${flight.departureTime}`),
+        departure_date: convert_to_timestamp(flight.departureDate, flight.departureTime),
         flight_no: flight.flightNumber,
         seat_no: flight.seatNumber || null
     }));
+    console.log(newFlights);
 
     // Save flights array to Firebase under the tripID
-    await setDoc(docRef, { 'flights' : newFlights }, { merge: true });
+    await updateDoc(docRef, { 'flights' : newFlights });
 };
-
-// --------------------------------------------------------- END ------------------------------------------------------------------
