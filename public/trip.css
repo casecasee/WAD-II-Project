@@ -23,39 +23,9 @@ footer {
     position: absolute;
 }
 
-/* addtripinfo.html*/
-
-.addtripbtn {
-    background-color: #B5855B;
-    color: white;
-    font-family: 'Lora', serif; 
-    font-weight: bold;
-    border: none;
-    padding: 15px 30px;
-    font-size: 20px;
-    width: 100%;
-}
-
-.addtripbtn:hover {
-    background-color: #DCB287;
-    transition: background-color 0.3s;
-}
-
-.form-container {
-    padding: 30px;
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.9); 
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4); 
-    max-width: 600px; 
-    align-items: center;
-    margin: 0 auto; 
-    display: flex; 
-    justify-content: center; /* Center the form container */
-}
-
 /* attractionsImages.html */
 
-h1 {
+/* h1 {
     text-align: center;
     color: #764F37; 
     font-size: 50px;
@@ -63,6 +33,28 @@ h1 {
     font-weight: 700; 
     margin-top: 20px; 
     margin-bottom: 30px; 
+} */
+
+.content-title {
+    text-align: center;
+    color: #764F37;
+    font-size: 40px;
+    font-family: 'Playfair Display', serif;
+    /* font-weight: 700; */
+    position: relative;
+    margin: 40px 0;
+}
+
+/* can remove if the underline is ugly */
+.content-title::after{
+    content: '';
+    position: absolute;
+    bottom: -10px; 
+    left: 50%;
+    transform: translateX(-50%);
+    width: 350px; 
+    height: 3px; 
+    background-color: #DCB287; 
 }
 
 #imgs {

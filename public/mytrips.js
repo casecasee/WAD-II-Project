@@ -140,6 +140,10 @@ const app = Vue.createApp({
             window.location.href = `mytripinfo.html?tripID=${tripID}`;
         },
 
+        deleteTrip(tripID){
+            window.location.href = `mytripinfo.html?tripID=${tripID}`;
+        },
+
         updateCarouselButtonsVisibility() {
             const totalWidthCurrent = this.currentTrips.length * 320;  
             const totalWidthOld = this.oldTrips.length * 320;

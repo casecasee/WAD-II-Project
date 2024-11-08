@@ -17,6 +17,14 @@ const app = Vue.createApp({
     async mounted() { 
         this.fetchCountries();
         this.UID = await UID();
+
+        gsap.to("#form-container", {
+            duration: 1,
+            opacity: 1,
+            y: 0,
+            ease: "power3.out",
+            delay: 0.5
+        });
     },
     methods: {
         async fetchCountries() {
@@ -45,12 +53,21 @@ const app = Vue.createApp({
             const tripID = await add_info_trips(this.selectedCountry, this.start, this.end, this.budget); 
             await update_trips_users(this.UID, tripID);
 
-            window.location.href = 'options.html?country=' + this.entry; 
+            // window.location.href = 'mytrips.html?country=' + tripID;
+            window.location.href = `mytrips.html?country=${tripID}`;
+
+            // console.log(tripID) 
             localStorage.setItem('selectedCountry', this.selectedCountry);
         },
         change() {
             this.entry = this.selectedCountry;
         }, 
+        scrollToForm(){
+            gsap.to(window, {
+                duration: 1,
+                scrollTo: "#form-container"
+            });
+        }
     }
 });
 const vm = app.mount('#app1');
