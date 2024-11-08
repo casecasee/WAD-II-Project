@@ -8,7 +8,7 @@ import { getFirestore,
          Timestamp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
 
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
-import { firebaseApp } from "./stuff";
+import { firebaseApp } from "./stuff.js";
 const db = getFirestore(firebaseApp);
 
 //------------------------------- get UID of logged in user, else direct to signin page -------------------------------------------

@@ -5,25 +5,99 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ROAMEO - Community Feed</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Roboto+Slab:wght@400;700&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Pacifico&family=Playwrite+GB+S:ital,wght@0,100..400;1,100..400&display=swap">
 
     <!-- fonts and navbar -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Pacifico&family=Playwrite+GB+S:ital,wght@0,100..400;1,100..400&display=swap">
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Pacifico&family=Playwrite+GB+S:ital,wght@0,100..400;1,100..400&display=swap" rel="stylesheet">    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> 
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Pacifico&family=Playwrite+GB+S:ital,wght@0,100..400;1,100..400&display=swap" rel="stylesheet"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" /> 
-    <link rel="stylesheet" href="navbar.css">
-    <link rel = "stylesheet" href = "trip.css"> 
+    <link rel="stylesheet" href="navbar.css"> 
+
 
     <style>
+        /* navbar */
+        body { 
+            font-family: 'Montserrat', sans-serif; 
+            background-color: #e1e7e4; 
+            margin: 0; 
+            padding: 0; 
+        } 
+        .header { 
+            position: relative; 
+            height: 60vh; 
+            background-image: url('countryPics/mountains.jpg') !important; /* Add a vibrant travel image */ 
+            background-size: cover; 
+            background-position: center; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            color: white; 
+        } 
+        .header::before { 
+            content: ""; 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: rgba(0, 0, 0, 0.5); /* Dark overlay */ 
+            background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.2)); /* Gradient effect */ 
+        } 
+        .header-content { 
+            position: relative; 
+            text-align: center; 
+            z-index: 1; 
+        } 
+        .header-title { 
+            font-family: 'Playfair Display', serif; 
+            font-size: 48px; 
+            font-weight: 700; 
+            margin: 0; 
+        } 
+        .header-subtitle { 
+            font-size: 18px; 
+            margin-top: 10px; 
+        } 
+        .explore-button { 
+            display: inline-block; 
+            margin-top: 20px; 
+            padding: 12px 24px; 
+            font-size: 16px; 
+            color: #764F37; 
+            background-color: #DCB287; 
+            border: none; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            font-weight: bold; 
+            text-decoration: none; 
+        } 
+        .explore-button:hover { 
+            background-color: #764F37; 
+            color: white; 
+        } 
+        #navbar-app{ 
+            position: relative; 
+            width: 100%; 
+            z-index: 2;       
+            margin-bottom: 10px; 
+        }
         .main-content {
             margin-top: 10px;
-            padding: 10px;
+            padding: 20px;
+            background-color: #fff;  /* White background for contrast */
+            border-radius: 15px;
+            margin: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
+
         .photo-item {
             position: relative;
             margin-bottom: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
         .photo-container {
             position: relative;
@@ -79,24 +153,31 @@
             }
         }
         .add-photo-button {
-            display: block;
-            width: 200px;
-            margin: 20px auto;
-            padding: 10px;
-            background-color: black;
+            background-color: #B5855B;
             color: white;
-            text-align: center;
-            text-decoration: none;
+            padding: 12px 30px;
             border: none;
-            border-radius: 5px;
-            cursor: pointer;
+            border-radius: 25px;
             font-size: 16px;
-            transition: background-color 0.3s;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin: 20px auto;
+            display: block;
+            font-family: 'Montserrat', sans-serif;
         }
+
         .add-photo-button:hover {
-            background-color: lightgray;
-            color: white;
+            background-color: #DCB287;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
+
+        .activities-list {
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+
         .modal-body img {
             width: 100%;
             height: auto;
@@ -110,8 +191,9 @@
         /* connections added from here */
         .travelers-section {
             padding: 10px;
+            margin-top: 20px;
             margin-bottom: 5px;
-            background-color: #BDC6C2;
+            background-color: transparent;  /* Changed from #E8D5C4 to transparent */
         }
 
         .travelers-section h2 {
@@ -129,7 +211,7 @@
         }
 
         .traveler-card {
-            background: white;
+            background: white;  /* Keep white background for cards */
             border-radius: 10px;
             padding: 15px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
@@ -185,7 +267,7 @@
             font-size: 0.8em;
         }
 
-        .connect-btn {
+        /* .connect-btn {
             background-color: #B5855B;
             color: white;
             border: none;
@@ -202,7 +284,7 @@
 
         .connected {
             background-color: #28a745;
-        }
+        } */
 
         .latest-posts-header {
             text-align: center;
@@ -223,6 +305,205 @@
             height: 3px;
             background-color: #DCB287;
         }
+
+        .itinerary-section {
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .itinerary-section h4 {
+            color: #764F37;
+            margin-bottom: 15px;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .itinerary-details {
+            margin-bottom: 20px;
+        }
+
+        .trip-info {
+            background-color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .day-item {
+            background-color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .day-item h5 {
+            color: #B5855B;
+            margin-bottom: 10px;
+        }
+
+        .day-item ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .day-item li {
+            padding: 5px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .add-to-trips-btn {
+            background-color: #B5855B;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 20px auto 0;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .add-to-trips-btn:hover {
+            background-color: #DCB287;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .share-itinerary-btn {
+            background-color: #B5855B;
+            color: white;
+            padding: 12px 40px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 20px auto;
+            display: inline-block;
+            font-family: 'Montserrat', sans-serif;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .share-itinerary-btn:hover {
+            background-color: #DCB287;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-body {
+            padding: 25px;
+        }
+
+        .modal-body form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .modal-body .mb-3 {
+            width: 100%;
+        }
+
+        .file-upload-wrapper {
+            position: relative;
+        }
+
+        .image-preview {
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        .preview-image {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        input[type="file"] {
+            padding: 10px;
+            border: 2px dashed #DCB287;
+            border-radius: 8px;
+            background-color: #fff;
+            cursor: pointer;
+        }
+
+        input[type="file"]:hover {
+            border-color: #B5855B;
+        }
+
+        /* Update modal styles */
+        .modal-dialog {
+            max-width: 800px;
+            margin: 1.75rem auto;
+            height: 90vh;
+        }
+
+        .modal-content {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .modal-body {
+            padding: 20px;
+            overflow-y: auto;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Update image styles */
+        .modal-body img {
+            width: 100%;
+            height: auto;
+            max-height: none;
+            object-fit: contain;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+
+        /* Keep header fixed */
+        .modal-header {
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 1;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        /* Style the itinerary section */
+        .itinerary-section {
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        /* Style scrollbar for better visibility */
+        .modal-body::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .modal-body::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        .modal-body::-webkit-scrollbar-thumb {
+            background: #B5855B;
+            border-radius: 4px;
+        }
+
+        .modal-body::-webkit-scrollbar-thumb:hover {
+            background: #764F37;
+        }
     </style>
 </head>
 <body>
@@ -231,15 +512,34 @@
             <navbar-component></navbar-component> 
         </div> 
 
-        <!-- gpt from here, want to add anyth else?? or for show only?? -->
         <!-- Add this right after the navbar and before the main-content -->
         <!-- connections added from here -->
-        <div class="travelers-section">
+        <!-- <div class="travelers-section">
             <h2>Connect with Travelers</h2>
-            <div class="travelers-grid" id="travelersGrid">
-                <!-- Travelers will be dynamically added here -->
+            <div class="travelers-grid">
+                <div v-for="traveler in travelers" :key="traveler.id" class="traveler-card">
+                    <div class="traveler-info">
+                        <img :src="traveler.avatar" :alt="traveler.name" class="traveler-avatar">
+                        <div class="traveler-details">
+                            <h3 class="traveler-name">{{ traveler.name }}</h3>
+                            <p class="traveler-location">{{ traveler.location }}</p>
+                        </div>
+                    </div>
+                    <div class="traveler-interests">
+                        <span v-for="interest in traveler.interests" 
+                              :key="interest" 
+                              class="interest-tag">
+                            {{ interest }}
+                        </span>
+                    </div>
+                    <button class="connect-btn" 
+                            :class="{ connected: traveler.connected }"
+                            @click="toggleConnect(traveler.id)">
+                        {{ traveler.connected ? 'Connected' : 'Connect' }}
+                    </button>
+                </div>
             </div>
-        </div>
+        </div> -->
 
         <main class="main-content">
             <h2 class="latest-posts-header">Latest Posts</h2>
@@ -267,7 +567,7 @@
             </nav>
 
             <!-- Add Photo Button -->
-            <button @click="addPhoto" class="add-photo-button">Add Photo</button>
+            <button @click="addItinerary" class="add-photo-button">Add Itinerary</button>
         </main>
 
         <!-- Photo Modal -->
@@ -280,6 +580,27 @@
                     </div>
                     <div class="modal-body">
                         <img :src="selectedPhoto.src" :alt="selectedPhoto.alt" class="img-fluid">
+                        <div class="itinerary-section">
+                            <h4>Trip Itinerary</h4>
+                            <div class="itinerary-details">
+                                <div class="trip-info">
+                                    <p><strong>Duration:</strong> {{ selectedPhoto.duration }} days</p>
+                                    <p><strong>Destination:</strong> {{ selectedPhoto.destination }}</p>
+                                    <p><strong>Total Cost:</strong> SGD {{ selectedPhoto.cost }}</p>
+                                </div>
+                                <div class="daily-schedule">
+                                    <div v-for="(day, index) in selectedPhoto.itinerary" :key="index" class="day-item">
+                                        <h5>Day {{ index + 1 }}</h5>
+                                        <ul>
+                                            <li v-for="activity in day" :key="activity">{{ activity }}</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <button @click="addToMyTrips(selectedPhoto)" class="add-to-trips-btn">
+                                Add to My Trips
+                            </button>
+                        </div>
                         <div class="modal-caption">{{ selectedPhoto.desc }}</div>
                     </div>
                 </div>
@@ -288,27 +609,71 @@
 
         <!-- Add Photo Modal -->
         <div v-if="showAddPhotoModal" class="modal" tabindex="-1" style="display: block;">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Add New Photo</h5>
+                        <h5 class="modal-title">Share Your Travel Itinerary</h5>
                         <button type="button" class="btn-close" @click="closeAddPhotoModal"></button>
                     </div>
                     <div class="modal-body">
-                        <form @submit.prevent="submitNewPhoto">
+                        <form @submit.prevent="submitNewItinerary">
                             <div class="mb-3">
-                                <label for="photoUrl" class="form-label">Photo URL</label>
-                                <input type="text" class="form-control" id="photoUrl" v-model="newPhoto.src" required>
+                                <label class="form-label">Cover Photo</label>
+                                <div class="file-upload-wrapper">
+                                    <input type="file" 
+                                           class="form-control" 
+                                           @change="handleFileUpload" 
+                                           accept="image/*"
+                                           required>
+                                    <div v-if="previewUrl" class="image-preview mt-2">
+                                        <img :src="previewUrl" alt="Preview" class="preview-image">
+                                    </div>
+                                </div>
                             </div>
                             <div class="mb-3">
-                                <label for="photoDescription" class="form-label">Title</label>
-                                <input type="text" class="form-control" id="photoDescription" v-model="newPhoto.alt" required>
+                                <label class="form-label">Trip Title</label>
+                                <input type="text" class="form-control" v-model="newPhoto.alt" required>
                             </div>
                             <div class="mb-3">
-                                <label for="photoCaption" class="form-label">Caption</label>
-                                <textarea class="form-control" id="photoCaption" v-model="newPhoto.desc" required></textarea>
+                                <label class="form-label">Description</label>
+                                <textarea class="form-control" v-model="newPhoto.desc" required></textarea>
                             </div>
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <div class="mb-3">
+                                <label class="form-label">Destination</label>
+                                <input type="text" class="form-control" v-model="newPhoto.destination" required>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col">
+                                    <label class="form-label">Duration (days)</label>
+                                    <input type="number" class="form-control" v-model="newPhoto.duration" required min="1">
+                                </div>
+                                <div class="col">
+                                    <label class="form-label">Total Cost (SGD)</label>
+                                    <input type="number" class="form-control" v-model="newPhoto.cost" required min="0">
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Daily Itinerary</label>
+                                <div v-for="(day, index) in newPhoto.duration" :key="index" class="mb-3">
+                                    <h6>Day {{ index + 1 }}</h6>
+                                    <div class="activities-list">
+                                        <div v-for="(activity, actIndex) in getDayActivities(index)" :key="actIndex" class="mb-2">
+                                            <div class="input-group">
+                                                <input type="text" class="form-control" 
+                                                       v-model="newPhoto.itinerary[index][actIndex]" 
+                                                       placeholder="Add activity">
+                                                <button type="button" class="btn btn-danger" 
+                                                        @click="removeActivity(index, actIndex)">Remove</button>
+                                            </div>
+                                        </div>
+                                        <button type="button" class="btn btn-secondary btn-sm mt-2" 
+                                                @click="addActivity(index)">Add Activity</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3 text-center">
+                                <button type="submit" class="share-itinerary-btn">Share Itinerary</button>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -317,52 +682,265 @@
     </div>
 
     <script>
-        new Vue({
-            el: '#app',
-            data: {
-                photos: [
-                { id: 1, src: "https://images.unsplash.com/photo-1543783207-ec64e4d95325?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2940&q=80", alt: "Spain", desc:"Lovely day in Spain" },
-                    { id: 2, src: "https://www.planetware.com/wpimages/2020/02/france-in-pictures-beautiful-places-to-photograph-eiffel-tower.jpg", alt: "France", desc: "Beautiful Eiffel Tower in Paris" },
-                    { id: 3, src: "https://media.istockphoto.com/id/1380534040/photo/beautiful-view-of-amalfi-on-the-mediterranean-coast-with-lemons-in-the-foreground-italy.jpg?s=612x612&w=0&k=20&c=4UQak9WJkyvN8aEgkLEwjnV5EW2RiGfC_GZNeQaVJeo=", alt: "Italy", desc:"Ciao!" },
-                    { id: 4, src: "https://t3.ftcdn.net/jpg/02/65/23/70/360_F_265237090_Muthvb72m2POYFjyx7F5UCQLh9JdBtKN.jpg", alt: "Japan", desc:"hello Japan" },
-                    { id: 5, src: "https://plus.unsplash.com/premium_photo-1661963468634-71b9482a3efe?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8c291dGglMjBrb3JlYXxlbnwwfHwwfHx8MA%3D%3D", alt: "Korea", desc:"The beauty of Korea!"},
-                    { id: 6, src: "https://media.istockphoto.com/id/497572532/photo/cityscape-of-guiyang-at-night.jpg?s=612x612&w=0&k=20&c=iZ2avxaTDglVbfygFduRdxADXI-KqUO1nhX4DlPgFZs=", alt: "China", desc:"China is so beautiful" },
-                    { id: 7, src: "https://images.unsplash.com/photo-1525625293386-3f8f99389edd?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8c2luZ2Fwb3JlfGVufDB8fDB8fHww", alt: "Singapore", desc:"Concrete jungle" },
-                    { id: 8, src: "https://media.istockphoto.com/id/1201281530/photo/landscape-with-halong-bay.jpg?s=612x612&w=0&k=20&c=Kg4BgIyfMr5Egq-yaQNtBLjHP2U_db9WaLB0-4MGrb0=", alt: "Vietnam", desc:"Vietnam!" },
-                    { id: 9, src: "https://media.istockphoto.com/id/1046543492/photo/cliffs-of-moher-in-ireland.jpg?s=612x612&w=0&k=20&c=sMDpoVewpDlKDVUDg2Y0chw9ZdkHbdXCxKmhmQS-RpU=", alt: "Ireland", desc:"Ireland is so beautiful!" },
-                ],
-                selectedPhoto: null,
-                currentPage: 1,
-                photosPerPage: 8,
-                showAddPhotoModal: false,
-                newPhoto: { src: '', alt: '', desc: '' },
-                // new code for travellers
-                travelers: [
-                    {
-                        id: 1,
-                        name: "Sarah Chen",
-                        location: "Singapore",
-                        avatar: "https://randomuser.me/api/portraits/women/1.jpg",
-                        interests: ["Photography", "Food", "Culture"],
-                        connected: false
-                    },
-                    {
-                        id: 2,
-                        name: "John Smith",
-                        location: "United States",
-                        avatar: "https://randomuser.me/api/portraits/men/1.jpg",
-                        interests: ["Hiking", "Adventure", "History"],
-                        connected: false
-                    },
-                    {
-                        id: 3,
-                        name: "Maria Garcia",
-                        location: "Spain",
-                        avatar: "https://randomuser.me/api/portraits/women/2.jpg",
-                        interests: ["Art", "Museums", "Local Markets"],
-                        connected: false
+        const { createApp } = Vue
+
+        createApp({
+            data() {
+                return {
+                    photos: [
+                        { 
+                            id: 1, 
+                            src: "https://images.unsplash.com/photo-1543783207-ec64e4d95325", 
+                            alt: "Barcelona Adventure", 
+                            desc: "Amazing 5-day trip through Barcelona!",
+                            duration: 5,
+                            destination: "Barcelona, Spain",
+                            cost: 2500,
+                            itinerary: [
+                                ["Check-in to hotel", "Visit La Sagrada Familia", "Evening tapas tour"],
+                                ["Park Güell tour", "Las Ramblas walking tour", "Flamenco show"],
+                                ["Day trip to Montserrat", "Wine tasting", "Beach sunset"],
+                                ["Gothic Quarter exploration", "Cooking class", "Dinner at local restaurant"],
+                                ["Shopping at local markets", "Beach day", "Farewell dinner"]
+                            ]
+                        },
+                        { 
+                            id: 2, 
+                            src: "https://www.planetware.com/wpimages/2020/02/france-in-pictures-beautiful-places-to-photograph-eiffel-tower.jpg", 
+                            alt: "Paris Escapade", 
+                            desc: "Romantic week in Paris",
+                            duration: 4,
+                            destination: "Paris, France",
+                            cost: 3000,
+                            itinerary: [
+                                ["Arrive in Paris", "Eiffel Tower visit", "Seine River dinner cruise"],
+                                ["Louvre Museum", "Notre-Dame Cathedral", "Champs-Élysées shopping"],
+                                ["Palace of Versailles", "French pastry class", "Moulin Rouge show"],
+                                ["Montmartre walk", "Sacré-Cœur", "Fine dining experience"]
+                            ]
+                        },
+                        { 
+                            id: 3, 
+                            src: "https://media.istockphoto.com/id/1380534040/photo/beautiful-view-of-amalfi-on-the-mediterranean-coast-with-lemons-in-the-foreground-italy.jpg?s=612x612&w=0&k=20&c=4UQak9WJkyvN8aEgkLEwjnV5EW2RiGfC_GZNeQaVJeo=", 
+                            alt: "Italian Dream", 
+                            desc: "Perfect Italian getaway!",
+                            duration: 6,
+                            destination: "Amalfi Coast, Italy",
+                            cost: 3500,
+                            itinerary: [
+                                ["Arrive in Naples", "Transfer to Positano", "Welcome dinner"],
+                                ["Positano beach day", "Cooking class", "Sunset aperitivo"],
+                                ["Capri day trip", "Blue Grotto tour", "Marina Grande dinner"],
+                                ["Ravello visit", "Villa Rufolo", "Classical music concert"],
+                                ["Amalfi town tour", "Limoncello tasting", "Seafood dinner"],
+                                ["Path of the Gods hike", "Beach relaxation", "Farewell feast"]
+                            ]
+                        },
+                        { 
+                            id: 4, 
+                            src: "https://t3.ftcdn.net/jpg/02/65/23/70/360_F_265237090_Muthvb72m2POYFjyx7F5UCQLh9JdBtKN.jpg", 
+                            alt: "Tokyo Explorer", 
+                            desc: "Unforgettable Japan experience!",
+                            duration: 5,
+                            destination: "Tokyo, Japan",
+                            cost: 4000,
+                            itinerary: [
+                                ["Arrive in Tokyo", "Shibuya crossing", "Ramen experience"],
+                                ["Tsukiji market", "Senso-ji Temple", "Robot Restaurant"],
+                                ["TeamLab Borderless", "Harajuku shopping", "Izakaya dinner"],
+                                ["Mt. Fuji day trip", "Hot spring experience", "Traditional ryokan stay"],
+                                ["Akihabara tour", "Sushi making class", "Farewell karaoke"]
+                            ]
+                        },
+                        { 
+                            id: 5, 
+                            src: "https://images.unsplash.com/photo-1578637387939-43c525550085", 
+                            alt: "Seoul Adventure", 
+                            desc: "K-culture and beyond!",
+                            duration: 5,
+                            destination: "Seoul, South Korea",
+                            cost: 2800,
+                            itinerary: [
+                                ["Arrive in Seoul", "Myeongdong shopping", "Korean BBQ dinner"],
+                                ["Gyeongbokgung Palace", "Hanbok experience", "K-pop concert"],
+                                ["DMZ tour", "Hongdae street food", "Noraebang night"],
+                                ["Namsan Tower", "Cooking class", "Han River cruise"],
+                                ["Temple stay experience", "Gangnam exploration", "Farewell dinner"]
+                            ]
+                        },
+                        { 
+                            id: 6, 
+                            src: "https://images.unsplash.com/photo-1549893072-4bc678117f45", 
+                            alt: "Vietnam Discovery", 
+                            desc: "Cultural journey through Vietnam",
+                            duration: 7,
+                            destination: "Vietnam",
+                            cost: 2200,
+                            itinerary: [
+                                ["Arrive in Hanoi", "Old Quarter walk", "Water puppet show"],
+                                ["Ha Long Bay cruise", "Cave exploration", "Sunset dinner"],
+                                ["Cooking class", "Temple visits", "Night market"],
+                                ["Fly to Hoi An", "Ancient town tour", "Lantern making"],
+                                ["My Son Sanctuary", "Beach relaxation", "Food tour"],
+                                ["Mekong Delta", "Floating market", "Local homestay"],
+                                ["Cu Chi tunnels", "Saigon tour", "Farewell dinner"]
+                            ]
+                        }
+                    ],
+                    selectedPhoto: null,
+                    currentPage: 1,
+                    photosPerPage: 8,
+                    showAddPhotoModal: false,
+                    newPhoto: { src: '', alt: '', desc: '' },
+                    travelers: [
+                        {
+                            id: 1,
+                            name: "Sarah Chen",
+                            location: "Singapore",
+                            avatar: "https://randomuser.me/api/portraits/women/1.jpg",
+                            interests: ["Photography", "Food", "Culture"],
+                            connected: false
+                        },
+                        {
+                            id: 2,
+                            name: "John Smith",
+                            location: "United States",
+                            avatar: "https://randomuser.me/api/portraits/men/1.jpg",
+                            interests: ["Hiking", "Adventure", "History"],
+                            connected: false
+                        },
+                        {
+                            id: 3,
+                            name: "Maria Garcia",
+                            location: "Spain",
+                            avatar: "https://randomuser.me/api/portraits/women/2.jpg",
+                            interests: ["Art", "Museums", "Local Markets"],
+                            connected: false
+                        }
+                    ],
+                    previewUrl: null,
+                }
+            },
+            methods: {
+                toggleConnect(travelerId) {
+                    const traveler = this.travelers.find(t => t.id === travelerId);
+                    if (traveler) {
+                        traveler.connected = !traveler.connected;
                     }
-                ]
+                },
+                openModal(photo) {
+                    this.selectedPhoto = photo;
+                    document.body.classList.add('no-scroll');
+                },
+                closeModal() {
+                    this.selectedPhoto = null;
+                    document.body.classList.remove('no-scroll');
+                },
+                changePage(page) {
+                    if (page >= 1 && page <= this.totalPages) {
+                        this.currentPage = page;
+                    }
+                },
+                addItinerary() {
+                    this.newPhoto = {
+                        src: '',
+                        alt: '',
+                        desc: '',
+                        destination: '',
+                        duration: 1,
+                        cost: 0,
+                        itinerary: [[]]
+                    };
+                    this.showAddPhotoModal = true;
+                },
+                closeAddPhotoModal() {
+                    this.showAddPhotoModal = false;
+                    this.newPhoto = { 
+                        src: '', 
+                        alt: '', 
+                        desc: '',
+                        destination: '',
+                        duration: 1,
+                        cost: 0,
+                        itinerary: [[]]
+                    };
+                    this.previewUrl = null;
+                    URL.revokeObjectURL(this.previewUrl);
+                    document.body.classList.remove('no-scroll');
+                },
+                getDayActivities(dayIndex) {
+                    if (!this.newPhoto.itinerary[dayIndex]) {
+                        this.$set(this.newPhoto.itinerary, dayIndex, []);
+                    }
+                    return this.newPhoto.itinerary[dayIndex];
+                },
+                addActivity(dayIndex) {
+                    if (!this.newPhoto.itinerary[dayIndex]) {
+                        this.newPhoto.itinerary[dayIndex] = [];
+                    }
+                    this.newPhoto.itinerary[dayIndex].push('');
+                },
+                removeActivity(dayIndex, activityIndex) {
+                    this.newPhoto.itinerary[dayIndex].splice(activityIndex, 1);
+                },
+                handleFileUpload(event) {
+                    const file = event.target.files[0];
+                    if (file) {
+                        this.previewUrl = URL.createObjectURL(file);
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            this.newPhoto.src = e.target.result;
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                },
+                submitNewItinerary() {
+                    const newId = this.photos.length + 1;
+                    const newItinerary = {
+                        id: newId,
+                        src: this.newPhoto.src,
+                        alt: this.newPhoto.alt,
+                        desc: this.newPhoto.desc,
+                        destination: this.newPhoto.destination,
+                        duration: this.newPhoto.duration,
+                        cost: this.newPhoto.cost,
+                        itinerary: this.newPhoto.itinerary
+                    };
+                    
+                    this.photos.push(newItinerary);
+                    this.closeAddPhotoModal();
+                    this.changePage(this.totalPages);
+                },
+                async addToMyTrips(photo) {
+                    try {
+                        await this.saveTrip({
+                            title: photo.alt,
+                            destination: photo.destination,
+                            duration: photo.duration,
+                            cost: photo.cost,
+                            itinerary: photo.itinerary
+                        });
+                        alert('Trip added to your itineraries successfully!');
+                        this.closeModal();
+                    } catch (error) {
+                        console.error('Error adding trip:', error);
+                        alert('Failed to add trip to your itineraries');
+                    }
+                },
+                async saveTrip(tripData) {
+                    // Implement your save logic here
+                    console.log('Saving trip:', tripData);
+                },
+                handleEscKey(event) {
+                    if (event.key === 'Escape') {
+                        if (this.selectedPhoto) {
+                            this.closeModal();
+                        }
+                        if (this.showAddPhotoModal) {
+                            this.closeAddPhotoModal();
+                        }
+                    }
+                }
             },
             computed: {
                 displayedPhotos() {
@@ -374,129 +952,15 @@
                     return Math.ceil(this.photos.length / this.photosPerPage);
                 }
             },
-            created() {
-                document.addEventListener('keydown', this.handleKeyDown);
-            },
-            beforeDestroy() {
-                document.removeEventListener('keydown', this.handleKeyDown);
-            },
-            methods: {
-                openModal(photo) {
-                    this.selectedPhoto = photo;
-                    this.toggleBodyScroll(true);
-                },
-                closeModal() {
-                    this.selectedPhoto = null;
-                    this.toggleBodyScroll(false);
-                },
-                toggleBodyScroll(disable) {
-                    if (disable) {
-                        document.body.classList.add('no-scroll');
-                    } else {
-                        document.body.classList.remove('no-scroll');
-                    }
-                },
-                changePage(page) {
-                    if (page >= 1 && page <= this.totalPages) {
-                        this.currentPage = page;
-                    }
-                },
-                addPhoto() {
-                    this.showAddPhotoModal = true;
-                },
-                closeAddPhotoModal() {
-                    this.showAddPhotoModal = false;
-                    this.newPhoto = { src: '', alt: '', desc: '' };
-                },
-                submitNewPhoto() {
-                    const newId = this.photos.length + 1;
-                    this.photos.push({
-                        id: newId,
-                        src: this.newPhoto.src,
-                        alt: this.newPhoto.alt,
-                        desc: this.newPhoto.desc
-                    });
-                    this.closeAddPhotoModal();
-                    this.changePage(this.totalPages);
-                },
-                handleKeyDown(event) {
-                    if (event.key === 'Escape' && this.selectedPhoto) {
-                        this.closeModal();
-                    }
-                },
-                // new code
-                displayTravelers() {
-                    const travelersGrid = document.getElementById('travelersGrid');
-                    while (travelersGrid.firstChild) {
-                        travelersGrid.removeChild(travelersGrid.firstChild);
-                    }
-
-                    this.travelers.forEach(traveler => {
-                        const travelerCard = document.createElement('div');
-                        travelerCard.className = 'traveler-card';
-
-                        const travelerInfo = document.createElement('div');
-                        travelerInfo.className = 'traveler-info';
-
-                        const avatar = document.createElement('img');
-                        avatar.src = traveler.avatar;
-                        avatar.alt = traveler.name;
-                        avatar.className = 'traveler-avatar';
-
-                        const details = document.createElement('div');
-                        details.className = 'traveler-details';
-
-                        const name = document.createElement('h3');
-                        name.className = 'traveler-name';
-                        name.textContent = traveler.name;
-
-                        const location = document.createElement('p');
-                        location.className = 'traveler-location';
-                        location.textContent = traveler.location;
-
-                        details.appendChild(name);
-                        details.appendChild(location);
-                        travelerInfo.appendChild(avatar);
-                        travelerInfo.appendChild(details);
-
-                        const interests = document.createElement('div');
-                        interests.className = 'traveler-interests';
-                        traveler.interests.forEach(interest => {
-                            const tag = document.createElement('span');
-                            tag.className = 'interest-tag';
-                            tag.textContent = interest;
-                            interests.appendChild(tag);
-                        });
-
-                        const connectBtn = document.createElement('button');
-                        connectBtn.className = 'connect-btn';
-                        connectBtn.textContent = traveler.connected ? 'Connected' : 'Connect';
-                        if (traveler.connected) {
-                            connectBtn.classList.add('connected');
-                        }
-                        connectBtn.addEventListener('click', () => this.toggleConnect(traveler.id));
-
-                        travelerCard.appendChild(travelerInfo);
-                        travelerCard.appendChild(interests);
-                        travelerCard.appendChild(connectBtn);
-                        travelersGrid.appendChild(travelerCard);
-                    });
-                },
-                toggleConnect(travelerId) {
-                    const traveler = this.travelers.find(t => t.id === travelerId);
-                    if (traveler) {
-                        traveler.connected = !traveler.connected;
-                        this.displayTravelers();
-                    }
-                }
-            },
             mounted() {
-                this.displayTravelers();
+                document.addEventListener('keydown', this.handleEscKey);
+            },
+            beforeUnmount() {
+                document.removeEventListener('keydown', this.handleEscKey);
             }
-        });
+        }).mount('#app')
     </script>
-    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <script src = "navbarLoader.js"></script>
+    <script src="navbarLoader.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
 </body>
