@@ -51,8 +51,8 @@ const app = Vue.createApp({
         // },
 
         async fetchCountryImage(destination) {
-            const query = `famous places in ${destination}`;
-            // const query = `iconic place ${destination}`;
+            const query = `Famous places in ${destination}`;
+            // const query = `famous place ${destination}`;
 
             const url = `https://api.unsplash.com/photos/random?client_id=JivBMMHuK8nWdlawocBWaYEZBRT35nzdtkNs8yJM-6g&query=${encodeURIComponent(query)}`;
         

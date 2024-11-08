@@ -20,7 +20,7 @@ footer {
     box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
     font-family: 'Montserrat', sans-serif;
     width: 100%;
-    position: absolute;
+    position: fixed;
 }
 
 /* attractionsImages.html */
@@ -146,50 +146,6 @@ footer {
     margin-top: 30px;
 }
 
-/* options.html */
-
-.buttons-container {
-    text-align: center;
-    background-color: rgba(255, 255, 255, 0.9); 
-    padding: 40px;
-    border-radius: 15px;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); 
-    margin: 50px auto;
-    max-width: 500px; 
-}
-
-.btn {
-    background-color: #B5855B; 
-    color: white;
-    font-weight: bold;
-    padding: 15px 30px;
-    margin: 15px;
-    border: none;
-    border-radius: 10px;
-    font-size: 19px;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    box-shadow: 0 8px 10px rgba(0, 0, 0, 0.1);
-}
-
-.btn:hover {
-    background-color: #DCB287;
-    transform: translateY(-2px);
-}
-
-.btn img {
-    height: 50px;
-    margin-right: 10px;
-}
-
-h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 40px;
-    color: #764F37;
-    margin-bottom: 30px;
-}
-
-
-/* attractionImages */
 .card {
     position: relative;
     width: 100%;
@@ -245,6 +201,48 @@ h1 {
     grid-template-columns: repeat(5, 1fr); 
     gap: 15px; 
     justify-items: center;
+    margin-bottom: 30px;
+}
+
+/* options.html */
+
+.buttons-container {
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.9); 
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); 
+    margin: 50px auto;
+    max-width: 500px; 
+}
+
+.btn {
+    background-color: #B5855B; 
+    color: white;
+    font-weight: bold;
+    padding: 15px 30px;
+    margin: 15px;
+    border: none;
+    border-radius: 10px;
+    font-size: 19px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 8px 10px rgba(0, 0, 0, 0.1);
+}
+
+.btn:hover {
+    background-color: #DCB287;
+    transform: translateY(-2px);
+}
+
+.btn img {
+    height: 50px;
+    margin-right: 10px;
+}
+
+h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 40px;
+    color: #764F37;
     margin-bottom: 30px;
 }
 
