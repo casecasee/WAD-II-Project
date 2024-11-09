@@ -36,10 +36,20 @@ export const UID = function UID() {
 //     return timestamp
 // }
 
-function convert_to_timestamp(date) {
+function convert_to_timestamp(date) { // for dates oni
     const datee = new Date(date + "T00:00:00Z"); // Adds midnight UTC time
     const timestamp = Timestamp.fromDate(datee);
     return timestamp
+}
+
+function convert_to_timestamp_2(dateInput, timeInput) { // for date and time
+    const dateTime = new Date(`${dateInput}T${timeInput}:00`); // Adding ":00" for seconds
+
+    // Convert to Firebase Timestamp
+    const firebaseTimestamp = Timestamp.fromDate(dateTime);
+
+    return firebaseTimestamp;
+
 }
 //-------------------------------------------------------- END --------------------------------------------------------------------
 
@@ -207,12 +217,13 @@ export const add_attraction = async function add_attraction(tripID, a_name, date
 // }
 
 export const add_flights_to_trip = async function add_flights_to_trip(tripID, flights) {
+    // console.log(flights);
     const docRef = doc(db, "trips", tripID);
 
     const newFlights = flights.map(flight => ({
         arrival_city: flight.toCity,
         departure_city: flight.fromCity,
-        departure_date: convert_to_timestamp(flight.departureDate, flight.departureTime),
+        departure_date: convert_to_timestamp_2(flight.departureDate, flight.departureTime),
         flight_no: flight.flightNumber,
         seat_no: flight.seatNumber || null
     }));
