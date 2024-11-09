@@ -11,15 +11,17 @@ const app = Vue.createApp({
     }, // data
     computed: { 
         country() { // for us to display header and to pass in to google place api
-            const selectedCountry = localStorage.getItem('selectedCountry');
+            const urlParams = new URLSearchParams(window.location.search);
+            const selectedCountry = urlParams.get('selectedCountry');
             return selectedCountry;
-        } ,
+        },
 
         tripID() {
             // const id = localStorage.getItem('tripID');
             // return id;
             return 'ZI1IlYYOwUncoQZ2OztJ'
-        }
+        },
+        
     }, // computed
 
     methods: {
@@ -37,6 +39,35 @@ const app = Vue.createApp({
             await add_attraction(this.tripID, a_name, date, cost);
             this.close();
             alert('attraction successfully added');
+        },
+
+        async handle(results, status) {
+            // var all = [];
+            console.log(results);
+            const url = 'https://api.wikimedia.org/core/v1/wikipedia/en/search/page';
+
+            for (const res of results) {
+                console.log(res.name);
+                const params = { q: res.name, limit: 1 };
+                const response = await axios.get(url, { params: params } );
+                const ouh = response.data.pages;
+                
+                if (ouh[0]) { // checks if the wiki page exists
+                    // console.log(result)
+                    const thumbimage = ouh[0].thumbnail?.url; // Optional chaining for handling missing thumbnails
+                    const description = ouh[0].description || "No description available";
+                    // TODO check if wiki page consists of coords DOESNT WORK ISTG!!!!!!
+                    
+                    if (thumbimage) {
+                        var to_add = {};
+                        const image = thumbimage.replace('/thumb', '').replace(/\/\d+px-.+$/, ''); // get big image
+                        to_add.name = res.name;
+                        to_add.imgurl = image;
+                        to_add.desc = description;
+                        this.all.push(to_add);
+                    }
+                }
+            }
         }
     }, 
 
@@ -55,42 +86,14 @@ const app = Vue.createApp({
             type: ['tourist_attraction'], 
         };
 
-        service.nearbySearch(request, (results, status) => this.all = results); // set list of attractions
+        service.nearbySearch(request, this.handle); // set list of attractions
     }
 });
 
 //loop through attractions and for each attraction render this component
 app.component('country-images', { 
-    props: [ 'a_name' ],
+    props: [ 'a_name', 'imgurl', 'desc' ],
 
-    data() {
-        return {
-            imgurl : '',
-            desc : ''
-        }
-    }, // data
-
-    async mounted() {
-        const url = 'https://api.wikimedia.org/core/v1/wikipedia/en/search/page';
-        const params = { q: this.a_name, limit: 1 };
-        const response = await axios.get(url, { params: params } );
-        const result = response.data.pages;
-
-        // this.imgurl = 'countryPics/paris.jpg';
-        // this.desc = 'placeholder description';
-
-        if (result[0]) { // checks if the wiki page exists
-            const thumbimage = result[0].thumbnail?.url; // Optional chaining for handling missing thumbnails
-            const description = result[0].description || "No description available";
-            // TODO check if wiki page consists of coords DOESNT WORK ISTG!!!!!!
-    
-            if (thumbimage) {
-                const image = thumbimage.replace('/thumb', '').replace(/\/\d+px-.+$/, ''); // get big image
-                this.imgurl = image;
-                this.desc = description         
-            }
-        }
-    },
     template: `
         <div class='card' v-if=imgurl @click="$emit('popup', this.imgurl)">
             <img :src=imgurl></img>
@@ -103,7 +106,7 @@ app.component('country-images', {
     });
 
     // TODO make the form better bruh
-    // TODO limit date selection to trip dates
+    // TODO limit date selection to trip dates (dropdown)
     app.component('pop-up', { 
         props: [ 'a_name', 'display_it', 'bg_img' ],
 
