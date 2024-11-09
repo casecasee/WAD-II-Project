@@ -138,7 +138,7 @@
         const app = Vue.createApp({
             data() {
                 return {
-                    tripID: '0NrjHRi6YuqasmSxBrMJ',
+                    tripID: '',
                     fromCity: '',
                     toCity: '',
                     departureDate: '',
@@ -148,6 +148,10 @@
                     flightCost: '',
                     flights: [] 
                 };
+            },
+            mounted() {
+            const urlParams = new URLSearchParams(window.location.search);
+            this.tripID = urlParams.get('tripID');
             },
             methods: {
                 addFlight() {
