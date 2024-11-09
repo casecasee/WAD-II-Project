@@ -1,5 +1,8 @@
 body {
     background-color: #764F37;
+    background-image: url('./countryPics/mountains.jpg') !important; 
+    background-size: cover; 
+    background-position: center;
 }
 .main-content {
     margin-top: 60px; /* Adjust based on your header height */
@@ -8,6 +11,78 @@ body {
     overflow-y: auto;
 }
 
+.header { 
+    position: relative; 
+    display: flex; 
+    flex-direction: column;  /* Stack content vertically */
+    align-items: center; 
+    justify-content: center; 
+    color: white; 
+    border-bottom: 1px solid white;
+} 
+
+.header-title { 
+    font-family: 'Playfair Display', serif; 
+    font-size: 48px; 
+    font-weight: 700; 
+    margin: 0; 
+} 
+.header-subtitle { 
+    font-size: 18px; 
+    margin-top: 10px; 
+} 
+
+.nav-buttons {
+    top: 80px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px 0;
+    z-index: 100;
+}
+
+.btn {
+    display: inline-block;
+    padding: 12px 24px;
+    font-size: 19px;
+    color: #764F37;
+    background-color: #DCB287;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    color: #eee;
+    background-color: #764F37;
+    transform: scale(1.05);
+}
+@media screen and (max-width: 480px) {
+    .header {
+        padding: 15px 0;   /* Adjust header padding on smaller screens */
+    }
+
+    .header-title {
+        font-size: 36px;    /* Reduce title size on smaller screens */
+    }
+
+    .nav-buttons {
+        flex-direction: column;  /* Stack buttons vertically */
+        align-items: center;     /* Center buttons */
+        margin-top: 10px;         /* Adjust margin between title and buttons */
+    }
+
+    .btn {
+        font-size: 16px;          /* Reduce button font size */
+        padding: 10px 20px;       /* Adjust button padding */
+        margin: 5px 0;            /* Add some space between buttons */
+    }
+}
 /* New styles for the revamped layout */
 .trip-container {
     display: grid;
@@ -99,14 +174,6 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
-}
-
-.flight-header-centered {
-    display: flex;
-    justify-content: center; /* Center the content horizontally */
-    align-items: center;     /* Center the content vertically */
-    margin-bottom: 10px;      /* Adjust margin as needed */
 }
 
 .flight-type {
@@ -123,6 +190,7 @@ body {
 }
 
 .flight-city {
+    font-size: 20px;
     text-align: center;
 }
 
