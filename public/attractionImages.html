@@ -117,7 +117,7 @@
         <div class='container'>
             <div class='row row-cols-4'>
                 <div class="col" v-for="attraction in all">
-                    <country-images @popup="(imgurl) => popup(imgurl, attraction.name)" :a_name="attraction.name"></country-images>
+                    <country-images @popup="(imgurl) => popup(imgurl, attraction.name)" :a_name="attraction.name" :imgurl="attraction.imgurl" :desc="attraction.desc"></country-images>
                 </div>
             </div>
         </div>
