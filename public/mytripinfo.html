@@ -21,6 +21,7 @@
     <div id="app">
         <div class="header">
             <div class="header-title">Trip to {{ destination }}</div>
+            {{ formatDate(startDate) }} - {{ formatDate(endDate) }}
             <div class="nav-buttons">
                 <button class="btn" @click="navigateToHotels">Hotels</button>
                 <button class="btn" @click="navigateToAttractions">Attractions</button>
@@ -29,9 +30,11 @@
         </div>
 
         <div class="trip-container">        
-
             <div class="itinerary-section">
                 <h2>Trip Itinerary</h2>
+                <div v-if="days.length === 0 || !days.some(day => day.activities.length > 0)" class="center-message">
+                    <p>Click "Attractions" or "Hotels" to start!</p>
+                </div>
                 <div v-for="day in days" :key="day.id" class="day-card">
                     <div class="day-header">
                         <h3>{{ day.name }}</h3>
@@ -50,6 +53,9 @@
             <!-- Flight Details Sidebar -->
             <div class="flight-section">
                 <h2>Flight Details</h2>
+                <div v-if="flights.length === 0" class="center-message">
+                    <p>Click on "Flights" to add your flight to the trip!</p>
+                </div>
                 <div v-for="flight in flights" :key="flight.flight_no" class="flight-card">
                     <div class="flight-header">
                         <span class="flight-type">{{ formatDate(flight.departure_date) }}</span>
@@ -69,15 +75,47 @@
                             <div><strong>{{ flight.arrival_city }}</strong></div>
                         </div>
                     </div>
-                
+                </div>
+
+                <h2>Remaining Budget</h2>
+                <div class="budget-section">
+                    <div class="budget-header">
+                        <h3 :style="{ color: remainingBudgetColor }">${{ remainingBudgetCalc.toFixed(2) }}</h3>
+                        <!-- Budget Progress Bar -->
+                        <div class="budget-progress">
+                            <div 
+                                class="budget-bar" 
+                                :style="{ 
+                                    width: budgetBarWidth, 
+                                    backgroundColor: budgetBarColor 
+                                }">
+                            </div>
+                        </div>
+                        <h5>Total Spent:</h5>
+                        <h5> <strong>${{ totalSpent.toFixed(2) }}</strong> / ${{ budget.total.toFixed(2) }}</h5>
+                    </div>
+                    <div class="budget-details">
+                        <div class="budget-row">
+                            <span><h5>Hotels:</h5></span>
+                            <span>${{ budget.hotels.toFixed(2) }}</span>
+                        </div>
+                        <div class="budget-row">
+                            <span><h5>Flights:</h5></span>
+                            <span>${{ budget.flights.toFixed(2) }}</span>
+                        </div>
+                        <div class="budget-row">
+                            <span><h5>Activities:</h5></span>
+                            <span>${{ budget.activities.toFixed(2) }}</span>
+                        </div>
+                    </div>
                 </div>
             </div>
-            
+
             <!-- Budget Section -->
             <div class="budget-section">
                 <div class="budget-header">
-                    <h3>Budget Tracker</h3>
-                    <h4 :style="{ color: remainingBudgetColor }">Remaining Budget: ${{ remainingBudgetCalc.toFixed(2) }}</h4>
+                    <h2>Remaining Budget</h2>
+                    <h3 :style="{ color: remainingBudgetColor }">${{ remainingBudgetCalc.toFixed(2) }}</h3>
                     <!-- Budget Progress Bar -->
                     <div class="budget-progress">
                         <div 
@@ -88,16 +126,10 @@
                             }">
                         </div>
                     </div>
+                    <h5>Total Spent:</h5>
+                    <h5> <strong>${{ totalSpent.toFixed(2) }}</strong> / ${{ budget.total.toFixed(2) }}</h5>
                 </div>
                 <div class="budget-details">
-                    <div class="budget-row">
-                        <span><h5>Total Budget:</h5></span>
-                        <span>${{ budget.total.toFixed(2) }}</span>
-                    </div>
-                    <div class="budget-row">
-                        <span><h5>Total Spent:</h5></span>
-                        <span>${{ totalSpent.toFixed(2) }}</span>
-                    </div>
                     <div class="budget-row">
                         <span><h5>Hotels:</h5></span>
                         <span>${{ budget.hotels.toFixed(2) }}</span>
@@ -114,6 +146,11 @@
             </div>
         </div>
     </div>
+
+    <footer>
+        &copy; 2024 ROAMEO. All Rights Reserved.
+    </footer>
+
     <script src="navbarLoader.js"></script>
 
     <script type="module">
@@ -138,6 +175,8 @@
                         activities: 0
                     },
                     remainingBudget: 0,
+                    startDate: '',
+                    endDate: '',
                     tripID: null
                 };
             },
@@ -256,16 +295,18 @@
                         console.log("Fetched trip data for tripID:", tripID);
                         console.log(tripData); // This will show the entire data object from Firestore
 
-                        const tripDetails = {
-                            id: tripID,
-                            destination: tripData.destination,
-                            startDate: tripData.startdate,
-                            endDate: tripData.enddate,
-                            budget: tripData.budget,
-                            flights: tripData.flights,
-                            hotels: tripData.hotels,
-                            attractions: tripData.attractions
-                        };
+                        // const tripDetails = {
+                        //     id: tripID,
+                        //     destination: tripData.destination,
+                        //     startDate: tripData.startdate,
+                        //     endDate: tripData.enddate,
+                        //     budget: tripData.budget,
+                        //     flights: tripData.flights,
+                        //     hotels: tripData.hotels,
+                        //     attractions: tripData.attractions
+                        // };
+                        this.startDate = tripData.startdate;
+                        this.endDate = tripData.enddate;
                         this.destination = tripData.destination;
                         this.budget.total = tripData.budget || 0;
 
@@ -280,9 +321,9 @@
                             ? tripData.attractions.reduce((sum, activity) => sum + (activity.cost || 0), 0)
                             : 0;
 
-                        this.trips.push(tripDetails);
+                        // this.trips.push(tripDetails);
                         
-                        return tripDetails;
+                        // return tripDetails;
                     } else {
                         console.error("No such trip found");
                     }
