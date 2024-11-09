@@ -1,10 +1,11 @@
-import { UID, get_info, add_flights_to_trip, add_attraction } from './functions';
+import { UID, get_info, add_flights_to_trip, add_attraction, delete_trip, get_all_trips, add_hotel } from './functions';
 
 const app = Vue.createApp({ 
     data() { 
         return { 
               UID : null,
-              all : ''
+              all : '', 
+              everything : ''
         };
     }, // data
     async mounted() { 
@@ -30,6 +31,12 @@ const app = Vue.createApp({
         },
         async add_a() {
             await add_attraction('z5NIL74rFcYBtY4eSqR8', 'Singapore Zoo', '2024-03-12', 100)
+        }, 
+        async del() {
+            await delete_trip('l8499WmessHXOqxULDAA')
+        }, 
+        async get() {
+            this.everything = await get_all_trips();
         }
 
     } // methods
