@@ -214,7 +214,8 @@ export const add_flights_to_trip = async function add_flights_to_trip(tripID, fl
         departure_city: flight.fromCity,
         departure_date: convert_to_timestamp(flight.departureDate, flight.departureTime),
         flight_no: flight.flightNumber,
-        seat_no: flight.seatNumber || null
+        seat_no: flight.seatNumber || null,
+        flight_cost: flight.flightCost || 0
     }));
     console.log(newFlights);
 
