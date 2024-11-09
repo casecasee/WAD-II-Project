@@ -1,4 +1,4 @@
-import { add_attraction } from "./functions";
+import { add_attraction } from "./functions.js";
 
 const app = Vue.createApp({ 
     data() { 

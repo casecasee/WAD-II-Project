@@ -3,126 +3,205 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ROAMEO - Hotel comparison</title>
+    <title>ROAMEO - Hotels</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet"> 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Roboto+Slab:wght@400;700&display=swap">
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Pacifico&family=Playwrite+GB+S:ital,wght@0,100..400;1,100..400&display=swap">
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Pacifico&family=Playwrite+GB+S:ital,wght@0,100..400;1,100..400&display=swap" rel="stylesheet">    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> 
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Pacifico&family=Playwrite+GB+S:ital,wght@0,100..400;1,100..400&display=swap" rel="stylesheet"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" /> 
-    <link rel="stylesheet" href="navbar.css">
-    <link rel = "stylesheet" href = "trip.css"> 
+    <link rel="stylesheet" href="navbar.css"> 
 
     <style>
-
+        body { 
+            font-family: 'Montserrat', sans-serif; 
+            background-color: #e1e7e4;
+            margin: 0; 
+            padding: 0; 
+        } 
+        .header { 
+            position: relative; 
+            height: 45vh; 
+            background-image: url('./countryPics/mountains.jpg') !important; 
+            background-size: cover; 
+            background-position: center; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            color: white; 
+        } 
+        .header::before { 
+            content: ""; 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: rgba(0, 0, 0, 0.5); /* Dark overlay */ 
+            background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.2)); /* Gradient effect */ 
+        } 
+        .header-title { 
+            font-family: 'Playfair Display', serif; 
+            font-size: 48px; 
+            font-weight: 700; 
+            margin: 0; 
+        } 
+        .header-subtitle { 
+            font-size: 18px; 
+            margin-top: 10px; 
+        } 
+        .explore-button { 
+            display: inline-block; 
+            margin-top: 20px; 
+            padding: 12px 24px; 
+            font-size: 16px; 
+            color: #764F37; 
+            background-color: #DCB287; 
+            border: none; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            font-weight: bold; 
+            text-decoration: none; 
+        } 
+        .explore-button:hover { 
+            background-color: #764F37; 
+            color: white; 
+        } 
+        #navbar-app{ 
+            position: absolute;  
+            top: 0;  
+            width: 100%;  
+            z-index: 2;       
+        }  
         .main-content {
             display: flex;
             padding: 20px;
+            position: absolute;
+            top: 200px;
+            left: 0;
+            right: 0;
+            justify-content: center;
+            align-items: center;
+            padding: 20px 0;
+            z-index: 100;
+            color: white;
+            gap: 20px;
         }
-        .destination {
-            margin-bottom: 20px;
-            margin-right: 5px;
+        .destination, .date-picker {
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         .details {
             flex: 3;
         }
         .search-button {
-            margin-bottom: 20px;
-            margin-left: 5px;
+            margin: 0;
+            display: flex;
+            align-items: center;
         }
-        /* .right-content {
-            flex: 1;
-        } */
         .date-picker {
-            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         .hotel-comparisons {
-            border: 1px solid #ddd;
             padding: 10px;
             margin-left: 20px;
             margin-right: 20px;
             display: flex;
             flex-direction: column;
         }
-
         .hotel-comparisons h2 {
             margin-bottom: 20px;
-        }
-        /* #budgetChart {
-            width: 200px;
-            height: 200px;
-        } */
-        .nav-buttons {
-        display: flex;
-        justify-content: center;
-        gap: 20px;
-        padding: 10px 0;
-        }
-        /* options */
-        .buttons-container {
             text-align: center;
-            background-color: rgba(255, 255, 255, 0.9); 
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); 
-            margin: 50px auto;
-            max-width: 500px; 
+            font-family: 'Playfair Display', serif;
+            color: #764F37;
+            font-weight: 700;
+            font-size: 30px;
+            padding-bottom: 10px;  /* Add padding for the underline */
+            position: relative;    /* Required for absolute positioning of pseudo-element */
+        }
+
+        .hotel-comparisons h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background-color: #DCB287;  /* Brown color to match your theme */
+        }
+
+        .nav-buttons {
+            position: absolute;
+            top: 80px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px 0;
+            z-index: 100;
+        }
+        .btn:hover {
+            background-color: #764F37;
+            color: white;
         }
 
         .btn {
-            background-color: #B5855B; 
-            color: white;
-            font-weight: bold;
-            padding: 15px 30px;
-            margin: 15px;
-            border: none;
-            border-radius: 10px;
+            display: inline-block;
+            padding: 12px 24px;
             font-size: 19px;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            box-shadow: 0 8px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .btn:hover {
+            color: #764F37;
             background-color: #DCB287;
-            transform: translateY(-2px);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            text-decoration: none;
+            transition: all 0.3s ease;
         }
-
-        .btn img {
-            height: 50px;
-            margin-right: 10px;
-        }
-
         h1 {
             font-family: 'Playfair Display', serif;
             font-size: 40px;
             color: #764F37;
             margin-bottom: 30px;
         }
-        /* Style for <a> tags that look like buttons */
-        .nav-buttons a.button {
-            padding: 8px 20px;
-            background-color: #4285f4;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            border: none;
-            font-size: 16px;
-            display: inline-block;
+        .hotel-card {
+            background-color: rgba(255, 255, 255, 0.9);  /* Semi-transparent white background */
+            display: flex;
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            transition: transform 0.2s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
-        .nav-buttons a.button:hover {
-            background-color: #3367d6;
+        /* Alternate background colors for hotel cards */
+        .hotel-card:nth-child(3n+1) {
+            background-color: rgba(181, 133, 91, 0.1); /* Light brown */
+            border-left: 4px solid #B5855B;
         }
-        .hotel-card {
-            display: flex;
-            border: 1px solid #ddd;
-            margin-bottom: 20px;
-            padding: 10px;
-            border-radius: 5px;
+
+        .hotel-card:nth-child(3n+2) {
+            background-color: rgba(118, 79, 55, 0.1); /* Medium brown */
+            border-left: 4px solid #764F37;
         }
+
+        .hotel-card:nth-child(3n+3) {
+            background-color: rgba(220, 178, 135, 0.1); /* Darker brown */
+            border-left: 4px solid #DCB287;
+        }
+
+        /* hover effect */
+        .hotel-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
         .hotel-image {
             flex: 1;
             max-width: 200px;
@@ -146,7 +225,7 @@
             margin-bottom: 10px;
         }
 
-        /* Add responsive styles */
+        /* responsive styles */
         @media screen and (max-width: 480px) {
             .main-content {
                 flex-direction: column;
@@ -300,97 +379,212 @@
             from { opacity: 0; }
             to { opacity: 1; }
         }
+
+        /* Style for the search button */
+        .search-button button {
+            display: inline-block;
+            padding: 12px 24px;
+            font-size: 16px;
+            color: #764F37;
+            background-color: #DCB287;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-button button:hover {
+            background-color: #764F37;
+            color: white;
+        }
+
+        /* Style for the add button in hotel cards */
+        .add-button button {
+            display: inline-block;
+            padding: 12px 24px;
+            font-size: 16px;
+            color: #764F37;
+            background-color: #DCB287;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .add-button button:hover {
+            background-color: #764F37;
+            color: white;
+        }
+
+        /* Style for input fields */
+        input[type="text"], input[type="date"] {
+            padding: 15px 20px;
+            font-size: 16px;
+            width: 250px;
+            border: 2px solid #DCB287;
+            border-radius: 25px;
+            font-family: 'Montserrat', sans-serif;
+            transition: all 0.3s ease;
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+
+        input[type="text"]:focus, input[type="date"]:focus {
+            outline: none;
+            border-color: #B5855B;
+            box-shadow: 0 0 10px rgba(181, 133, 91, 0.2);
+        }
+
+        /* Add some overlay to improve text readability */
+        .container {
+            background-color: rgba(255, 255, 255, 0.9);  /* Semi-transparent white */
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Style labels */
+        .destination label, .date-picker label {
+            margin: 0;
+            white-space: nowrap;
+        }
+
+        /* Add some spacing between date inputs */
+        .date-picker input:first-of-type {
+            margin-right: 10px;
+        }
+        footer { 
+            text-align: center; 
+            padding: 20px; 
+            color: white; 
+            background-color: #764F37;  
+            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1); 
+            font-family: 'Montserrat', sans-serif; 
+            width: 100%; 
+            position: fixed; 
+        }   
     </style>
+
+    <!-- Add these scripts right before your closing </head> tag -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="functions.js" type="module"></script>
 </head>
 <body>
 
-    <div id="navbar-app"> 
-        <navbar-component></navbar-component> 
-    </div> 
-   
-  <!-- <script src = "navbarLoader.js"></script> -->
+    <!-- Add this div to wrap your entire content -->
+    <div id="app">
+        <div id="navbar-app"> 
+            <navbar-component></navbar-component> 
+        </div> 
 
-    <div class="nav-buttons">
-        <a href="addflightinfo.html"><button id="flight" class="btn"><img src="countryPics/ticket_sign.png" alt="Flight Icon">FLIGHT</button></a>
-        <a href="hotels.html"><button id="hotel" class="btn"><img src="countryPics/hotel_sign.png" alt="Hotel Icon">HOTEL</button></a>
-        <button id="attractions" class="btn" @click="goToAttractions"><img src="countryPics/attraction_sign.png" alt="Attractions Icon">ATTRACTIONS</button>
-    </div>
-    
-    <div class="main-content">
-        <div class="destination">
-            <label for="destination">Destination:</label>
-            <input type="text" id="destination" placeholder="Enter city name" required>
+        <div class="header">
         </div>
-        <div class="date-picker">
-            <label for="start-date">Check-in:</label>
-            <input type="date" id="start-date" required>
-            <label for="end-date">Check-out:</label>
-            <input type="date" id="end-date" required>
+
+        <div class="nav-buttons">
+            <a href="addflightinfo.html"><button id="flight" class="btn">Flight</button></a>
+            <a href="hotels.html"><button id="hotel" class="btn">Hotel</button></a>
+            <a href="attractionImages.html"><button id="attractions" class="btn">Attractions</button></a>
         </div>
-        <div class="search-button">
-            <button id="search-button" onclick="displayHotels()">Search Hotels</button>
+        
+        <div class="main-content">
+            <div class="destination">
+                <label for="destination">Destination:</label>
+                <input type="text" v-model="destination" placeholder="Enter city name" required>
+            </div>
+            <div class="date-picker">
+                <label for="start-date">Check-in:</label>
+                <input type="date" v-model="startDate" required>
+                <label for="end-date">Check-out:</label>
+                <input type="date" v-model="endDate" required>
+            </div>
+            <div class="search-button">
+                <button @click="searchHotels">Search Hotels</button>
+            </div>
         </div>
-    </div>
-    <div class="hotel-comparisons">
-        <h2>Hotels</h2>
-        <div id="hotel-list"></div>
+
+        <div class="hotel-comparisons">
+            <h2>Hotels</h2>
+            <div class="hotel-list">
+                <div v-for="(hotel, index) in hotels" :key="index" class="hotel-card" :data-hotel-id="hotel.hotel_id">
+                    <div class="hotel-image">
+                        <img :src="hotel.max_photo_url || 'placeholder-image.jpg'" :alt="hotel.hotel_name">
+                    </div>
+                    <div class="hotel-description">
+                        <h3>{{ hotel.hotel_name }}</h3>
+                        <p>{{ hotel.address || 'Address not available' }}</p>
+                        <p>Rating: {{ hotel.review_score || 'N/A' }}/10</p>
+                    </div>
+                    <div class="hotel-prices">
+                        <p>Price: SGD {{ hotel.min_total_price ? Number(hotel.min_total_price).toFixed(2) : 'Not available' }}</p>
+                    </div>
+                    <div class="add-button">
+                        <button @click="addHotel(hotel)">Add</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Success Popup -->
+        <div class="overlay" v-show="showPopup"></div>
+        <div class="popup" v-show="showPopup">
+            <div class="popup-content">
+                <h3>Success!</h3>
+                <p>Hotel has been added to your trip successfully.</p>
+                <button class="popup-button" @click="closePopup">OK</button>
+            </div>
+        </div>
     </div>
 
-    <!-- help with the footer -->
-    <footer>
-        <p>&copy; 2024 ROAMEO. All Rights Reserved.</p>
-    </footer>
-
-    <div class="overlay" id="overlay"></div>
-    <div class="popup" id="successPopup">
-        <div class="popup-content">
-            <h3>Success!</h3>
-            <p>Hotel has been added to your trip successfully.</p>
-            <button class="popup-button" onclick="closePopup()">OK</button>
-        </div>
-    </div>
-
-        <!-- Vue 3 -->
-        <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-        <script src = "navbarLoader.js"></script>
+    <!-- Place this right before closing </body> tag -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="navbarLoader.js"></script>
     <script>
-        const RAPID_API_KEY = import.meta.env.VITE_RAPID_API_KEY;
-        const RAPID_API_HOST = import.meta.env.VITE_RAPID_API_HOST;
+    const { createApp } = Vue
 
-        function displayHotels() {
-            // Get values when the function is called
-            const destination = document.getElementById('destination').value;
-            const startDate = document.getElementById('start-date').value;
-            const endDate = document.getElementById('end-date').value;
-
-            // Validate inputs
-            if (!destination || !startDate || !endDate) {
-                alert('Please fill in all fields');
-                return;
+    createApp({
+        data() {
+            return {
+                destination: '',
+                startDate: '',
+                endDate: '',
+                hotels: [],
+                showPopup: false,
+                RAPID_API_KEY: "7bb272beafmshf057635e1f360f4p10cef0jsn822b6e337760",
+                RAPID_API_HOST: "booking-com.p.rapidapi.com"
             }
-
-            // First, get the destination ID
-            const locationOptions = {
-                method: 'GET',
-                url: 'https://booking-com.p.rapidapi.com/v1/hotels/locations',
-                params: {
-                    name: destination,
-                    locale: 'en-us'
-                },
-                headers: {
-                    'X-RapidAPI-Key': RAPID_API_KEY,
-                    'X-RapidAPI-Host': RAPID_API_HOST
+        },
+        methods: {
+            async searchHotels() {
+                if (!this.destination || !this.startDate || !this.endDate) {
+                    alert('Please fill in all fields');
+                    return;
                 }
-            };
 
-            // First get the destination ID, then search for hotels
-            axios.request(locationOptions)
-                .then(function (locationResponse) {
+                try {
+                    // Get location data
+                    const locationResponse = await axios.request({
+                        method: 'GET',
+                        url: 'https://booking-com.p.rapidapi.com/v1/hotels/locations',
+                        params: {
+                            name: this.destination,
+                            locale: 'en-us'
+                        },
+                        headers: {
+                            'X-RapidAPI-Key': this.RAPID_API_KEY,
+                            'X-RapidAPI-Host': this.RAPID_API_HOST
+                        }
+                    });
+
                     if (locationResponse.data && locationResponse.data.length > 0) {
                         const location = locationResponse.data[0];
-                        console.log('Location data:', location); // For debugging
                         
-                        const searchOptions = {
+                        // Search hotels
+                        const searchResponse = await axios.request({
                             method: 'GET',
                             url: 'https://booking-com.p.rapidapi.com/v1/hotels/search-by-coordinates',
                             params: {
@@ -400,148 +594,44 @@
                                 latitude: location.latitude,
                                 filter_by_currency: 'SGD',
                                 locale: 'en-us',
-                                checkout_date: endDate,
+                                checkout_date: this.endDate,
                                 adults_number: '2',
-                                checkin_date: startDate,
+                                checkin_date: this.startDate,
                                 order_by: 'popularity',
                                 page_number: '0'
                             },
                             headers: {
-                                'X-RapidAPI-Key': RAPID_API_KEY,
-                                'X-RapidAPI-Host': RAPID_API_HOST
+                                'X-RapidAPI-Key': this.RAPID_API_KEY,
+                                'X-RapidAPI-Host': this.RAPID_API_HOST
                             }
-                        };
+                        });
 
-                        // Clear previous results
-                        const hotelList = document.getElementById('hotel-list');
-                        while (hotelList.firstChild) {
-                            hotelList.removeChild(hotelList.firstChild);
-                        }
-                        
-                        return axios.request(searchOptions);
-                    } else {
-                        throw new Error('Location not found');
+                        this.hotels = searchResponse.data.result || [];
                     }
-                })
-                .then(function (response) {
-                    console.log('API Response:', response.data);
-                    if (response.data.result) {
-                        displayHotelData(response.data.result);
-                    } else {
-                        const hotelList = document.getElementById('hotel-list');
-                        while (hotelList.firstChild) {
-                            hotelList.removeChild(hotelList.firstChild);
-                        }
-                        const messageText = document.createTextNode('No hotels found');
-                        hotelList.appendChild(messageText);
-                    }
-                })
-                .catch(function (error) {
-                    console.error('API Error Details:', error.response?.data || error.message);
-                    let errorMessage = 'Error fetching hotel data: ';
-                    
-                    if (error.response?.data?.detail) {
-                        // Format the error details in a more readable way
-                        const details = error.response.data.detail;
-                        errorMessage += details.map(d => `${d.msg} (${d.loc.join('.')})`).join(', ');
-                    } else {
-                        errorMessage += error.message;
-                    }
-                    
-                    const hotelList = document.getElementById('hotel-list');
-                    while (hotelList.firstChild) {
-                        hotelList.removeChild(hotelList.firstChild);
-                    }
-                    const messageText = document.createTextNode(errorMessage);
-                    hotelList.appendChild(messageText);
-                });
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Error fetching hotel data');
+                }
+            },
+            async addHotel(hotel) {
+                try {
+                    const tripID = "ZI1IlYYOwUncoQZ2OztJ";
+                    await add_hotel(tripID, hotel.hotel_name, this.startDate, this.endDate, hotel.min_total_price);
+                    this.showPopup = true;
+                } catch (error) {
+                    console.error('Error adding hotel:', error);
+                    alert('Failed to add hotel to trip');
+                }
+            },
+            closePopup() {
+                this.showPopup = false;
+            },
         }
-
-        function displayHotelData(hotels) {
-            const hotelList = document.getElementById('hotel-list');
-            
-            if (!Array.isArray(hotels) || hotels.length === 0) {
-                const noHotelsText = document.createTextNode('No hotels found for this destination');
-                hotelList.appendChild(noHotelsText);
-                return;
-            }
-            
-            hotels.forEach(hotel => {
-                // Create main hotel card div
-                const hotelDiv = document.createElement('div');
-                hotelDiv.className = 'hotel-card';
-
-                // Create and append image section
-                const imageDiv = document.createElement('div');
-                imageDiv.className = 'hotel-image';
-                const img = document.createElement('img');
-                img.src = hotel.max_photo_url || 'placeholder-image.jpg';
-                img.alt = hotel.hotel_name;
-                imageDiv.appendChild(img);
-
-                // Create and append description section
-                const descriptionDiv = document.createElement('div');
-                descriptionDiv.className = 'hotel-description';
-                
-                const hotelName = document.createElement('h3');
-                hotelName.textContent = hotel.hotel_name;
-                
-                const address = document.createElement('p');
-                address.textContent = hotel.address || 'Address not available';
-                
-                const rating = document.createElement('p');
-                rating.textContent = `Rating: ${hotel.review_score || 'N/A'}/10`;
-                
-                descriptionDiv.appendChild(hotelName);
-                descriptionDiv.appendChild(address);
-                descriptionDiv.appendChild(rating);
-
-                // Create and append prices section
-                const pricesDiv = document.createElement('div');
-                pricesDiv.className = 'hotel-prices';
-                
-                const price = document.createElement('p');
-                price.textContent = hotel.min_total_price ? 
-                    `Price: SGD ${hotel.min_total_price}` : 
-                    'Price not available';
-                pricesDiv.appendChild(price);
-
-                // Create and append add button section
-                const addButtonDiv = document.createElement('div');
-                addButtonDiv.className = 'add-button';
-                
-                const addButton = document.createElement('button');
-                addButton.textContent = 'Add';
-                addButton.addEventListener('click', () => addHotel(hotel.hotel_id));
-                addButtonDiv.appendChild(addButton);
-
-                // Append all sections to hotel card
-                hotelDiv.appendChild(imageDiv);
-                hotelDiv.appendChild(descriptionDiv);
-                hotelDiv.appendChild(pricesDiv);
-                hotelDiv.appendChild(addButtonDiv);
-
-                // Append hotel card to list
-                hotelList.appendChild(hotelDiv);
-            });
-        }
-
-        function showPopup() {
-            document.getElementById('overlay').style.display = 'block';
-            document.getElementById('successPopup').style.display = 'block';
-        }
-
-        function closePopup() {
-            document.getElementById('overlay').style.display = 'none';
-            document.getElementById('successPopup').style.display = 'none';
-        }
+    }).mount('#app')
     </script>
-    <script type="module">
-        import { add_hotel } from './functions.js';
-        // Your module code here
-        async function addHotel(hotelId) {
-            await add_hotel("ZI1IlYYOwUncoQZ2OztJ", hotel_name, checkin, checkout, cost);
-        }
-    </script>
+
+    <footer>
+        <p>&copy; 2024 ROAMEO. All Rights Reserved.</p>
+    </footer>
 </body>
 </html>

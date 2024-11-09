@@ -16,7 +16,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Pacifico&family=Playwrite+GB+S:ital,wght@0,100..400;1,100..400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="navbar.css">
-    <link rel = "stylesheet" href = "mytrips.css">
 
     <!-- GSAP and ScrollToPlugin -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/gsap.min.js"></script>
@@ -119,6 +118,20 @@
             justify-content: center; /* Center the form container */
         }
 
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: white;
+            background-color: #764F37;
+            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
+            font-family: 'Montserrat', sans-serif;
+            width: 100%;
+            position: relative;
+            margin-bottom: 0;
+        }
+
+
+
     </style>
 
 
@@ -134,7 +147,7 @@
         <div class="header-content">
             <h1 class="header-title">Discover Your Next Adventure</h1>
             <p class="header-subtitle">Plan, explore, and experience unforgettable trips</p>
-            <a href="addtripinfo.html" class="explore-button" @click="scrollToForm()">Plan Now</a>
+            <a href="addtripinfo.html" class="explore-button" id="planButton">Plan Now</a>
         </div>
     </div>
 
@@ -180,6 +193,16 @@
     <footer>
         &copy; 2024 ROAMEO. All Rights Reserved.
     </footer>
+
+    <script>
+        document.getElementById('planButton').addEventListener('click', function(event) {
+            event.preventDefault(); // Prevents navigation for demo purposes
+            gsap.to(window, {
+                duration: 1,
+                scrollTo: "#form-container"
+            });
+        });
+    </script>
 
     <script src = "addtripinfo.js"  type="module"></script>
     <script src = "navbarLoader.js"></script>

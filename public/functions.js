@@ -3,9 +3,10 @@ import { getFirestore,
          addDoc,
          setDoc,
          getDoc,
+         getDocs,
          doc, 
          updateDoc, 
-         Timestamp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+         deleteDoc  } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
 
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
 import { firebaseApp } from "./stuff.js";
@@ -25,21 +26,6 @@ export const UID = function UID() {
             }
         })
     })
-}
-//-------------------------------------------------------- END --------------------------------------------------------------------
-
-//-------------------------------------- convert YYYY-MM-DD to firestore timestamp -----------------------------------------------
-// function convert_to_timestamp(date, time) {
-
-//     const datee = new Date(`${dateInput}T${timeInput}:00`); // Adds midnight UTC time
-//     const timestamp = Timestamp.fromDate(datee);
-//     return timestamp
-// }
-
-function convert_to_timestamp(date) {
-    const datee = new Date(date + "T00:00:00Z"); // Adds midnight UTC time
-    const timestamp = Timestamp.fromDate(datee);
-    return timestamp
 }
 //-------------------------------------------------------- END --------------------------------------------------------------------
 
@@ -149,15 +135,12 @@ export const get_trip_info = async function get_trip_info(tripID) {
 
 //------------------------------------------------------ add hotel to hotel arr ---------------------------------------------------
 export const add_hotel = async function add_hotel(tripID, hotel_name, checkin, checkout, cost) {
-    // checkin and checkout are in the form of YYYY-MM-DD 
-    const checkin_t = convert_to_timestamp(checkin);
-    const checkout_t = convert_to_timestamp(checkout);
     const doc_ref = doc(db, "trips", tripID);
 
     const new_data = {
         'h_name' : hotel_name, 
-        'checkin' : checkin_t,
-        'checkout' : checkout_t,
+        'checkin' : checkin,
+        'checkout' : checkout,
         'cost' : cost
     };
     const doc_snap =  await getDoc(doc_ref);
@@ -170,12 +153,11 @@ export const add_hotel = async function add_hotel(tripID, hotel_name, checkin, c
 
 //------------------------------------------------- add attraction to attraction arr ----------------------------------------------
 export const add_attraction = async function add_attraction(tripID, a_name, date, cost) {
-    const datee = convert_to_timestamp(date);
     const doc_ref = doc(db, "trips", tripID);
 
     const new_data = {
         'a_name' : a_name, 
-        'date' : datee, 
+        'date' : date, 
         'cost' : cost
     };
     const doc_snap =  await getDoc(doc_ref);
@@ -207,12 +189,14 @@ export const add_attraction = async function add_attraction(tripID, a_name, date
 // }
 
 export const add_flights_to_trip = async function add_flights_to_trip(tripID, flights) {
+    // console.log(flights);
     const docRef = doc(db, "trips", tripID);
 
     const newFlights = flights.map(flight => ({
         arrival_city: flight.toCity,
         departure_city: flight.fromCity,
-        departure_date: convert_to_timestamp(flight.departureDate, flight.departureTime),
+        departure_date: flight.departureDate,
+        departure_time: flight.departureTime, 
         flight_no: flight.flightNumber,
         seat_no: flight.seatNumber || null,
         flight_cost: flight.flightCost || 0
@@ -222,3 +206,34 @@ export const add_flights_to_trip = async function add_flights_to_trip(tripID, fl
     // Save flights array to Firebase under the tripID
     await updateDoc(docRef, { 'flights' : newFlights });
 };
+
+export const delete_trip = async function delete_trip(tripID) {
+    const docRef = doc(db, "trips", tripID);
+
+    try {
+        await deleteDoc(docRef);
+        alert('trip deleted successfully');
+    }
+    catch(error) {
+        const errCode = error.code;
+        const errMsg = error.message;
+        console.log(errCode + errMsg);
+    }
+
+}
+
+export const get_all_trips = async function get_all() {
+    const collectionRef = collection(db, "trips");
+    var rt = [];
+    try {
+        const querySnapshot = await getDocs(collectionRef); // Retrieve all documents
+        querySnapshot.forEach(element => {
+            rt.push(element.data());
+            console.log(element.data());
+        });
+        return rt;
+    } catch (error) {
+        console.error("Error getting documents:", error);
+    }
+
+}
