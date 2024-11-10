@@ -89,7 +89,7 @@
                                 </div>
                             </div>
                             <div class="passenger-name">
-                                <h4>Passenger's Name</h4>
+                                <h4>{{ username }}</h4>
                             </div>
                             <div class="body-info">
                                 <div class="flight-info">
@@ -152,12 +152,22 @@
                     flightNumber: '',
                     seatNumber: '',
                     flightCost: '',
-                    flights: [] 
+                    flights: [] ,
+                    username: ''
                 };
             },
             mounted() {
             const urlParams = new URLSearchParams(window.location.search);
             this.tripID = urlParams.get('tripID');
+            },
+            mounted() {
+                this.getUserID()
+                    .then(userID => {
+                        console.log("User UID:", userID);
+                    })
+                    .catch(error => {
+                        console.log("Error fetching UID:", error);
+                    });
             },
             methods: {
                 addFlight() {
@@ -200,6 +210,7 @@
                         onAuthStateChanged(auth, (user) => {
                             if (user) {
                                 console.log(user.uid); // Log the user object here
+                                
                                 resolve(user.uid);
                             } else {
                                 window.location.href = 'index.html'; // Redirect if no user is signed in
