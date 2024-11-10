@@ -2,7 +2,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Trips</title>
+    <title>Add Trip</title>
 
     <!-- VUE -->
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
@@ -22,6 +22,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.10.4/ScrollToPlugin.min.js"></script>
     <script src = "addtripinfo.js"  type="module"></script>
 
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
         body {
@@ -168,10 +170,10 @@
                         <label for="dateSelect">Dates:</label>
                         <div class="row">
                             <div class="col-md-6">
-                                <input v-model='start' type="date" id="startDate" name="startDate" class="form-control" required>
+                                <input v-model='start' type="date" id="startDate" name="startDate" class="form-control" required :min="minDate">
                             </div>
                             <div class="col-md-6">
-                                <input v-model='end' type="date" id="endDate" name="endDate" class="form-control" required>
+                                <input v-model='end' type="date" id="endDate" name="endDate" class="form-control" required :min="minDate">
                             </div>
                         </div>
                     </div>
