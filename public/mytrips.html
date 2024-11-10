@@ -119,7 +119,7 @@
                     <div class="trip-details">
                         <h3>{{ trip.destination }}</h3>
                         <p>{{ trip.startdate }} to {{ trip.enddate }}</p>
-                        <button @click = "viewDetails(trip.id)" class="details-button">View Details</button>
+                        <button @click="viewDetails(trip.id, trip.destination)" class="details-button">View Details</button>
                         <button @click="deleteTrip(trip.id)" class="delete-button">
                             <i class="fas fa-trash-alt"></i> <!-- <span>Delete Trip</span> -->
                         </button>
@@ -139,6 +139,9 @@
                     <div class="trip-details">
                         <h3>{{ trip.destination }}</h3>
                         <p>{{ trip.startdate }} to {{ trip.enddate }}</p>
+                        <button @click="deleteTrip(trip.id)" class="delete-button">
+                            <i class="fas fa-trash-alt"></i> <span>Delete Trip</span>
+                        </button>
                     </div>
                 </div>
             </div>
