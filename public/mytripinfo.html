@@ -61,6 +61,7 @@
                             <span class="activity-type">{{ activity.type }}</span>
                         </div>
                     </div>
+                    <button class="activity-type" @click="navigateToAttractions">+ Attraction</button>
                 </div>
             </div>
             
@@ -170,7 +171,7 @@
                 if (this.userID) {
                     this.loadUserTrips();
                 }
-                this.getTripIDFromURL();
+                this.country();
             },
             computed: {
                 totalSpent() {
@@ -208,15 +209,23 @@
                 }
             },
             methods: {
-                getTripIDFromURL() {
-                    const urlParams = new URLSearchParams(window.location.search);
-                    this.tripID = urlParams.get('tripID');
-                    console.log("Current tripID from URL:", this.tripID); // Log for debugging
+                // getTripIDFromURL() {
+                //     const urlParams = new URLSearchParams(window.location.search);
+                //     this.tripID = urlParams.get('tripID');
+                //     console.log("Current tripID from URL:", this.tripID); // Log for debugging
+                // },
+
+                country() {
+                    const selectedCountry = localStorage.getItem('selectedCountry');
+                    this.tripID = selectedCountry;
+                    console.log("Current tripID from localStorage:", this.tripID); // Log for debugging
+
+                    return selectedCountry;
                 },
 
                 navigateToAttractions() {
                     if (this.tripID) {
-                        window.location.href = `attractions.html?tripID=${this.tripID}`;
+                        window.location.href = `attractionImages.html?tripID=${this.tripID}`;
                     }
                 },
 
@@ -317,17 +326,14 @@
                     if (tripSnap.exists()) {
                         const tripData = tripSnap.data();
 
-                        // Log all the trip data here to see everything retrieved
                         console.log("Fetched trip data for tripID:", tripID);
-                        console.log(tripData); // This will show the entire data object from Firestore
-
+                        console.log(tripData); 
                 
                         this.startDate = tripData.startdate;
                         this.endDate = tripData.enddate;
                         this.destination = tripData.destination;
                         this.budget.total = tripData.budget || 0;
                         
-                        // Initialize the list of activities (hotels + attractions)
                         let activities = [];
 
                         // Map hotels to activities
