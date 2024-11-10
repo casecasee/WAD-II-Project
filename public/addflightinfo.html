@@ -164,6 +164,7 @@
                 this.getUserID()
                     .then(userID => {
                         console.log("User UID:", userID);
+                        this.fetchUserDetails(userID);  // Fetch user details after getting UID
                     })
                     .catch(error => {
                         console.log("Error fetching UID:", error);
@@ -204,13 +205,24 @@
                     this.seatNumber = '';
                     this.flightCost = '';
                 },
+                async fetchUserDetails(userID) {
+                    const userRef = doc(db, "users", userID);  // Reference to the user's Firestore document
+                    const userSnap = await getDoc(userRef);
+
+                    if (userSnap.exists()) {
+                        const userData = userSnap.data();
+                        this.username = userData.name;  // Store user's name in the `username` data property
+                        console.log(this.username);
+                    } else {
+                        console.error("User not found in Firestore");
+                    }
+                },
                 async getUserID() {
                     const auth = getAuth(firebaseApp);
                     return new Promise((resolve, reject) => {
                         onAuthStateChanged(auth, (user) => {
                             if (user) {
                                 console.log(user.uid); // Log the user object here
-                                
                                 resolve(user.uid);
                             } else {
                                 window.location.href = 'index.html'; // Redirect if no user is signed in

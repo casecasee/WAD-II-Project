@@ -168,6 +168,8 @@
             },
             async mounted() {
                 this.userID = await this.getUserID(); // Fetch the user ID after authentication
+                console.log("User ID:", this.userID);  // Log the userID
+
                 if (this.userID) {
                     this.loadUserTrips();
                 }
