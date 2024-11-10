@@ -171,7 +171,7 @@
                 if (this.userID) {
                     this.loadUserTrips();
                 }
-                this.country();
+                this.getTripIDFromURL(); // this function sets both country and tripid
             },
             computed: {
                 totalSpent() {
@@ -209,35 +209,29 @@
                 }
             },
             methods: {
-                // getTripIDFromURL() {
-                //     const urlParams = new URLSearchParams(window.location.search);
-                //     this.tripID = urlParams.get('tripID');
-                //     console.log("Current tripID from URL:", this.tripID); // Log for debugging
-                // },
-
-                country() {
-                    const selectedCountry = localStorage.getItem('selectedCountry');
-                    this.tripID = selectedCountry;
-                    console.log("Current tripID from localStorage:", this.tripID); // Log for debugging
-
-                    return selectedCountry;
+                getTripIDFromURL() {
+                    const urlParams = new URLSearchParams(window.location.search);
+                    // this.tripID = urlParams.get('tripID');
+                    this.tripID = localStorage.getItem('tripID')
+                    this.country = urlParams.get('country')
+                    console.log("Current tripID from URL:", this.tripID); // Log for debugging
                 },
 
                 navigateToAttractions() {
                     if (this.tripID) {
-                        window.location.href = `attractionImages.html?tripID=${this.tripID}`;
+                        window.location.href = `attractionImages.html?country=${this.country}`;
                     }
                 },
 
                 navigateToHotels() {
                     if (this.tripID) {
-                        window.location.href = `hotels.html?tripID=${this.tripID}`;
+                        window.location.href = `hotels.html?country=${this.country}`;
                     } 
                 },
 
                 navigateToAddFlightInfo() {
                     if (this.tripID) {
-                        window.location.href = `addflightinfo.html?tripID=${this.tripID}`;
+                        window.location.href = `addflightinfo.html?country=${this.country}`;
                     } else {
                         console.error("Trip ID is not available.");
                     }

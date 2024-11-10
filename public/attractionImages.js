@@ -12,7 +12,7 @@ const app = Vue.createApp({
     computed: { 
         country() { // for us to display header and to pass in to google place api
             const urlParams = new URLSearchParams(window.location.search);
-            const selectedCountry = urlParams.get('selectedCountry');
+            const selectedCountry = urlParams.get('country');
             return selectedCountry;
         },
 
