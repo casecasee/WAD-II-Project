@@ -188,85 +188,6 @@
         .no-scroll {
             overflow: hidden;
         }
-        
-        /* connections added from here */
-        .travelers-section {
-            padding: 10px;
-            margin-top: 20px;
-            margin-bottom: 5px;
-            background-color: transparent;  /* Changed from #E8D5C4 to transparent */
-        }
-
-        .travelers-section h2 {
-            color: #764F37;
-            text-align: center;
-            margin-bottom: 20px;
-            font-family: 'Playfair Display', serif;
-        }
-
-        .travelers-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
-            padding: 10px;
-        }
-
-        .traveler-card {
-            background: white;  /* Keep white background for cards */
-            border-radius: 10px;
-            padding: 15px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
-        }
-
-        .traveler-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .traveler-info {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .traveler-avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            margin-right: 15px;
-            object-fit: cover;
-        }
-
-        .traveler-details {
-            flex-grow: 1;
-        }
-
-        .traveler-name {
-            font-weight: bold;
-            color: #764F37;
-            margin: 0;
-        }
-
-        .traveler-location {
-            color: #666;
-            font-size: 0.9em;
-            margin: 5px 0;
-        }
-
-        .traveler-interests {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 5px;
-            margin-bottom: 10px;
-        }
-
-        .interest-tag {
-            background: #DCB287;
-            color: white;
-            padding: 3px 8px;
-            border-radius: 15px;
-            font-size: 0.8em;
-        }
         .latest-posts-header {
             text-align: center;
             color: #764F37;
@@ -526,11 +447,11 @@
                 </ul>
             </nav>
 
-            <!-- Add Photo Button -->
+            
             <button @click="addItinerary" class="add-photo-button">Add Itinerary</button>
         </main>
 
-        <!-- Photo Modal -->
+        <!-- Photo Modal for latest posts when it is clicked -->
         <div v-if="selectedPhoto" class="modal" tabindex="-1" style="display: block;">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
@@ -544,6 +465,8 @@
                             <h4>Trip Itinerary</h4>
                             <div class="itinerary-details">
                                 <div class="trip-info">
+                                    <p><strong>Start Date:</strong> {{ selectedPhoto.startDate }}</p>
+                                    <p><strong>End Date:</strong> {{ selectedPhoto.endDate }}</p>
                                     <p><strong>Duration:</strong> {{ selectedPhoto.duration }} days</p>
                                     <p><strong>Destination:</strong> {{ selectedPhoto.destination }}</p>
                                     <p><strong>Total Cost:</strong> SGD {{ selectedPhoto.cost }}</p>
@@ -567,7 +490,7 @@
             </div>
         </div>
 
-        <!-- Add Photo Modal -->
+        <!-- Adding your itinerary -->
         <div v-if="showAddPhotoModal" class="modal" tabindex="-1" style="display: block;">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
@@ -603,6 +526,17 @@
                                 <input type="text" class="form-control" v-model="newPhoto.destination" required>
                             </div>
                             <div class="row mb-3">
+                                <div class="row mb-3">
+                                    <div class="col">
+                                        <label class="form-label">Start Date</label>
+                                        <input type="date" class="form-control" v-model="newPhoto.startDate" required>
+                                    </div>
+                                    <div class="col">
+                                        <label class="form-label">End Date</label>
+                                        <input type="date" class="form-control" v-model="newPhoto.endDate" required>
+                                    </div>
+                                </div>
+                                <!-- settle this later!!!!! -->
                                 <div class="col">
                                     <label class="form-label">Duration (days)</label>
                                     <input type="number" class="form-control" v-model="newPhoto.duration" required min="1">
@@ -640,287 +574,9 @@
             </div>
         </div>
     </div>
-
-    <script>
-        const { createApp } = Vue
-
-        createApp({
-            data() {
-                return {
-                    photos: [
-                        { 
-                            id: 1, 
-                            src: "https://images.unsplash.com/photo-1543783207-ec64e4d95325", 
-                            alt: "Barcelona Adventure", 
-                            desc: "Amazing 5-day trip through Barcelona!",
-                            duration: 5,
-                            destination: "Barcelona, Spain",
-                            cost: 2500,
-                            itinerary: [
-                                ["Check-in to hotel", "Visit La Sagrada Familia", "Evening tapas tour"],
-                                ["Park Güell tour", "Las Ramblas walking tour", "Flamenco show"],
-                                ["Day trip to Montserrat", "Wine tasting", "Beach sunset"],
-                                ["Gothic Quarter exploration", "Cooking class", "Dinner at local restaurant"],
-                                ["Shopping at local markets", "Beach day", "Farewell dinner"]
-                            ]
-                        },
-                        { 
-                            id: 2, 
-                            src: "https://www.planetware.com/wpimages/2020/02/france-in-pictures-beautiful-places-to-photograph-eiffel-tower.jpg", 
-                            alt: "Paris Escapade", 
-                            desc: "Romantic week in Paris",
-                            duration: 4,
-                            destination: "Paris, France",
-                            cost: 3000,
-                            itinerary: [
-                                ["Arrive in Paris", "Eiffel Tower visit", "Seine River dinner cruise"],
-                                ["Louvre Museum", "Notre-Dame Cathedral", "Champs-Élysées shopping"],
-                                ["Palace of Versailles", "French pastry class", "Moulin Rouge show"],
-                                ["Montmartre walk", "Sacré-Cœur", "Fine dining experience"]
-                            ]
-                        },
-                        { 
-                            id: 3, 
-                            src: "https://media.istockphoto.com/id/1380534040/photo/beautiful-view-of-amalfi-on-the-mediterranean-coast-with-lemons-in-the-foreground-italy.jpg?s=612x612&w=0&k=20&c=4UQak9WJkyvN8aEgkLEwjnV5EW2RiGfC_GZNeQaVJeo=", 
-                            alt: "Italian Dream", 
-                            desc: "Perfect Italian getaway!",
-                            duration: 6,
-                            destination: "Amalfi Coast, Italy",
-                            cost: 3500,
-                            itinerary: [
-                                ["Arrive in Naples", "Transfer to Positano", "Welcome dinner"],
-                                ["Positano beach day", "Cooking class", "Sunset aperitivo"],
-                                ["Capri day trip", "Blue Grotto tour", "Marina Grande dinner"],
-                                ["Ravello visit", "Villa Rufolo", "Classical music concert"],
-                                ["Amalfi town tour", "Limoncello tasting", "Seafood dinner"],
-                                ["Path of the Gods hike", "Beach relaxation", "Farewell feast"]
-                            ]
-                        },
-                        { 
-                            id: 4, 
-                            src: "https://t3.ftcdn.net/jpg/02/65/23/70/360_F_265237090_Muthvb72m2POYFjyx7F5UCQLh9JdBtKN.jpg", 
-                            alt: "Tokyo Explorer", 
-                            desc: "Unforgettable Japan experience!",
-                            duration: 5,
-                            destination: "Tokyo, Japan",
-                            cost: 4000,
-                            itinerary: [
-                                ["Arrive in Tokyo", "Shibuya crossing", "Ramen experience"],
-                                ["Tsukiji market", "Senso-ji Temple", "Robot Restaurant"],
-                                ["TeamLab Borderless", "Harajuku shopping", "Izakaya dinner"],
-                                ["Mt. Fuji day trip", "Hot spring experience", "Traditional ryokan stay"],
-                                ["Akihabara tour", "Sushi making class", "Farewell karaoke"]
-                            ]
-                        },
-                        { 
-                            id: 5, 
-                            src: "https://images.unsplash.com/photo-1578637387939-43c525550085", 
-                            alt: "Seoul Adventure", 
-                            desc: "K-culture and beyond!",
-                            duration: 5,
-                            destination: "Seoul, South Korea",
-                            cost: 2800,
-                            itinerary: [
-                                ["Arrive in Seoul", "Myeongdong shopping", "Korean BBQ dinner"],
-                                ["Gyeongbokgung Palace", "Hanbok experience", "K-pop concert"],
-                                ["DMZ tour", "Hongdae street food", "Noraebang night"],
-                                ["Namsan Tower", "Cooking class", "Han River cruise"],
-                                ["Temple stay experience", "Gangnam exploration", "Farewell dinner"]
-                            ]
-                        },
-                        { 
-                            id: 6, 
-                            src: "https://images.unsplash.com/photo-1549893072-4bc678117f45", 
-                            alt: "Vietnam Discovery", 
-                            desc: "Cultural journey through Vietnam",
-                            duration: 7,
-                            destination: "Vietnam",
-                            cost: 2200,
-                            itinerary: [
-                                ["Arrive in Hanoi", "Old Quarter walk", "Water puppet show"],
-                                ["Ha Long Bay cruise", "Cave exploration", "Sunset dinner"],
-                                ["Cooking class", "Temple visits", "Night market"],
-                                ["Fly to Hoi An", "Ancient town tour", "Lantern making"],
-                                ["My Son Sanctuary", "Beach relaxation", "Food tour"],
-                                ["Mekong Delta", "Floating market", "Local homestay"],
-                                ["Cu Chi tunnels", "Saigon tour", "Farewell dinner"]
-                            ]
-                        }
-                    ],
-                    selectedPhoto: null,
-                    currentPage: 1,
-                    photosPerPage: 8,
-                    showAddPhotoModal: false,
-                    newPhoto: { src: '', alt: '', desc: '' },
-                    travelers: [
-                        {
-                            id: 1,
-                            name: "Sarah Chen",
-                            location: "Singapore",
-                            avatar: "https://randomuser.me/api/portraits/women/1.jpg",
-                            interests: ["Photography", "Food", "Culture"],
-                            connected: false
-                        },
-                        {
-                            id: 2,
-                            name: "John Smith",
-                            location: "United States",
-                            avatar: "https://randomuser.me/api/portraits/men/1.jpg",
-                            interests: ["Hiking", "Adventure", "History"],
-                            connected: false
-                        },
-                        {
-                            id: 3,
-                            name: "Maria Garcia",
-                            location: "Spain",
-                            avatar: "https://randomuser.me/api/portraits/women/2.jpg",
-                            interests: ["Art", "Museums", "Local Markets"],
-                            connected: false
-                        }
-                    ],
-                    previewUrl: null,
-                }
-            },
-            methods: {
-                toggleConnect(travelerId) {
-                    const traveler = this.travelers.find(t => t.id === travelerId);
-                    if (traveler) {
-                        traveler.connected = !traveler.connected;
-                    }
-                },
-                openModal(photo) {
-                    this.selectedPhoto = photo;
-                    document.body.classList.add('no-scroll');
-                },
-                closeModal() {
-                    this.selectedPhoto = null;
-                    document.body.classList.remove('no-scroll');
-                },
-                changePage(page) {
-                    if (page >= 1 && page <= this.totalPages) {
-                        this.currentPage = page;
-                    }
-                },
-                addItinerary() {
-                    this.newPhoto = {
-                        src: '',
-                        alt: '',
-                        desc: '',
-                        destination: '',
-                        duration: 1,
-                        cost: 0,
-                        itinerary: [[]]
-                    };
-                    this.showAddPhotoModal = true;
-                },
-                closeAddPhotoModal() {
-                    this.showAddPhotoModal = false;
-                    this.newPhoto = { 
-                        src: '', 
-                        alt: '', 
-                        desc: '',
-                        destination: '',
-                        duration: 1,
-                        cost: 0,
-                        itinerary: [[]]
-                    };
-                    this.previewUrl = null;
-                    URL.revokeObjectURL(this.previewUrl);
-                    document.body.classList.remove('no-scroll');
-                },
-                getDayActivities(dayIndex) {
-                    if (!this.newPhoto.itinerary[dayIndex]) {
-                        this.$set(this.newPhoto.itinerary, dayIndex, []);
-                    }
-                    return this.newPhoto.itinerary[dayIndex];
-                },
-                addActivity(dayIndex) {
-                    if (!this.newPhoto.itinerary[dayIndex]) {
-                        this.newPhoto.itinerary[dayIndex] = [];
-                    }
-                    this.newPhoto.itinerary[dayIndex].push('');
-                },
-                removeActivity(dayIndex, activityIndex) {
-                    this.newPhoto.itinerary[dayIndex].splice(activityIndex, 1);
-                },
-                handleFileUpload(event) {
-                    const file = event.target.files[0];
-                    if (file) {
-                        this.previewUrl = URL.createObjectURL(file);
-                        const reader = new FileReader();
-                        reader.onload = (e) => {
-                            this.newPhoto.src = e.target.result;
-                        };
-                        reader.readAsDataURL(file);
-                    }
-                },
-                submitNewItinerary() {
-                    const newId = this.photos.length + 1;
-                    const newItinerary = {
-                        id: newId,
-                        src: this.newPhoto.src,
-                        alt: this.newPhoto.alt,
-                        desc: this.newPhoto.desc,
-                        destination: this.newPhoto.destination,
-                        duration: this.newPhoto.duration,
-                        cost: this.newPhoto.cost,
-                        itinerary: this.newPhoto.itinerary
-                    };
-                    
-                    this.photos.push(newItinerary);
-                    this.closeAddPhotoModal();
-                    this.changePage(this.totalPages);
-                },
-                async addToMyTrips(photo) {
-                    try {
-                        await this.saveTrip({
-                            title: photo.alt,
-                            destination: photo.destination,
-                            duration: photo.duration,
-                            cost: photo.cost,
-                            itinerary: photo.itinerary
-                        });
-                        alert('Trip added to your itineraries successfully!');
-                        this.closeModal();
-                    } catch (error) {
-                        console.error('Error adding trip:', error);
-                        alert('Failed to add trip to your itineraries');
-                    }
-                },
-                async saveTrip(tripData) {
-                    // Implement your save logic here
-                    console.log('Saving trip:', tripData);
-                },
-                handleEscKey(event) {
-                    if (event.key === 'Escape') {
-                        if (this.selectedPhoto) {
-                            this.closeModal();
-                        }
-                        if (this.showAddPhotoModal) {
-                            this.closeAddPhotoModal();
-                        }
-                    }
-                }
-            },
-            computed: {
-                displayedPhotos() {
-                    const start = (this.currentPage - 1) * this.photosPerPage;
-                    const end = start + this.photosPerPage;
-                    return this.photos.slice(start, end);
-                },
-                totalPages() {
-                    return Math.ceil(this.photos.length / this.photosPerPage);
-                }
-            },
-            mounted() {
-                document.addEventListener('keydown', this.handleEscKey);
-            },
-            beforeUnmount() {
-                document.removeEventListener('keydown', this.handleEscKey);
-            }
-        }).mount('#app')
     </script>
     <script src="navbarLoader.js"></script>
+    <script src="social.js" type="module"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
 </body>
