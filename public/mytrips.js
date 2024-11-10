@@ -1,5 +1,5 @@
 // <!------------------------------------------------------ USES API TO GET IMAGE ------------------------------------------------------------------->
-import { UID, get_info } from './functions.js';
+import { UID, get_info, delete_trip } from './functions.js';
 
 const app = Vue.createApp({
     data() {
@@ -140,8 +140,42 @@ const app = Vue.createApp({
             window.location.href = `mytripinfo.html?tripID=${tripID}`;
         },
 
-        deleteTrip(tripID){
-            window.location.href = `mytripinfo.html?tripID=${tripID}`;
+        async deleteTrip(tripID) {
+            // Show a confirmation dialog
+            const result = await Swal.fire({
+                title: 'Are you sure?',
+                text: 'Do you really want to delete this trip? This action cannot be undone.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!'
+            });
+        
+            if (!result.isConfirmed) return;
+        
+            try {
+                await delete_trip(tripID, this.UID);
+                
+                // Remove the trip from the lists
+                this.currentTrips = this.currentTrips.filter(trip => trip.id !== tripID);
+                this.oldTrips = this.oldTrips.filter(trip => trip.id !== tripID);
+                
+                Swal.fire({
+                    title: 'Deleted!',
+                    text: 'Your trip has been deleted successfully.',
+                    icon: 'success',
+                    confirmButtonColor: '#3085d6'
+                });
+            } catch (error) {
+                console.error("Failed to delete trip:", error);
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'There was a problem deleting the trip. Please try again later.',
+                    icon: 'error',
+                    confirmButtonColor: '#d33'
+                });
+            }
         },
 
         updateCarouselButtonsVisibility() {

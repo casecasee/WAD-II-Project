@@ -221,7 +221,7 @@ export const delete_trip = async function delete_trip(tripID, UID) {
         trips.splice(index, 1);
         await updateDoc(docRef_u, {'trips' : trips});
 
-        alert('trip deleted successfully');
+        // alert('trip deleted successfully');
     }
     catch(error) {
         const errCode = error.code;
