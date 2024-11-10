@@ -23,6 +23,7 @@
     <div id="navbar-app"> 
         <navbar-component></navbar-component> 
     </div> 
+    
 
     <!-- Main Content -->
     <div id="app" class="container-fluid my-4">
@@ -58,7 +59,7 @@
                     </div>
                     <div class="mb-4">
                         <label for="flight-cost" class="form-label">Cost Of Flight ($)</label>
-                        <input type="text" class="form-control" v-model="flightCost" placeholder="Enter Cost">
+                        <input type="number" class="form-control" v-model="flightCost" placeholder="Enter Cost">
                     </div>
                     <button type="submit" class="btn btn-primary w-100" @click.prevent="addFlight">Confirm</button>
                 </form>
@@ -110,7 +111,7 @@
                 <!-- Add Flights button -->
                 <div class="text-center mt-4">
                     <button 
-                        type="button" 
+                        type="submit" 
                         class="btn btn-primary w-100" 
                         v-if="flights.length > 0" 
                         @click="addAllFlightsToTrip"
@@ -132,7 +133,12 @@
     <script src = "navbarLoader.js"></script>
      
     <script type="module">
-        import { add_flights_to_trip } from './functions.js';
+        import { getFirestore, doc, getDoc, getDocs, collection, updateDoc } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
+        import { firebaseApp } from "./stuff.js";
+        
+        const db = getFirestore(firebaseApp);
+        // import { add_flights_to_trip, fetchTripData } from './functions.js';
         // const urlParams = new URLSearchParams (window. location.search);
         // const tripID = urlParams get 'tripID');
         const app = Vue.createApp({
@@ -187,6 +193,32 @@
                     this.flightNumber = '';
                     this.seatNumber = '';
                     this.flightCost = '';
+                },
+                async getUserID() {
+                    const auth = getAuth(firebaseApp);
+                    return new Promise((resolve, reject) => {
+                        onAuthStateChanged(auth, (user) => {
+                            if (user) {
+                                console.log(user.uid); // Log the user object here
+                                resolve(user.uid);
+                            } else {
+                                window.location.href = 'index.html'; // Redirect if no user is signed in
+                                reject("No user signed in");
+                            }
+                        });
+                    });
+                },
+
+                async fetchTripData(tripID) {
+                    const tripRef = doc(db, "trips", tripID);
+                    const tripSnap = await getDoc(tripRef);
+                    if (tripSnap.exists()) {
+                        const tripData = tripSnap.data();
+                        console.log("Fetched trip data for tripID:", tripID);
+                        console.log(tripData); // This will show the entire data object from Firestore
+                    } else {
+                        console.error("No such trip found");
+                    }
                 }
             }
         });

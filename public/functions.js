@@ -114,7 +114,7 @@ export const get_info = async function get_info_trips(UID) {
     
     for (let trip of trips) {
         const info = await trip_info(trip);
-        info['tripID'] = trip;
+        info.tripID = trip;
         rt.push(info);
     }
     return rt
@@ -207,11 +207,20 @@ export const add_flights_to_trip = async function add_flights_to_trip(tripID, fl
     await updateDoc(docRef, { 'flights' : newFlights });
 };
 
-export const delete_trip = async function delete_trip(tripID) {
-    const docRef = doc(db, "trips", tripID);
+export const delete_trip = async function delete_trip(tripID, UID) {
+    const docRef_t = doc(db, "trips", tripID);
+    const docRef_u = doc(db, "users", UID);
 
     try {
-        await deleteDoc(docRef);
+        await deleteDoc(docRef_t);
+        const doc_snap = await getDoc(docRef_u);
+        const trips = doc_snap.data().trips;
+        console.log(trips);
+        const index = trips.indexOf(tripID);
+        console.log(index);
+        trips.splice(index, 1);
+        await updateDoc(docRef_u, {'trips' : trips});
+
         alert('trip deleted successfully');
     }
     catch(error) {

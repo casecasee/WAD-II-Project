@@ -33,7 +33,8 @@ const app = Vue.createApp({
             await add_attraction('z5NIL74rFcYBtY4eSqR8', 'Singapore Zoo', '2024-03-12', 100)
         }, 
         async del() {
-            await delete_trip('l8499WmessHXOqxULDAA')
+            await delete_trip("gsASdlvsa3GKGla7NWzZ", 'H3TnHlYTMVMAraHOOqkXkfrusFd2')
+            // change the 2 values to test (go firebase console find)
         }, 
         async get() {
             this.everything = await get_all_trips();
