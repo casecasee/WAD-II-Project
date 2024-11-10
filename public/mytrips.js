@@ -10,8 +10,8 @@ const app = Vue.createApp({
             oldTrips: [],
             scrollPosition: { current: 0, old: 0 },
             containerWidth: { current: 0, old: 0 },
-            showCurrentButtons: false, // Track visibility for current trips
-            showOldButtons: false,     // Track visibility for old trips
+            showCurrentButtons: false,
+            showOldButtons: false,  
         };
     },
 
@@ -51,7 +51,7 @@ const app = Vue.createApp({
         // },
 
         async fetchCountryImage(destination) {
-            const query = `Famous places in ${destination}`;
+            const query = `Beautiful locations ${destination}`;
             // const query = `famous place ${destination}`;
 
             const url = `https://api.unsplash.com/photos/random?client_id=JivBMMHuK8nWdlawocBWaYEZBRT35nzdtkNs8yJM-6g&query=${encodeURIComponent(query)}`;
@@ -93,8 +93,6 @@ const app = Vue.createApp({
                     image: image,
                     startdate: trip.startdate,
                     enddate: trip.enddate,
-                    flightDate: firstFlight.date, 
-                    flightInfo: firstFlight.flightInfo || "No flights available" 
                 };
                 
                 // if the trip is current or old
@@ -136,8 +134,12 @@ const app = Vue.createApp({
         async disp() {
             this.all = await get_info(this.UID); 
         },
-        viewDetails(tripID){
-            window.location.href = `mytripinfo.html?tripID=${tripID}`;
+        viewDetails(tripID, destination){
+            // Store the tripID localStorage
+            localStorage.setItem('tripID', tripID);
+
+            // country in the URL
+            window.location.href = `mytripinfo.html?country=${encodeURIComponent(destination)}`;
         },
 
         async deleteTrip(tripID) {

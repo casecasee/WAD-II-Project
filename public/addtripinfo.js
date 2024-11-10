@@ -92,9 +92,9 @@ const app = Vue.createApp({
     
             const tripID = await add_info_trips(this.selectedCountry, this.start, this.end, this.budget);
             await update_trips_users(this.UID, tripID);
-
-            window.location.href = `mytripinfo.html?country=${tripID}`;
-            localStorage.setItem('selectedCountry', this.selectedCountry);
+            
+            localStorage.setItem('tripID', tripID);
+            window.location.href = `mytripinfo.html?country=${encodeURIComponent(this.selectedCountry)}`;
         },
         change() {
             this.entry = this.selectedCountry;
