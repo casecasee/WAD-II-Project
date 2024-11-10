@@ -51,11 +51,11 @@
                 </div>
                 <div v-for="day in days" :key="day.id" class="day-card">
                     <div class="day-header">
-                        <h3>{{ day.name }}</h3>
-                        <span class="day-date">{{ day.date }}</span>
+                        <h3>{{ day.date }}</h3>
+                        <!-- <span class="day-date">{{ day.date }}</span> -->
                     </div>
                     <div v-for="activity in day.activities" :key="activity.id" class="activity-item">
-                        <span class="activity-time">{{ activity.time }}</span>
+                        <span class="activity-time">{{ activity.formattedTime }}</span>
                         <div class="activity-details">
                             <span>{{ activity.description }}</span>
                             <span class="activity-type">{{ activity.type }}</span>
@@ -127,36 +127,7 @@
 
             <!-- Budget Section -->
             <div class="budget-section">
-                <div class="budget-header">
-                    <h2>Remaining Budget</h2>
-                    <h3 :style="{ color: remainingBudgetColor }">${{ remainingBudgetCalc.toFixed(2) }}</h3>
-                    <!-- Budget Progress Bar -->
-                    <div class="budget-progress">
-                        <div 
-                            class="budget-bar" 
-                            :style="{ 
-                                width: budgetBarWidth, 
-                                backgroundColor: budgetBarColor 
-                            }">
-                        </div>
-                    </div>
-                    <h5>Total Spent:</h5>
-                    <h5> <strong>${{ totalSpent.toFixed(2) }}</strong> / ${{ budget.total.toFixed(2) }}</h5>
-                </div>
-                <div class="budget-details">
-                    <div class="budget-row">
-                        <span><h5>Hotels:</h5></span>
-                        <span>${{ budget.hotels.toFixed(2) }}</span>
-                    </div>
-                    <div class="budget-row">
-                        <span><h5>Flights:</h5></span>
-                        <span>${{ budget.flights.toFixed(2) }}</span>
-                    </div>
-                    <div class="budget-row">
-                        <span><h5>Activities:</h5></span>
-                        <span>${{ budget.activities.toFixed(2) }}</span>
-                    </div>
-                </div>
+                {{days}}
             </div>
         </div>
     </div>
@@ -237,7 +208,6 @@
                 }
             },
             methods: {
-                
                 getTripIDFromURL() {
                     const urlParams = new URLSearchParams(window.location.search);
                     this.tripID = urlParams.get('tripID');
@@ -268,6 +238,48 @@
                     const options = { year: 'numeric', month: 'short', day: '2-digit' };
                     const date = new Date(dateString); // Convert string to Date object
                     return date.toLocaleDateString('en-GB', options); // 'en-GB' formats as 'dd mmm yyyy'
+                },
+
+                groupAndSortActivities(activities) {
+                    // Helper function to format date
+                    const formatDate = (timestamp) => {
+                        const date = new Date(timestamp * 1000);
+                        return date.toLocaleDateString('en-GB', {
+                            day: '2-digit',
+                            month: 'short',
+                            year: 'numeric',
+                        });
+                    };
+
+                    // Helper function to format time
+                    const formatTime = (timestamp) => {
+                        const date = new Date(timestamp * 1000);
+                        return date.toLocaleTimeString('en-US', {
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            hour12: true,
+                        });
+                    };
+
+                    // Group activities by date
+                    const grouped = activities.reduce((acc, activity) => {
+                        const formattedDate = formatDate(activity.dateTime.seconds);
+                        if (!acc[formattedDate]) {
+                            acc[formattedDate] = [];
+                        }
+                        acc[formattedDate].push({
+                            ...activity,
+                            formattedTime: formatTime(activity.dateTime.seconds),
+                        });
+                        return acc;
+                    }, {});
+
+                    // Sort each group by time
+                    Object.keys(grouped).forEach((date) => {
+                        grouped[date].sort((a, b) => a.dateTime.seconds - b.dateTime.seconds);
+                    });
+
+                    return grouped;
                 },
 
                 // Get the UID of the logged-in user
@@ -309,20 +321,49 @@
                         console.log("Fetched trip data for tripID:", tripID);
                         console.log(tripData); // This will show the entire data object from Firestore
 
-                        // const tripDetails = {
-                        //     id: tripID,
-                        //     destination: tripData.destination,
-                        //     startDate: tripData.startdate,
-                        //     endDate: tripData.enddate,
-                        //     budget: tripData.budget,
-                        //     flights: tripData.flights,
-                        //     hotels: tripData.hotels,
-                        //     attractions: tripData.attractions
-                        // };
+                
                         this.startDate = tripData.startdate;
                         this.endDate = tripData.enddate;
                         this.destination = tripData.destination;
                         this.budget.total = tripData.budget || 0;
+                        
+                        // Initialize the list of activities (hotels + attractions)
+                        let activities = [];
+
+                        // Map hotels to activities
+                        if (tripData.hotels && tripData.hotels.length > 0) {
+                            activities.push(...tripData.hotels.map(hotel => ({
+                                type: "Hotel Check-In",
+                                description: hotel.h_name,
+                                dateTime: hotel.checkin,
+                                cost: hotel.cost
+                            })));
+                        }
+
+                        // Map attractions to activities
+                        if (tripData.attractions && tripData.attractions.length > 0) {
+                            activities.push(...tripData.attractions.map(attraction => ({
+                                type: "Activity",
+                                description: attraction.a_name,
+                                dateTime: attraction.date,
+                                cost: attraction.cost
+                            })));
+                        }
+
+                        // Sort activities by date/time
+                        activities.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+                        console.log('Activities before grouping:', activities);
+
+                        // Group activities by day
+                        let groupedDays = this.groupAndSortActivities(activities);
+                        console.log('Grouped Days:', groupedDays);
+
+                        // Update the days data property
+                        this.days =  Object.keys(groupedDays).map(date => ({
+                            date, // e.g., "13 Nov 2024"
+                            activities: groupedDays[date] // Array of activities for that day
+                        }));
 
                         this.flights = tripData.flights || [];
                         this.budget.flights = this.flights.reduce((sum, flight) => sum + parseFloat(flight.flight_cost || 0), 0);
