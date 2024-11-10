@@ -30,7 +30,7 @@ body::before {
     align-items: center; 
     justify-content: center; 
     color: white; 
-    padding-top: 20px;
+    padding-top: 50px;
 } 
 
 .header-title { 
@@ -74,27 +74,15 @@ body::before {
     background-color: #764F37;
     transform: scale(1.05);
 }
-@media screen and (max-width: 480px) {
-    .header {
-        padding: 15px 0;   /* Adjust header padding on smaller screens */
-    }
+/*  */
 
-    .header-title {
-        font-size: 36px;    /* Reduce title size on smaller screens */
-    }
-
-    .nav-buttons {
-        flex-direction: column;  /* Stack buttons vertically */
-        align-items: center;     /* Center buttons */
-        margin-top: 10px;         /* Adjust margin between title and buttons */
-    }
-
-    .btn {
-        font-size: 16px;          /* Reduce button font size */
-        padding: 10px 20px;       /* Adjust button padding */
-        margin: 5px 0;            /* Add some space between buttons */
-    }
+#navbar-app{
+    position: absolute; 
+    top: 0; 
+    width: 100%; 
+    z-index: 2;      
 }
+
 /* New styles for the revamped layout */
 .trip-container {
     display: grid;
