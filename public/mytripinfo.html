@@ -61,6 +61,7 @@
                             <span class="activity-type">{{ activity.type }}</span>
                         </div>
                     </div>
+                    <button class="activity-type" @click="navigateToAttractions">+ Attraction</button>
                 </div>
             </div>
             
@@ -170,7 +171,7 @@
                 if (this.userID) {
                     this.loadUserTrips();
                 }
-                this.getTripIDFromURL();
+                this.getTripIDFromURL(); // this function sets both country and tripid
             },
             computed: {
                 totalSpent() {
@@ -319,17 +320,14 @@
                     if (tripSnap.exists()) {
                         const tripData = tripSnap.data();
 
-                        // Log all the trip data here to see everything retrieved
                         console.log("Fetched trip data for tripID:", tripID);
-                        console.log(tripData); // This will show the entire data object from Firestore
-
+                        console.log(tripData); 
                 
                         this.startDate = tripData.startdate;
                         this.endDate = tripData.enddate;
                         this.destination = tripData.destination;
                         this.budget.total = tripData.budget || 0;
                         
-                        // Initialize the list of activities (hotels + attractions)
                         let activities = [];
 
                         // Map hotels to activities
