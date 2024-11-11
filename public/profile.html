@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="navbar.css"> 
 
 
-    <title>ROAMEO - Profile</title>
+    <title>Profile</title>
     <style>
         body { 
             font-family: 'Montserrat', sans-serif; 
@@ -43,34 +43,6 @@
             background: rgba(0, 0, 0, 0.5); /* Dark overlay */ 
             background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.2)); /* Gradient effect */ 
         } 
-        /* need or no need?
-        .header-title { 
-            font-family: 'Playfair Display', serif; 
-            font-size: 48px; 
-            font-weight: 700; 
-            margin: 0; 
-        } 
-        .header-subtitle { 
-            font-size: 18px; 
-            margin-top: 10px; 
-        } 
-        .explore-button { 
-            display: inline-block; 
-            margin-top: 20px; 
-            padding: 12px 24px; 
-            font-size: 16px; 
-            color: #764F37; 
-            background-color: #DCB287; 
-            border: none; 
-            border-radius: 5px; 
-            cursor: pointer; 
-            font-weight: bold; 
-            text-decoration: none; 
-        } 
-        .explore-button:hover { 
-            background-color: #764F37; 
-            color: white; 
-        }  */
         #navbar-app{ 
             position: absolute;  
             top: 0;  
@@ -86,7 +58,7 @@
         /* Profile Container Styles */
         .profile-container {
             position: absolute;
-            top: 40px;
+            top: 100px;
             left: 0;
             right: 0;
             max-width: 1200px;
@@ -95,7 +67,7 @@
             display: grid;
             grid-template-columns: 300px 1fr;
             gap: 30px;
-            z-index: 2;
+            z-index: 1;
         }
 
         /* Sidebar Styles */
@@ -262,153 +234,6 @@
 
 
     </style>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
-    <script>
-        import { initializeApp } from "firebase/app";
-        import { getAuth } from "firebase/auth";
-        import { getFirestore } from "firebase/firestore";
-        // Your Firebase configuration
-        const firebaseConfig = {
-            // Your config object from Firebase console
-            apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-            authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-            projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-            storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-            messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-            appId: import.meta.env.VITE_FIREBASE_APP_ID,
-        };
-        
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db = firebase.firestore();
-    </script>
-    <script>
-        // Get current user data when page loads
-        document.addEventListener('DOMContentLoaded', async () => {
-            const user = auth.currentUser;
-            if (user) {
-                try {
-                    const userDoc = await db.collection('users').doc(user.uid).get();
-                    if (userDoc.exists) {
-                        const userData = userDoc.data();
-                        document.getElementById('username').value = userData.username || '';
-                        document.getElementById('email').value = userData.email || '';
-                        document.getElementById('language').value = userData.preferredLanguage || 'en';
-                    }
-                } catch (error) {
-                    console.error('Error loading user data:', error);
-                    alert('Error loading user data. Please try again.');
-                }
-            } else {
-                window.location.href = 'login.html'; // Redirect if not logged in
-            }
-        });
-
-        // Handle form submission
-        document.getElementById('settings-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const user = auth.currentUser;
-            if (!user) {
-                alert('Please log in to save settings');
-                return;
-            }
-
-            const username = document.getElementById('username').value;
-            const email = document.getElementById('email').value;
-            const language = document.getElementById('language').value;
-
-            try {
-                // Update email in Firebase Auth if it changed
-                if (email !== user.email) {
-                    await user.updateEmail(email);
-                }
-
-                // Update user data in Firestore
-                await db.collection('users').doc(user.uid).update({
-                    username: username,
-                    email: email,
-                    preferredLanguage: language,
-                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
-
-                alert('Settings updated successfully!');
-            } catch (error) {
-                console.error('Error updating settings:', error);
-                alert('Error updating settings: ' + error.message);
-            }
-        });
-
-        // Add password change functionality
-        async function changePassword() {
-            const user = auth.currentUser;
-            const oldPassword = document.getElementById('oldPassword').value;
-            const newPassword = document.getElementById('newPassword').value;
-
-            try {
-                // Reauthenticate user
-                const credential = firebase.auth.EmailAuthProvider.credential(
-                    user.email, 
-                    oldPassword
-                );
-                await user.reauthenticateWithCredential(credential);
-                
-                // Update password
-                await user.updatePassword(newPassword);
-                alert('Password updated successfully!');
-            } catch (error) {
-                console.error('Error changing password:', error);
-                alert('Error changing password: ' + error.message);
-            }
-        }
-
-        // Add profile picture update functionality
-        async function updateProfilePicture(file) {
-            const user = auth.currentUser;
-            if (!user || !file) return;
-
-            try {
-                const storageRef = firebase.storage().ref();
-                const profilePicRef = storageRef.child(`profile-pics/${user.uid}`);
-                
-                // Upload file
-                await profilePicRef.put(file);
-                
-                // Get download URL
-                const downloadURL = await profilePicRef.getDownloadURL();
-                
-                // Update user profile
-                await user.updateProfile({
-                    photoURL: downloadURL
-                });
-                
-                // Update in Firestore
-                await db.collection('users').doc(user.uid).update({
-                    photoURL: downloadURL
-                });
-
-                // Update display
-                document.querySelector('.user-info img').src = downloadURL;
-                alert('Profile picture updated successfully!');
-            } catch (error) {
-                console.error('Error updating profile picture:', error);
-                alert('Error updating profile picture: ' + error.message);
-            }
-        }
-
-        // Add logout functionality
-        function logout() {
-            auth.signOut().then(() => {
-                window.location.href = 'login.html';
-            }).catch((error) => {
-                console.error('Error logging out:', error);
-                alert('Error logging out: ' + error.message);
-            });
-        }
-    </script>
 </head>
 <body>
     <div class="header"> 
@@ -422,12 +247,12 @@
         <div class="sidebar">
             <div class="user-info">
                 <img src="dp.png" alt="Profile Picture">
-                <h3>John Doe</h3>
+                <h3>John Doe</h3> <!-- get user info here -->
             </div>
             <div class="settings-menu">
-                <a href="#" onclick="showTab('account')">Account Settings</a>
-                <a href="#" onclick="showTab('game')">Language Game</a>
-                <a href="#" onclick="showTab('badges')">My Badges</a>
+                <a href="#" class="tab-link" data-tab="account">Account Settings</a>
+                <a href="#" class="tab-link" data-tab="game">Language Game</a>
+                <a href="#" class="tab-link" data-tab="badges">My Badges</a>
             </div>
         </div>
 
@@ -441,31 +266,36 @@
                         <label for="username" class="form-label">Username</label>
                         <input type="text" class="form-control" id="username" required>
                     </div>
-                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <div id="alert-container" style="display: none;">
+                        <div class="alert" role="alert"></div>
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="save-profile-btn">
+                        <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                        Save Changes
+                    </button>
                 </form>
 
                 <hr>
-
-                <h3>Change Password</h3>
-                <form id="password-form" onsubmit="event.preventDefault(); changePassword();">
-                    <div class="mb-3">
-                        <label for="oldPassword" class="form-label">Current Password</label>
-                        <input type="password" class="form-control" id="oldPassword" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="newPassword" class="form-label">New Password</label>
-                        <input type="password" class="form-control" id="newPassword" required>
-                    </div>
-                    <button type="submit" class="btn btn-warning">Change Password</button>
-                </form>
-
-                <hr>
-
+<!-- 
                 <h3>Profile Picture</h3>
-                <div class="mb-3">
+                <div class="mb-4">
                     <label for="profilePic" class="form-label">Update Profile Picture</label>
                     <input type="file" class="form-control" id="profilePic" accept="image/*" 
                            onchange="updateProfilePicture(this.files[0])">
+                </div> -->
+                <h3>Profile Picture</h3>
+                <div class="mb-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <img id="profile-preview" src="dp.png" alt="Profile Picture" 
+                            class="rounded-circle me-3" style="width: 100px; height: 100px; object-fit: cover;">
+                        <div>
+                            <label for="profilePic" class="form-label">Update Profile Picture</label>
+                            <input type="file" class="form-control" id="profilePic" accept="image/*">
+                        </div>
+                    </div>
+                    <div id="upload-progress" class="progress mb-2 d-none">
+                        <div class="progress-bar" role="progressbar" style="width: 0%"></div>
+                    </div>
                 </div>
 
                 <hr>
@@ -482,7 +312,7 @@
                         <p id="current-word">Bonjour</p>
                         <div class="game-input-group">
                             <input type="text" id="answer" placeholder="Type the translation">
-                            <button onclick="checkAnswer()" class="btn btn-primary">Submit</button>
+                            <button id="submit-answer" class="btn btn-primary">Submit</button>
                         </div>
                     </div>
                     <div class="score-display">
@@ -529,18 +359,31 @@
     </div>
 
     <script>
-        // Tab Functionality
         function showTab(tabId) {
-            // Hide all tabs
-            document.querySelectorAll('.tab-content').forEach(tab => {
-                tab.style.display = 'none';
-            });
-            // Show selected tab
-            document.getElementById(tabId).style.display = 'block';
-        }
+        // Hide all tabs
+        document.querySelectorAll('.tab-content').forEach(tab => {
+            tab.style.display = 'none';
+        });
+        // Show selected tab
+        document.getElementById(tabId).style.display = 'block';
+    }
 
-        // Language Game Logic
-        const words = [
+    // Add event listeners to tab links
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.tab-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const tabId = e.target.getAttribute('data-tab');
+                showTab(tabId);
+            });
+        });
+
+        // Show account tab by default
+        showTab('account');
+    });
+
+    // LANGUAGE GAME
+    const words = [
             // French words
             { word: 'Bonjour', translation: 'Hello' },
             { word: 'Merci', translation: 'Thank you' },
@@ -606,6 +449,22 @@
         let score = 0;
         let streak = 0;
 
+        document.addEventListener('DOMContentLoaded', () => {
+        const submitButton = document.getElementById('submitAnswer');
+        const answerInput = document.getElementById('answer');
+
+        // Add click event listener to submit button
+        submitButton.addEventListener('click', checkAnswer);
+
+        // Add enter key listener to input field
+        answerInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                checkAnswer();
+            }
+        });
+        document.getElementById('current-word').textContent = words[currentWordIndex].word;
+    });
+
         function checkAnswer() {
             const answer = document.getElementById('answer').value.toLowerCase().trim();
             const correctAnswer = words[currentWordIndex].translation.toLowerCase();
@@ -631,7 +490,6 @@
             document.getElementById('current-word').textContent = words[currentWordIndex].word;
             document.getElementById('answer').value = '';
         }
-
         function showSuccessMessage(message) {
             const gameCard = document.querySelector('.game-card');
             const messageDiv = document.createElement('div');
@@ -651,12 +509,333 @@
             gameCard.appendChild(messageDiv);
             setTimeout(() => messageDiv.remove(), 3000);
         }
+    </script>
+    <script type="module">
+        import { 
+            getAuth, 
+            onAuthStateChanged, 
+            updateProfile, 
+            updatePassword,
+            reauthenticateWithCredential,
+            signOut
+        } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
 
-        // Show account tab by default
-        showTab('account');
+        import { 
+            getFirestore,
+            doc,
+            getDoc,
+            updateDoc,
+            serverTimestamp
+        } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";  
+
+        import { 
+            getStorage, 
+            ref, 
+            uploadBytesResumable, 
+            getDownloadURL 
+        } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-storage.js";
+
+        import { firebaseApp } from "./stuff.js";
+
+        const db = getFirestore(firebaseApp);
+
+        // Function to show alerts
+        function showAlert(message, type = 'success') {
+            const alertContainer = document.getElementById('alert-container');
+            const alertElement = alertContainer.querySelector('.alert');
+    
+            alertElement.className = `alert alert-${type}`;
+            alertElement.textContent = message;
+            alertContainer.style.display = 'block';
+    
+            // Auto hide after 5 seconds
+            setTimeout(() => {
+                alertContainer.style.display = 'none';
+            }, 5000);
+        }
+
+        // Handle profile settings form submission
+        document.getElementById('settings-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const auth = getAuth(firebaseApp);
+            const user = auth.currentUser;
+            
+            if (!user) {
+                showAlert('Please log in to save settings', 'danger');
+                return;
+            }
+
+            const username = document.getElementById('username').value.trim();
+            const submitButton = document.getElementById('save-profile-btn');
+            const spinner = submitButton.querySelector('.spinner-border');
+            
+            try {
+                // Show loading state
+                submitButton.disabled = true;
+                spinner.classList.remove('d-none');
+
+                // Update user data in Firestore
+                const userDocRef = doc(db, 'users', user.uid);
+                await updateDoc(userDocRef, {
+                    // changed here from username:username to name:username 
+                    name: username,
+                    updatedAt: serverTimestamp()
+                });
+
+                // Update display name in Auth
+                await updateProfile(user, {
+                    displayName: username
+                });
+
+                // Update on profile page
+                document.querySelector('.user-info h3').textContent = username;
+                showAlert('Profile updated successfully!');
+            } catch (error) {
+                console.error('Error updating settings:', error);
+                showAlert(`Error updating settings: ${error.message}`, 'danger');
+            } finally {
+                submitButton.disabled = false;
+                spinner.classList.add('d-none');
+            }
+        });
+
+        // Load initial user data
+        document.addEventListener('DOMContentLoaded', async () => {
+            const auth = getAuth(firebaseApp);
+            onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    try {
+                        const userDocRef = doc(db, 'users', user.uid);
+                        const userDoc = await getDoc(userDocRef);
+                        
+                        if (userDoc.exists()) {
+                            const userData = userDoc.data();
+                            // changed here from userDate.username to userData.name 
+                            document.getElementById('username').value = userData.name || '';
+                            document.querySelector('.user-info h3').textContent = userData.name || '';
+                        }
+                    } catch (error) {
+                        console.error('Error loading user data:', error);
+                        showAlert('Error loading user data. Please try again.', 'danger');
+                    }
+                } else {
+                    window.location.href = 'login.html';
+                }
+                });
+            });
+
+        // function toggleButtonLoading(buttonId, isLoading) {
+        //     const button = document.getElementById(buttonId);
+        //     const spinner = button.querySelector('.spinner-border');
+            
+        //     button.disabled = isLoading;
+        //     if (isLoading) {
+        //         spinner.classList.remove('d-none');
+        //         button.querySelector('span:not(.spinner-border)') && 
+        //             button.querySelector('span:not(.spinner-border)').classList.add('d-none');
+        //     } else {
+        //         spinner.classList.add('d-none');
+        //         button.querySelector('span:not(.spinner-border)') && 
+        //             button.querySelector('span:not(.spinner-border)').classList.remove('d-none');
+        //     }
+        // }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+    const auth = getAuth(firebaseApp);
+    
+    onAuthStateChanged(auth, async (user) => {
+        if (user) {
+            try {
+                // Get user document from Firestore
+                const userDocRef = doc(db, 'users', user.uid);
+                const userDoc = await getDoc(userDocRef);
+                
+                if (userDoc.exists()) {
+                    const userData = userDoc.data();
+                    // Update form fields
+                    document.getElementById('username').value = userData.username || '';
+                    
+                    // Update profile picture if exists
+                    if (userData.photoURL) {
+                        document.getElementById('profile-preview').src = userData.photoURL;
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading user data:', error);
+                showAlert('Error loading user data. Please try again.', 'danger');
+            }
+            } else {
+                window.location.href = 'index.html';
+                }
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', async () => {
+    const auth = getAuth(firebaseApp);
+    
+    onAuthStateChanged(auth, async (user) => {
+        if (user) {
+            try {
+                // Get user document from Firestore
+                const userDocRef = doc(db, 'users', user.uid);
+                const userDoc = await getDoc(userDocRef);
+                
+                if (userDoc.exists()) {
+                    const userData = userDoc.data();
+                    // Update form fields
+                    // changed here from userDate.username to userData.name 
+                    document.getElementById('username').value = userData.name || '';
+
+                    
+                    // Update profile picture if exists
+                    if (userData.photoURL) {
+                        document.getElementById('profile-preview').src = userData.photoURL;
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading user data:', error);
+                showAlert('Error loading user data. Please try again.', 'danger');
+            }
+        } else {
+            window.location.href = 'login.html';
+        }
+    });
+});
+
+// Handle profile settings form submission
+document.getElementById('settings-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const auth = getAuth(firebaseApp);
+    const user = auth.currentUser;
+    
+    if (!user) {
+        showAlert('Please log in to save settings', 'danger');
+        return;
+    }
+
+    const username = document.getElementById('username').value.trim();
+    
+    try {
+        // toggleButtonLoading('save-profile-btn', true);
+
+        // Update user data in Firestore
+        const userDocRef = doc(db, 'users', user.uid);
+        await updateDoc(userDocRef, {
+            // changed here from username:username to name:username 
+            name: username,
+            // WANT OR NOT!!!!!
+            updatedAt: serverTimestamp()
+        });
+
+        // Update display name in Auth
+        await updateProfile(user, {
+            displayName: username
+        });
+
+        // Update UI
+        document.querySelector('.user-info h3').textContent = username;
+        showAlert('Profile updated successfully!');
+    } catch (error) {
+        console.error('Error updating settings:', error);
+        showAlert(`Error updating settings: ${error.message}`, 'danger');
+    } finally {
+        // toggleButtonLoading('save-profile-btn', false);
+        }
+    });
+
+// Handle profile picture upload
+document.getElementById('profilePic').addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const auth = getAuth(firebaseApp);
+    const user = auth.currentUser;
+    
+    if (!user) {
+        showAlert('Please log in to update profile picture', 'danger');
+        return;
+    }
+
+    // Validate file type and size
+    if (!file.type.startsWith('image/')) {
+        showAlert('Please select an image file', 'danger');
+        return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) { // 5MB limit
+        showAlert('Image size should be less than 5MB', 'danger');
+        return;
+    }
+
+    try {
+        const progressBar = document.getElementById('upload-progress');
+        const progressBarInner = progressBar.querySelector('.progress-bar');
+        progressBar.classList.remove('d-none');
+
+        // Create storage reference
+        const storage = getStorage(firebaseApp);
+        const fileRef = ref(storage, `profile-pictures/${user.uid}/${file.name}`);
+
+        // Upload file with progress monitoring
+        const uploadTask = uploadBytesResumable(fileRef, file);
         
+        uploadTask.on('state_changed', 
+            (snapshot) => {
+                // Update progress bar
+                const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                progressBarInner.style.width = progress + '%';
+                progressBarInner.textContent = Math.round(progress) + '%';
+            },
+            (error) => {
+                console.error('Error uploading file:', error);
+                showAlert('Error uploading profile picture', 'danger');
+                progressBar.classList.add('d-none');
+            },
+            async () => {
+                // Upload completed successfully
+                const downloadURL = await getDownloadURL(fileRef);
+
+                // Update auth profile
+                await updateProfile(user, {
+                    photoURL: downloadURL
+                });
+
+                // Update Firestore document
+                const userDocRef = doc(db, 'users', user.uid);
+                await updateDoc(userDocRef, {
+                    photoURL: downloadURL,
+                    updatedAt: serverTimestamp()
+                });
+
+                // Update UI
+                document.getElementById('profile-preview').src = downloadURL;
+                document.querySelector('.user-info img').src = downloadURL;
+                
+                showAlert('Profile picture updated successfully!');
+                progressBar.classList.add('d-none');
+            }
+        );
+    } catch (error) {
+        console.error('Error updating profile picture:', error);
+        showAlert('Error updating profile picture: ' + error.message, 'danger');
+    }
+});
+
+// Handle logout
+async function logout() {
+    try {
+        const auth = getAuth(firebaseApp);
+        await signOut(auth);
+        window.location.href = 'login.html';
+    } catch (error) {
+        console.error('Error logging out:', error);
+        showAlert('Error logging out: ' + error.message, 'danger');
+        }
+    }
     </script>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <script src = "navbarLoader.js"></script>
+    <script src="navbarLoader.js"></script>
 </body>
 </html>

@@ -120,6 +120,17 @@ body::before {
     font-weight: bold; 
 }
 
+.center-message-hotel {
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    height: 50px;
+    text-align: center;
+    font-size: 25px; 
+    color: #764F37;
+    font-weight: bold; 
+}
+
 
 .itinerary-section {
     background: white;
@@ -163,6 +174,35 @@ body::before {
     margin-bottom: 10px;
 }
 
+.hotel-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    background: white;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    justify-content: space-between;
+}
+
+.hotel-name {
+    font-weight: bold;
+    font-size: larger;
+    color: #764F37;
+    flex-grow: 1;
+    text-align: left;
+    width: 200px;
+
+}
+
+.hotel-type {
+    font-size: 15px;
+    color: white;
+    background: #764F37;
+    padding: 2px 8px;
+    border-radius: 12px;
+    margin-left: 10px;
+}
+
 .activity-time {
     min-width: 100px;
     color: #B5855B;
@@ -201,6 +241,27 @@ body::before {
     padding: 2px 8px;
     border-radius: 12px;
     margin-left: 10px;
+}
+
+.add-attract {
+    font-size: 15px;
+    color: white;
+    background: #764F37;
+    padding: 6px 16px;
+    border-radius: 12px;
+    margin-left: 10px;
+    border: none;
+}
+
+.add-attract:hover {
+    font-size: 15px;
+    color: white;
+    background: #DCB287;
+    padding: 6px 16px;
+    border-radius: 12px;
+    margin-left: 10px;
+    transform: scale(1.05);
+
 }
 
 .flight-section {
@@ -254,23 +315,6 @@ body::before {
 }
 
 .flight-date {
-    font-size: 0.9em;
-    color: #666;
-}
-
-.hotel-card {
-    background: white;
-    border-radius: 8px;
-    padding: 15px;
-    margin-bottom: 10px;
-}
-
-.hotel-name {
-    font-weight: bold;
-    color: #764F37;
-}
-
-.hotel-address {
     font-size: 0.9em;
     color: #666;
 }
