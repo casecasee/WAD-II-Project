@@ -51,7 +51,7 @@ const app = Vue.createApp({
         // },
 
         async fetchCountryImage(destination) {
-            const query = `Beautiful locations ${destination}`;
+            const query = `Famous and iconic locations ${destination}`;
             // const query = `famous place ${destination}`;
 
             const url = `https://api.unsplash.com/photos/random?client_id=JivBMMHuK8nWdlawocBWaYEZBRT35nzdtkNs8yJM-6g&query=${encodeURIComponent(query)}`;
@@ -134,11 +134,14 @@ const app = Vue.createApp({
         async disp() {
             this.all = await get_info(this.UID); 
         },
-        viewDetails(tripID, destination){
-            // Store the tripID localStorage
+        viewDetails(tripID, destination) {
+            // Clear any existing tripID from localStorage
+            localStorage.clear('tripID');
+            
+            // Store the new tripID in localStorage
             localStorage.setItem('tripID', tripID);
-
-            // country in the URL
+        
+            // Redirect to the page with the country in the URL
             window.location.href = `mytripinfo.html?country=${encodeURIComponent(destination)}`;
         },
 
