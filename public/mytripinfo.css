@@ -181,6 +181,26 @@ body::before {
     background: white;
     border-radius: 5px;
     margin-bottom: 10px;
+    justify-content: space-between;
+}
+
+.hotel-name {
+    font-weight: bold;
+    font-size: larger;
+    color: #764F37;
+    flex-grow: 1;
+    text-align: left;
+    width: 200px;
+
+}
+
+.hotel-type {
+    font-size: 15px;
+    color: white;
+    background: #764F37;
+    padding: 2px 8px;
+    border-radius: 12px;
+    margin-left: 10px;
 }
 
 .activity-time {
@@ -223,13 +243,25 @@ body::before {
     margin-left: 10px;
 }
 
-.hotel-type {
+.add-attract {
     font-size: 15px;
     color: white;
     background: #764F37;
-    padding: 2px 8px;
+    padding: 6px 16px;
     border-radius: 12px;
     margin-left: 10px;
+    border: none;
+}
+
+.add-attract:hover {
+    font-size: 15px;
+    color: white;
+    background: #DCB287;
+    padding: 6px 16px;
+    border-radius: 12px;
+    margin-left: 10px;
+    transform: scale(1.05);
+
 }
 
 .flight-section {
@@ -283,24 +315,6 @@ body::before {
 }
 
 .flight-date {
-    font-size: 0.9em;
-    color: #666;
-}
-
-.hotel-card {
-    background: white;
-    border-radius: 8px;
-    padding: 15px;
-    margin-bottom: 10px;
-}
-
-.hotel-name {
-    font-weight: bold;
-    font-size: larger;
-    color: #764F37;
-}
-
-.hotel-address {
     font-size: 0.9em;
     color: #666;
 }
