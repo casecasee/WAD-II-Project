@@ -3,6 +3,7 @@ import { add_hotel } from './functions.js';
 const app = Vue.createApp({
         data() {
             return {
+                country: '',
                 startDate: '',
                 endDate: '',
                 hotels: [],
@@ -12,10 +13,10 @@ const app = Vue.createApp({
             }
         },
         computed: {
-            country() {
-                const selectedCountry = localStorage.getItem('selectedCountry');
-                return selectedCountry;
-            },
+            // country() {
+            //     const selectedCountry = localStorage.getItem('selectedCountry');
+            //     return selectedCountry;
+            // },
             tripID() {
                 const id = localStorage.getItem('tripID');
                 return id;
@@ -111,14 +112,14 @@ const app = Vue.createApp({
                     alert('Error fetching hotel data');
                 }
             },
-            popup(imgurl, a_name) {
-                this.display_it = true;
-                this.selected_a = a_name;
-                this.imgurl = imgurl;
-            }, 
-            close() {
-                this.display_it = false;
-            }, 
+            // popup(imgurl, a_name) {
+            //     this.display_it = true;
+            //     this.selected_a = a_name;
+            //     this.imgurl = imgurl;
+            // }, 
+            // close() {
+            //     this.display_it = false;
+            // }, 
             async addHotel(event) {
                 try {
                     // Get the hotel directly from the clicked element's parent
