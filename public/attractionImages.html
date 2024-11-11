@@ -115,14 +115,14 @@
         <h1 class = "content-title">Attractions in {{ country }}</h1>
 
         <div class='container'>
-            <div class='row row-cols-4'>
+            <div class='row row-cols-4 pb-5'>
                 <div class="col" v-for="attraction in all">
                     <country-images @popup="(imgurl) => popup(imgurl, attraction.name)" :a_name="attraction.name" :imgurl="attraction.imgurl" :desc="attraction.desc"></country-images>
                 </div>
             </div>
         </div>
         
-        <pop-up :display_it=display_it :a_name="selected_a" :bg_img="this.imgurl" @close="close()" @add="addattract"></pop-up>
+        <pop-up :display_it=display_it :a_name="selected_a" :bg_img="this.imgurl" @close="close()" @add="addattract" :adates="dates"></pop-up>
     </div>
         
     <script src = "attractionImages.js" type="module"></script>
@@ -130,7 +130,7 @@
     
     <footer>
         <p>&copy; 2024 ROAMEO. All Rights Reserved.</p>
-    </footer>
+    </footer>    
     
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" defer></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" defer></script>

@@ -105,14 +105,15 @@ footer {
 }
 
 #content {
-    height:80%;
+    height:90%;
     width:60%;
     position: relative;
     top:0;
     left: 0;
     margin:auto;
     background-color: white;
-    margin-top: 80px;
+    margin-top: 70px;
+    /* z-index:10 */
 }
 
 #bg_img {
@@ -144,6 +145,7 @@ footer {
 
 #a_form {
     margin-top: 30px;
+    
 }
 
 .card {

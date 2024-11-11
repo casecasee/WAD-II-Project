@@ -1,4 +1,4 @@
-import { add_attraction } from "./functions.js";
+import { add_attraction, get_trip_info } from "./functions.js";
 
 const app = Vue.createApp({ 
     data() { 
@@ -7,6 +7,7 @@ const app = Vue.createApp({
               display_it: false,
               selected_a: '', 
               imgurl: '', 
+              dates: {}
         };
     }, // data
     computed: { 
@@ -17,9 +18,10 @@ const app = Vue.createApp({
         },
 
         tripID() {
-            // const id = localStorage.getItem('tripID');
-            // return id;
-            return 'ZI1IlYYOwUncoQZ2OztJ'
+            const id = localStorage.getItem('tripID');
+            console.log(id);
+            return id;
+            // return 'ZI1IlYYOwUncoQZ2OztJ'
         },
         
     }, // computed
@@ -33,10 +35,10 @@ const app = Vue.createApp({
         close() {
             this.display_it = false;
         }, 
-        async addattract(a_name, date, cost) {
+        async addattract(a_name, date, cost, time) {
             console.log(date);
             console.log(cost);
-            await add_attraction(this.tripID, a_name, date, cost);
+            await add_attraction(this.tripID, a_name, date, cost, time);
             this.close();
             alert('attraction successfully added');
         },
@@ -68,10 +70,42 @@ const app = Vue.createApp({
                     }
                 }
             }
+        }, 
+
+        getDateRange(startDate, endDate) {
+            this.dates = {}; // Initialize or clear `this.dates`
+            let currentDate = new Date(startDate);
+    
+            while (currentDate <= new Date(endDate)) {
+                // Format key as "DD-MM"
+                const key = currentDate.toLocaleDateString('en-GB', {
+                    day: '2-digit',
+                    month: '2-digit'
+                }).replace(/\//g, '-');
+    
+                // Format value as "DD Month" (e.g., "29 November")
+                const value = currentDate.toLocaleDateString('en-GB', {
+                    day: 'numeric',
+                    month: 'long'
+                });
+    
+                // Assign key-value pair directly to `this.dates`
+                this.dates[key] = value;
+    
+                // Move to the next day
+                currentDate.setDate(currentDate.getDate() + 1);
+            }
         }
     }, 
 
     async mounted() {  // in mounted because we need to use it after we have selected country
+
+        const tripInfo = await get_trip_info(this.tripID);
+        console.log(tripInfo);
+        const startdate = tripInfo.startdate;
+        const enddate = tripInfo.enddate; 
+        this.getDateRange(startdate, enddate); 
+
 
         const info = await getCoordinates(this.country);
         const lat = info.lat;
@@ -108,25 +142,32 @@ app.component('country-images', {
     // TODO make the form better bruh
     // TODO limit date selection to trip dates (dropdown)
     app.component('pop-up', { 
-        props: [ 'a_name', 'display_it', 'bg_img' ],
+        props: [ 'a_name', 'display_it', 'bg_img', 'adates' ],
 
         data() {
             return {
                 date: '',
-                cost: null
+                cost: null,
+                time: ''
             };
         },
 
         methods: {
             addAttraction() {
                 // Emit the form data to the parent
-                this.$emit('add', this.a_name, this.date, this.cost);
+                this.$emit('add', this.a_name, this.date, this.cost, this.time);
+            }
+        },
+
+        computed: {
+            // Format date for display as "DD Month"
+            formattedDate() {
+                return this.adates[this.date] || ''; // Display formatted date or an empty string if not selected
             }
         },
         
         template: `
             <div v-if="display_it" id='pop'>
-
                 <div id='content'>
 
                     <img :src=bg_img id='bg_img'>
@@ -135,20 +176,54 @@ app.component('country-images', {
                     
                     <div id="cancel" @click="$emit('close')">&times;</div>
 
-                    <div id='a_form'>
-
-                        <div class='form-container'>
-                            <form id="attractionForm">
+                    <div class='container-fluid '>
+                        <div class='row pt-3'>
+                            <div class='col'>
 
                                 <div class="form-group">
                                     <label for="dateSelect">Date:</label>
                                     <div class="row">
                                         <div class="col">
-                                            <input v-model="date" type="date" id="startDate" name="startDate" class="form-control" required>
+                                            <input type="text" v-model="formattedDate" id="selectedDate" class="form-control bg-white" readonly>
+                                            <select v-model="date" id="dateSelect" size='5' name="dateSelect" class="form-control" required>
+                                                <option v-for="(formattedDate, dateKey) in adates" :key="dateKey" :value="dateKey">
+                                                    {{formattedDate}}
+                                                </option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
-                        
+                                
+                            </div> <!-- col -->
+                
+                        </div> <!-- row -->
+
+                        <div class='row'>
+                            <div class='col'>
+
+
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col">
+                                            <label for="dateSelect">Time:</label>
+                                            <input v-model='time' type="time" id="time" name="time" class='form-control'>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+
+
+
+
+                        <div class='row'>
+
+                            <div class='col'>
+
+
                                 <div class="form-group">
                                     <label for="cost">Cost:</label>
                                     <div class="row">
@@ -158,15 +233,27 @@ app.component('country-images', {
                                     </div>
                                 </div>
 
-                            </form>
+                                
+                            </div>
+                                
+                            
+                        </div>
+
+                        <div class='row'>
+                            <div class='col text-center'>
+                                <button class='btn btn-primary' id='add_attraction_btn' @click="addAttraction()">Add Attraction!</button>
+                            </div>
+                        </div>
+
+
+                    </div> <!-- container -->
+
+
+                
                             
                         </div>
                         
                     </div>
-                    <button class='btn btn-primary' id='add_attraction_btn' @click="addAttraction()">Add Attraction!</button>
-
-                </div>
-            </div> 
         `
     });
     // component must be declared before app.mount(...)
