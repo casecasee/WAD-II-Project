@@ -41,6 +41,7 @@ const app = Vue.createApp({
             await add_attraction(this.tripID, a_name, date, cost, time);
             this.close();
             alert('attraction successfully added');
+            window.location.href = `mytripinfo.html?country=${encodeURIComponent(this.country)}`
         },
 
         async handle(results, status) {
