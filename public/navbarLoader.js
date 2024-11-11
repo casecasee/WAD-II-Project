@@ -19,9 +19,9 @@ Vue.createApp({
                         </ul>
                         <div class="profile-icon">
                             <a href="profile.html" aria-label="Profile">
-                                <img src="dp.png" alt="Profile" class="profile-pic">
+                                <img src="dp.png" alt="Profile" class="profile-pic">                            
+                            <span class="action_btn"> My Profile</span>
                             </a>
-                            <p class="action_btn">My Profile</p>
                         </div>
                         <div class="toggle_btn" @click="toggleMenu">
                             <i v-if="!isOpen" class="fa-solid fa-bars" id="menu-icon"></i> 

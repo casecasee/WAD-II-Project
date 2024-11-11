@@ -359,16 +359,23 @@
                         this.budget.total = tripData.budget || 0;
                         
                         let activities = [];
-
+                        let hotels = [];
+                        
                         // Map hotels to activities
                         if (tripData.hotels && tripData.hotels.length > 0) {
-                            activities.push(...tripData.hotels.map(hotel => ({
+                            hotels = tripData.hotels.map(hotel => ({
                                 type: "Hotel Check-In",
                                 description: hotel.h_name,
                                 dateTime: hotel.checkin,
-                                cost: hotel.cost
-                            })));
+                                cost: hotel.cost,
+                                formattedCheckin: this.formatDate(hotel.checkin) // Format the check-in date
+                            }));
                         }
+
+                        // Sort hotels by the formatted checkin date
+                        hotels.sort((a, b) => new Date(a.formattedCheckin) - new Date(b.formattedCheckin));
+                        console.log("sorted hotels", hotels);
+
 
                         // Map attractions to activities
                         if (tripData.attractions && tripData.attractions.length > 0) {
