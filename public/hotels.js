@@ -3,24 +3,19 @@ import { add_hotel } from './functions.js';
 const app = Vue.createApp({
         data() {
             return {
-                country: '',
                 startDate: '',
                 endDate: '',
                 hotels: [],
                 showPopup: false,
                 RAPID_API_KEY: "7bb272beafmshf057635e1f360f4p10cef0jsn822b6e337760",
-                RAPID_API_HOST: "booking-com.p.rapidapi.com"
+                RAPID_API_HOST: "booking-com.p.rapidapi.com",
+                country: ''
             }
         },
         computed: {
-            // country() {
-            //     const selectedCountry = localStorage.getItem('selectedCountry');
-            //     return selectedCountry;
-            // },
             tripID() {
                 const id = localStorage.getItem('tripID');
                 return id;
-                // return 'ZI1IlYYOwUncoQZ2OztJ'
             }
         },
         mounted() {
@@ -31,32 +26,6 @@ const app = Vue.createApp({
                 this.country = decodeURIComponent(destination);
             }
         },
-        // async mounted() {
-        //     // Get trip info when page loads
-        //     if (this.tripID) {
-        //         try {
-        //             // const tripInfo = await get_trip_info(this.tripID);
-        //             // if (tripInfo) {
-        //             //     this.country = tripInfo.destination;
-        //             //     // Optionally also set dates if needed
-        //             //     this.startDate = tripInfo.startdate;
-        //             //     this.endDate = tripInfo.enddate;
-        //             if (this.tripID) {
-        //                 const tripRef = doc(firebaseApp, 'trips', this.tripID);
-        //                 const tripSnap = await getDoc(tripRef);
-                        
-        //                 if (tripSnap.exists()) {
-        //                     // Get destination, start date, end date from Firebase and set it to country, startDate, endDate
-        //                     this.country = tripSnap.data().destination;
-        //                     this.startDate = tripSnap.data().startdate;
-        //                     this.endDate = tripSnap.data().enddate;
-        //                 }
-        //             }
-        //         } catch (error) {
-        //             console.error("Error getting trip info:", error);
-        //         }
-        //     }
-        // },
         methods: {
             async searchHotels() {
                 if (!this.country || !this.startDate || !this.endDate) { 
@@ -112,14 +81,6 @@ const app = Vue.createApp({
                     alert('Error fetching hotel data');
                 }
             },
-            // popup(imgurl, a_name) {
-            //     this.display_it = true;
-            //     this.selected_a = a_name;
-            //     this.imgurl = imgurl;
-            // }, 
-            // close() {
-            //     this.display_it = false;
-            // }, 
             async addHotel(event) {
                 try {
                     // Get the hotel directly from the clicked element's parent
