@@ -23,14 +23,7 @@ const app = Vue.createApp({
                 // return 'ZI1IlYYOwUncoQZ2OztJ'
             }
         },
-        mounted() {
-            // Get destination from URL parameters
-            const urlParams = new URLSearchParams(window.location.search);
-            const destination = urlParams.get('destination');
-            if (destination) {
-                this.country = decodeURIComponent(destination);
-            }
-        },
+        
         // async mounted() {
         //     // Get trip info when page loads
         //     if (this.tripID) {
@@ -57,6 +50,17 @@ const app = Vue.createApp({
         //         }
         //     }
         // },
+
+        mounted() {
+            // Retrieve the destination from localStorage when the component is mounted
+            const storedCountry = localStorage.getItem('selectedCountry');
+            if (storedCountry) {
+                this.country = storedCountry; // Update the country property
+            } else {
+                console.error("No country found in localStorage.");
+            }
+        },
+
         methods: {
             async searchHotels() {
                 if (!this.country || !this.startDate || !this.endDate) { 

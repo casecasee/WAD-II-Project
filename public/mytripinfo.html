@@ -239,10 +239,17 @@
                     }
                 },
 
+                // navigateToHotels() {
+                //     if (this.tripID) {
+                //         window.location.href = `hotels.html?country=${this.country}`;
+                //     } 
+                // },
                 navigateToHotels() {
                     if (this.tripID) {
+                        // Store the country in localStorage before navigating
+                        localStorage.setItem('selectedCountry', this.country);
                         window.location.href = `hotels.html?country=${this.country}`;
-                    } 
+                    }
                 },
 
                 navigateToAddFlightInfo() {
