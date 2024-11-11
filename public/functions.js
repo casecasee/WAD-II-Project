@@ -193,13 +193,13 @@ export const add_flights_to_trip = async function add_flights_to_trip(tripID, fl
     const docRef = doc(db, "trips", tripID);
 
     const newFlights = flights.map(flight => ({
-        arrival_city: flight.toCity,
-        departure_city: flight.fromCity,
-        departure_date: flight.departureDate,
-        departure_time: flight.departureTime, 
-        flight_no: flight.flightNumber,
-        seat_no: flight.seatNumber || null,
-        flight_cost: flight.flightCost || 0
+        arrival_city: flight.arrival_city,
+        departure_city: flight.departure_city,
+        departure_date: flight.departure_date,
+        departure_time: flight.departure_time, 
+        flight_no: flight.flight_no,
+        seat_no: flight.seat_no || null,
+        flight_cost: flight.flight_cost || 0
     }));
     console.log(newFlights);
 

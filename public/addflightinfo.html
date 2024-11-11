@@ -12,11 +12,12 @@
     
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Pacifico&family=Playwrite+GB+S:ital,wght@0,100..400;1,100..400&display=swap">
     
-    <link rel="stylesheet" href="addflightinfo.css">
     
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Pacifico&family=Playwrite+GB+S:ital,wght@0,100..400;1,100..400&display=swap" rel="stylesheet">    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" /> 
     <link rel="stylesheet" href="navbar.css">
+    <link rel="stylesheet" href="addflightinfo.css">
+
 
 </head>
 <body>
@@ -34,23 +35,23 @@
                 
                 <form>
                     <div class="mb-4">
-                        <label for="from-city" class="form-label">Departure</label>
+                        <label for="from-city" class="form-label">Departure <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" v-model="fromCity" placeholder="Enter City" required>
                     </div>
                     <div class="mb-4">
-                        <label for="to-city" class="form-label">Arrival</label>
+                        <label for="to-city" class="form-label">Arrival <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" v-model="toCity" placeholder="Enter City" required>
                     </div>
                     <div class="mb-4">
-                        <label for="departure-date" class="form-label">Departure Date</label>
+                        <label for="departure-date" class="form-label">Departure Date <span class="text-danger">*</span></label>
                         <input type="date" class="form-control" v-model="departureDate" required>
                     </div>
                     <div class="mb-4">
-                        <label for="departure-time" class="form-label">Departure Time</label>
+                        <label for="departure-time" class="form-label">Departure Time <span class="text-danger">*</span></label>
                         <input type="time" class="form-control" v-model="departureTime" required>
                     </div>
                     <div class="mb-4">
-                        <label for="flight-number" class="form-label">Flight Number</label>
+                        <label for="flight-number" class="form-label">Flight Number <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" v-model="flightNumber" placeholder="eg. SQ123" required>
                     </div>
                     <div class="mb-4">
@@ -58,8 +59,8 @@
                         <input type="text" class="form-control" v-model="seatNumber" placeholder="Enter Seat Number">
                     </div>
                     <div class="mb-4">
-                        <label for="flight-cost" class="form-label">Cost Of Flight ($)</label>
-                        <input type="number" class="form-control" v-model="flightCost" placeholder="Enter Cost">
+                        <label for="flight-cost" class="form-label">Cost Of Flight ($) <span class="text-danger">*</span></label>
+                        <input type="number" class="form-control" v-model="flightCost" placeholder="Enter Cost" min="0" required>
                     </div>
                     <button type="submit" class="btn btn-primary w-100" @click.prevent="addFlight">Confirm</button>
                 </form>
@@ -72,20 +73,20 @@
                     <div v-for="(flight, index) in flights" :key="index" class="ticket col-12 col-sm-6 col-lg-4 my-2">
                         <div class="ticket-header">
                             <div class="head-logo">Roameo</div>
-                            <div class="head-flight">{{ flight.flightNumber || "Flight Number" }}</div>
+                            <div class="head-flight">{{ flight.flight_no || "Flight Number" }}</div>
                         </div>
                         <div class="ticket-body">
                             <div class="locations">
                                 <div class="loc-depart">
-                                    {{ flight.fromCity || "From" }}
-                                    <h1>{{ flight.fromCity ? flight.fromCity.slice(0, 3).toUpperCase() : "---" }}</h1>
+                                    {{ flight.departure_city || "From" }}
+                                    <h1>{{ flight.departure_city ? flight.departure_city.slice(0, 3).toUpperCase() : "---" }}</h1>
                                 </div>
                                 <div class="loc-direction">
                                     <img src="plane.png" alt="Plane Icon" class="loc-direction">
                                 </div>
                                 <div class="loc-arrive">
-                                    {{ flight.toCity || "To" }}
-                                    <h1>{{ flight.toCity ? flight.toCity.slice(0, 3).toUpperCase() : "---" }}</h1>
+                                    {{ flight.arrival_city || "To" }}
+                                    <h1>{{ flight.arrival_city ? flight.arrival_city.slice(0, 3).toUpperCase() : "---" }}</h1>
                                 </div>
                             </div>
                             <div class="passenger-name">
@@ -93,18 +94,20 @@
                             </div>
                             <div class="body-info">
                                 <div class="flight-info">
-                                    <div>Flight <h4>{{ flight.flightNumber || "-" }}</h4></div>
-                                    <div>Seat <h4>{{ flight.seatNumber || "-" }}</h4></div>
+                                    <div>Flight <h4>{{ flight.flight_no || "-" }}</h4></div>
+                                    <div>Seat <h4>{{ flight.seat_no || "-" }}</h4></div>
                                 </div>
                                 <div class="flight">
-                                    <div>Departure Time <h4>{{ flight.departureTime || "-" }}</h4></div>
-                                    <div>Departure Date <h4>{{ flight.departureDate || "-" }}</h4></div>
+                                    <div>Departure Time <h4>{{ flight.departure_time || "-" }}</h4></div>
+                                    <div>Departure Date <h4>{{ flight.departure_date || "-" }}</h4></div>
                                 </div>
                             </div>
                         </div>
                         <div class="ticket-bottom">
                             <div class="depart-barcode"></div>
                         </div>
+                        <button class="delete-button" @click="deleteFlight(index)">Delete</button>
+
                     </div>
                 </div>
             
@@ -153,14 +156,20 @@
                     seatNumber: '',
                     flightCost: '',
                     flights: [] ,
-                    username: ''
+                    username: '',
+                    test: []
                 };
             },
             mounted() {
-            const urlParams = new URLSearchParams(window.location.search);
-            this.tripID = urlParams.get('tripID');
-            },
-            mounted() {
+                this.getTripIDFromURL();
+                // const urlParams = new URLSearchParams(window.location.search);
+                // this.tripID = urlParams.get('tripID');
+                // console.log(tripID);
+
+                if (this.tripID) {
+                    this.fetchTripData(this.tripID);
+                }
+
                 this.getUserID()
                     .then(userID => {
                         console.log("User UID:", userID);
@@ -171,19 +180,46 @@
                     });
             },
             methods: {
+                getTripIDFromURL() {
+                    const urlParams = new URLSearchParams(window.location.search);
+                    // this.tripID = urlParams.get('tripID');
+                    this.tripID = localStorage.getItem('tripID')
+                    this.country = urlParams.get('country')
+                    console.log("Current tripID from URL:", this.tripID); // Log for debugging
+                },
+
                 addFlight() {
+                    if (this.flightCost < 0) {
+                        alert('Flight cost cannot be negative!');
+                        return;  // Prevent form submission
+                    }
+
+                    // Validate all required fields are filled
+                    if (!this.fromCity || !this.toCity || !this.departureDate || !this.departureTime || !this.flightNumber || this.flightCost === '') {
+                        alert('Please fill in all required fields.');
+                        return;  // Prevent form submission
+                    }
+
                     this.flights.push({
-                        fromCity: this.fromCity,
-                        toCity: this.toCity,
-                        departureDate: this.departureDate,
-                        departureTime: this.departureTime,
-                        flightNumber: this.flightNumber,
-                        seatNumber: this.seatNumber,
-                        flightCost: this.flightCost
+                        departure_city: this.fromCity,
+                        arrival_city: this.toCity,
+                        departure_date: this.departureDate,
+                        departure_time: this.departureTime,
+                        flight_no: this.flightNumber,
+                        seat_no: this.seatNumber,
+                        flight_cost: this.flightCost
                     });
-    
+                    console.log(this.flights)
                     this.resetForm();
                 },
+
+                deleteFlight(index) {
+                    // Confirm before deleting (optional)
+                    if (confirm("Are you sure you want to delete this flight?")) {
+                        this.flights.splice(index, 1); // Remove the flight at the given index
+                    }
+                },
+
                 async addAllFlightsToTrip() {
                     try {
                         // Save flights to Firestore
@@ -222,7 +258,6 @@
                     return new Promise((resolve, reject) => {
                         onAuthStateChanged(auth, (user) => {
                             if (user) {
-                                console.log(user.uid); // Log the user object here
                                 resolve(user.uid);
                             } else {
                                 window.location.href = 'index.html'; // Redirect if no user is signed in
@@ -238,7 +273,11 @@
                     if (tripSnap.exists()) {
                         const tripData = tripSnap.data();
                         console.log("Fetched trip data for tripID:", tripID);
-                        console.log(tripData); // This will show the entire data object from Firestore
+                        console.log(tripData.flights);
+                        tripData.flights.forEach(flight => {
+                            this.flights.push(flight);
+                        });
+                        console.log("Updated this.flights:", this.flights);
                     } else {
                         console.error("No such trip found");
                     }

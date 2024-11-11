@@ -125,7 +125,8 @@ label {
 }
 
 .head-flight {
-    font-size: 11px;
+    margin-top: 7px;
+    font-size: 15px;
     text-align: right;
     text-transform: uppercase;
 }
@@ -187,10 +188,16 @@ label {
     transform: scale(1.05);
 }
 
+.ticket:hover .head-flight {
+    display: none;
+}
+
 .ticket:hover .loc-direction img {
     transform: scale(1.05);
     animation: fly 1.5s forwards ease-in-out;
 }
+
+
 
 @keyframes fly {
     0% {
@@ -202,6 +209,31 @@ label {
     100% {
         transform: translateX(0);
     }
+}
+
+/* Delete button styles */
+.delete-button {
+    position: absolute;
+    top: 27px;
+    right: 27px;
+    padding: 5px 10px;
+    background-color: rgb(251, 71, 71);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 12px;
+    cursor: pointer;
+    display: none; /* Initially hidden */
+    z-index: 10;
+}
+
+/* Show the button on hover */
+.ticket:hover .delete-button {
+    display: block; /* Show button on hover */
+}
+
+.delete-button:hover {
+    background-color: rgb(222, 35, 35);
 }
 
 .no-flights {
