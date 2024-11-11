@@ -166,15 +166,29 @@
                     tripID: null
                 };
             },
+            // async mounted() {
+            //     this.userID = await this.getUserID(); // Fetch the user ID after authentication
+            //     console.log("User ID:", this.userID);  // Log the userID
+
+            //     if (this.userID) {
+            //         this.loadUserTrips();
+            //     }
+            //     this.getTripIDFromURL(); // this function sets both country and tripid
+            // },
+
             async mounted() {
-                this.userID = await this.getUserID(); // Fetch the user ID after authentication
+                // Set tripID and country before loading trips
+                this.getTripIDFromURL(); 
+
+                this.userID = await this.getUserID(); // Get the user ID after authentication
                 console.log("User ID:", this.userID);  // Log the userID
 
                 if (this.userID) {
-                    this.loadUserTrips();
+                    await this.loadUserTrips();  // Load trips once tripID and country are set
+                    await this.fetchTripData(this.tripID);  // Get the specific trip data
                 }
-                this.getTripIDFromURL(); // this function sets both country and tripid
             },
+
             computed: {
                 totalSpent() {
                     return this.budget.flights + this.budget.hotels + this.budget.activities;
