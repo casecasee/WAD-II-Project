@@ -147,7 +147,8 @@
                 <h2>Weather</h2>
 
                 <div class="flight-section">
-                    {{userID}}
+                    {{ latitude }}:
+                    {{ longitude }}:
                 </div>
             </div>
 
@@ -191,7 +192,9 @@
                     remainingBudget: 0,
                     startDate: '',
                     endDate: '',
-                    tripID: null
+                    tripID: null,
+                    latitude: null,  // Store latitude
+                    longitude: null, // Store longitude
                 };
             },
             // async mounted() {
@@ -213,6 +216,7 @@
 
                 if (this.userID) {
                     await this.fetchTripData(this.tripID);  // Get the specific trip data
+                    await this.getCoordinates(this.destination); // Fetch coordinates for the destination
                 }
             },
 
@@ -273,11 +277,6 @@
                     }
                 },
 
-                // navigateToHotels() {
-                //     if (this.tripID) {
-                //         window.location.href = `hotels.html?country=${this.country}`;
-                //     } 
-                // },
                 navigateToHotels() {
                     if (this.tripID) {
                         // Store the country in localStorage before navigating
@@ -298,6 +297,53 @@
                     const options = { year: 'numeric', month: 'short', day: '2-digit' };
                     const date = new Date(dateString); // Convert string to Date object
                     return date.toLocaleDateString('en-GB', options); // 'en-GB' formats as 'dd mmm yyyy'
+                },
+
+                fetchWeatherDetails(lat, lon) {
+                    const URL = "https://api.openweathermap.org/data/2.5/weather";
+                    const apikey = "-";
+
+                    axios.get(URL, {
+                        params: {
+                            lat: lat,
+                            lon: lon,
+                            appid: apikey,
+                            units: 'metric'  // Temperature in Celsius
+                        }
+                    })
+                        .then(response => {
+                            const weather = response.data.weather[0].description;
+                            const humidity = response.data.main.humidity;
+                            const temperature = response.data.main.temp;
+
+                            console.log(`Weather: ${weather}, Humidity: ${humidity}%, Temperature: ${temperature}°C`);
+                        })
+                        .catch(error => {
+                            console.error("Error fetching weather details:", error.message);
+                        });
+                },
+
+                async getCoordinates(destination) {
+                    const apiKey = '-';
+                    const url = `https://api.geoapify.com/v1/geocode/search?text=${encodeURIComponent(destination)}&type=country&apiKey=${apiKey}`;
+
+                    try {
+                        const response = await axios.get(url);
+                        const data = response.data;
+
+                        if (data && data.features && data.features.length > 0) {
+                            const firstResult = data.features[0];
+                            this.latitude = firstResult.geometry.coordinates[1];  // Latitude
+                            this.longitude = firstResult.geometry.coordinates[0]; // Longitude
+                            console.log(`Coordinates: Lat=${this.latitude}, Lon=${this.longitude}`);
+
+                            this.fetchWeatherDetails(this.latitude, this.longitude);
+                        } else {
+                            console.error("No results found for the destination.");
+                        }
+                    } catch (error) {
+                        console.error("Error fetching coordinates:", error);
+                    }
                 },
 
                 groupAndSortActivities(activities) {
