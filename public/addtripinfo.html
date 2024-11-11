@@ -68,11 +68,12 @@
             font-size: 18px;
             margin-top: 10px;
         }
-        .explore-button {
-            display: inline-block;
+        .explore-call-to-action {
+            display: inline-flex;
+            align-items: center;
             margin-top: 20px;
-            padding: 12px 24px;
-            font-size: 16px;
+            padding: 10px 22px;
+            font-size: 20px;
             color: #764F37;
             background-color: #DCB287;
             border: none;
@@ -80,11 +81,25 @@
             cursor: pointer;
             font-weight: bold;
             text-decoration: none;
+            transition: background-color 0.3s, color 0.3s, transform 0.3s;
         }
-        .explore-button:hover {
+
+        .explore-call-to-action:hover{
             background-color: #764F37;
             color: white;
+            transform: translateY(5px);
         }
+
+        .explore-text {
+            margin-right: 8px;
+        }
+
+        .arrow-icon {
+            font-size: 28px;
+            transition: color 0.3s;
+            /* color: #764F37; */
+        }
+
         #navbar-app{
             position: absolute; 
             top: 0; 
@@ -149,8 +164,12 @@
         <div class="header-content">
             <h1 class="header-title">Discover Your Next Adventure</h1>
             <p class="header-subtitle">Plan, explore, and experience unforgettable trips</p>
-            <a href="addtripinfo.html" class="explore-button" id="planButton">Plan Now</a>
+            <div class="explore-call-to-action"  id="scrollArrow" a href = "#">
+                <span class="explore-text">Plan Now</span>
+                <i class="fas fa-chevron-down arrow-icon"></i>
+            </div>
         </div>
+        
     </div>
 
     <div id="app1">
@@ -197,7 +216,7 @@
     </footer>
 
     <script>
-        document.getElementById('planButton').addEventListener('click', function(event) {
+        document.getElementById('scrollArrow').addEventListener('click', function(event) {
             event.preventDefault(); // Prevents navigation for demo purposes
             gsap.to(window, {
                 duration: 1,

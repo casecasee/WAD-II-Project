@@ -59,6 +59,7 @@
                         <div class="activity-details">
                             <span>{{ activity.description }}</span>
                             <span class="activity-type">{{ activity.type }}</span>
+                            <span class="delete-cross">&#10006;</span>
                         </div>
                     </div>
                     <button class="activity-type" @click="navigateToAttractions">+ Attraction</button>
@@ -94,6 +95,7 @@
 
                 <h2>Remaining Budget</h2>
                 <div class="budget-section">
+                
                     <div class="budget-header">
                         <h3 :style="{ color: remainingBudgetColor }">${{ remainingBudgetCalc.toFixed(2) }}</h3>
                         <!-- Budget Progress Bar -->
@@ -124,11 +126,18 @@
                         </div>
                     </div>
                 </div>
+
+                <h2>Weather</h2>
+
+                <div class="flight-section">
+                    {{userID}}
+                </div>
             </div>
 
             <!-- Budget Section -->
-            <div class="budget-section">
-                {{days}}
+            <div class="news-section">
+                <h2>Latest news in {{ destination }}</h2>
+                {{userID}}
             </div>
         </div>
     </div>
@@ -184,7 +193,6 @@
                 console.log("User ID:", this.userID);  // Log the userID
 
                 if (this.userID) {
-                    await this.loadUserTrips();  // Load trips once tripID and country are set
                     await this.fetchTripData(this.tripID);  // Get the specific trip data
                 }
             },
@@ -227,7 +235,6 @@
             methods: {
                 getTripIDFromURL() {
                     const urlParams = new URLSearchParams(window.location.search);
-                    // this.tripID = urlParams.get('tripID');
                     this.tripID = localStorage.getItem('tripID')
                     this.country = urlParams.get('country')
                     console.log("Current tripID from URL:", this.tripID); // Log for debugging
@@ -239,10 +246,17 @@
                     }
                 },
 
+                // navigateToHotels() {
+                //     if (this.tripID) {
+                //         window.location.href = `hotels.html?country=${this.country}`;
+                //     } 
+                // },
                 navigateToHotels() {
                     if (this.tripID) {
+                        // Store the country in localStorage before navigating
+                        localStorage.setItem('selectedCountry', this.country);
                         window.location.href = `hotels.html?country=${this.country}`;
-                    } 
+                    }
                 },
 
                 navigateToAddFlightInfo() {

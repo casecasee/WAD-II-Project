@@ -18,14 +18,44 @@ const app = Vue.createApp({
                 return id;
             }
         },
+        
+        // async mounted() {
+        //     // Get trip info when page loads
+        //     if (this.tripID) {
+        //         try {
+        //             // const tripInfo = await get_trip_info(this.tripID);
+        //             // if (tripInfo) {
+        //             //     this.country = tripInfo.destination;
+        //             //     // Optionally also set dates if needed
+        //             //     this.startDate = tripInfo.startdate;
+        //             //     this.endDate = tripInfo.enddate;
+        //             if (this.tripID) {
+        //                 const tripRef = doc(firebaseApp, 'trips', this.tripID);
+        //                 const tripSnap = await getDoc(tripRef);
+                        
+        //                 if (tripSnap.exists()) {
+        //                     // Get destination, start date, end date from Firebase and set it to country, startDate, endDate
+        //                     this.country = tripSnap.data().destination;
+        //                     this.startDate = tripSnap.data().startdate;
+        //                     this.endDate = tripSnap.data().enddate;
+        //                 }
+        //             }
+        //         } catch (error) {
+        //             console.error("Error getting trip info:", error);
+        //         }
+        //     }
+        // },
+
         mounted() {
-            // Get destination from URL parameters
-            const urlParams = new URLSearchParams(window.location.search);
-            const destination = urlParams.get('destination');
-            if (destination) {
-                this.country = decodeURIComponent(destination);
+            // Retrieve the destination from localStorage when the component is mounted
+            const storedCountry = localStorage.getItem('selectedCountry');
+            if (storedCountry) {
+                this.country = storedCountry; // Update the country property
+            } else {
+                console.error("No country found in localStorage.");
             }
         },
+
         methods: {
             async searchHotels() {
                 if (!this.country || !this.startDate || !this.endDate) { 

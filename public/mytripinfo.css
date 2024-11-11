@@ -171,6 +171,27 @@ body::before {
 
 .activity-details {
     flex-grow: 1;
+    position: relative; /* Makes it the positioning context for .delete-cross */
+    display: flex;
+    align-items: center; /* Aligns content vertically */
+}
+
+.delete-cross {
+    position: absolute;
+    right: 10px;
+    display: none;
+}
+
+.delete-cross:hover {
+    cursor: pointer;
+}
+
+.activity-item:hover {
+    transform: scale(1.02);
+}
+
+.activity-item:hover .delete-cross {
+    display: block;
 }
 
 .activity-type {
@@ -258,6 +279,7 @@ body::before {
     background: #f8f9fa;
     border-radius: 8px;
     padding: 15px;
+    margin-bottom: 10px;
 }
 
 .budget-progress {

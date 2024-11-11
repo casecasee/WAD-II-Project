@@ -6,7 +6,8 @@ import { getFirestore,
          getDocs,
          doc, 
          updateDoc, 
-         deleteDoc  } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+         deleteDoc, 
+         Timestamp  } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
 
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
 import { firebaseApp } from "./stuff.js";
@@ -28,6 +29,24 @@ export const UID = function UID() {
     })
 }
 //-------------------------------------------------------- END --------------------------------------------------------------------
+
+
+function getFirebaseTimestamp(dateString, timeString) {
+    // Split the date and time parts
+    const [day, month] = dateString.split('-').map(Number);
+    const [hours, minutes] = timeString.split(':').map(Number);
+
+    // Get the current year
+    const year = new Date().getFullYear();
+
+    // Create a JavaScript Date object
+    const date = new Date(year, month - 1, day, hours, minutes);
+
+    // Convert to Firebase Timestamp
+    return Timestamp.fromDate(date);
+}
+
+
 
 //-------------------------------------- add user to DB when they sign up -------------------------------------------------------
 export const add_info_users = async function addUserToTable(UID, email, name) {
@@ -152,13 +171,17 @@ export const add_hotel = async function add_hotel(tripID, hotel_name, checkin, c
 // --------------------------------------------------------- END ------------------------------------------------------------------
 
 //------------------------------------------------- add attraction to attraction arr ----------------------------------------------
-export const add_attraction = async function add_attraction(tripID, a_name, date, cost) {
+export const add_attraction = async function add_attraction(tripID, a_name, date, cost, time) {
     const doc_ref = doc(db, "trips", tripID);
+    console.log(date);
+    console.log(time);
+    const ts = getFirebaseTimestamp(date, time);
+
 
     const new_data = {
         'a_name' : a_name, 
-        'date' : date, 
-        'cost' : cost
+        'date' : ts, 
+        'cost' : cost, 
     };
     const doc_snap =  await getDoc(doc_ref);
     const a_list = doc_snap.data().attractions;
@@ -193,13 +216,13 @@ export const add_flights_to_trip = async function add_flights_to_trip(tripID, fl
     const docRef = doc(db, "trips", tripID);
 
     const newFlights = flights.map(flight => ({
-        arrival_city: flight.toCity,
-        departure_city: flight.fromCity,
-        departure_date: flight.departureDate,
-        departure_time: flight.departureTime, 
-        flight_no: flight.flightNumber,
-        seat_no: flight.seatNumber || null,
-        flight_cost: flight.flightCost || 0
+        arrival_city: flight.arrival_city,
+        departure_city: flight.departure_city,
+        departure_date: flight.departure_date,
+        departure_time: flight.departure_time, 
+        flight_no: flight.flight_no,
+        seat_no: flight.seat_no || null,
+        flight_cost: flight.flight_cost || 0
     }));
     console.log(newFlights);
 
