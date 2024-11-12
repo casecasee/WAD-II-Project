@@ -1,3 +1,9 @@
+import { getFirestore, doc, getDoc, getDocs, collection, updateDoc } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
+import { firebaseApp } from "./stuff.js";
+
+const db = getFirestore(firebaseApp);
+
 import { add_hotel } from './functions.js';
 
 const app = Vue.createApp({
@@ -9,7 +15,10 @@ const app = Vue.createApp({
                 showPopup: false,
                 RAPID_API_KEY: "7bb272beafmshf057635e1f360f4p10cef0jsn822b6e337760",
                 RAPID_API_HOST: "booking-com.p.rapidapi.com",
-                country: ''
+                country: '',
+                hotelStartDate: '',
+                hotelEndDate: '',
+                tripID: ''
             }
         },
         computed: {
@@ -21,6 +30,10 @@ const app = Vue.createApp({
 
         mounted() {
             // Retrieve the destination from localStorage when the component is mounted
+            this.getTripIDFromURL();
+            if (this.tripID) {
+                this.fetchTripData(this.tripID);
+            }
             const storedCountry = localStorage.getItem('selectedCountry');
             if (storedCountry) {
                 this.country = storedCountry; // Update the country property
@@ -30,6 +43,13 @@ const app = Vue.createApp({
         },
 
         methods: {
+            getTripIDFromURL() {
+                const urlParams = new URLSearchParams(window.location.search);
+                // this.tripID = urlParams.get('tripID');
+                this.tripID = localStorage.getItem('tripID')
+                this.country = urlParams.get('country')
+                console.log("Current tripID from URL:", this.tripID); // Log for debugging
+            },
             async searchHotels() {
                 if (!this.country || !this.startDate || !this.endDate) { 
                     alert('Please fill in all fields');
@@ -136,5 +156,30 @@ const app = Vue.createApp({
             closePopup() {
                 this.showPopup = false;
             },
+
+            async fetchTripData(tripID) {
+                const tripRef = doc(db, "trips", tripID);
+                const tripSnap = await getDoc(tripRef);
+            
+                if (tripSnap.exists()) {
+                    const tripData = tripSnap.data();
+            
+                    this.hotelStartDate = tripData.startdate; // Trip start date
+                    this.hotelEndDate = tripData.enddate;     // Trip end date
+            
+                    // Set date limits for check-in and check-out inputs
+                    const checkinMin = new Date(this.hotelStartDate).toISOString().split('T')[0];
+                    const checkoutMax = new Date(this.hotelEndDate).toISOString().split('T')[0];
+            
+                    // Bind limits to input elements dynamically
+                    this.$refs.checkinDate.setAttribute('min', checkinMin);
+                    this.$refs.checkinDate.setAttribute('max', checkoutMax);
+                    this.$refs.checkoutDate.setAttribute('min', checkinMin);
+                    this.$refs.checkoutDate.setAttribute('max', checkoutMax);
+                } else {
+                    console.error("No such trip found.");
+                }
+            }
+            
         }
     }).mount('#app')

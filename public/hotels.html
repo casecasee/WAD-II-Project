@@ -429,12 +429,14 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
 <body>
+    <div>
+        <div id="navbar-app">
+            <navbar-component></navbar-component>
+        </div>
 
-    <div class="header"> 
-        <div id="navbar-app"> 
-            <navbar-component></navbar-component> 
-        </div> 
-    
+        <script type='module' src="navbarLoader.js"></script>
+    </div>
+    <div class="header">  
         <div class="header-content"> 
             <h1 class="header-title">Hotels</h1> 
         </div> 
@@ -448,10 +450,11 @@
             </div>
             <div class="date-picker">
                 <label for="start-date">Check-in:</label>
-                <input type="date" v-model="startDate" required>
+                <input type="date" v-model="startDate" ref="checkinDate" required>
+                
                 <label for="end-date">Check-out:</label>
-                <input type="date" v-model="endDate" required>
-            </div>
+                <input type="date" v-model="endDate" ref="checkoutDate" required>
+            </div>            
             <div class="search-button">
                 <button @click="searchHotels">Search Hotels</button>
             </div>
