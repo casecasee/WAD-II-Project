@@ -21,8 +21,12 @@
 
 </head>
 <body>
-    <div id="navbar-app"> 
-        <navbar-component></navbar-component> 
+    <div>
+        <div id="navbar-app">
+            <navbar-component></navbar-component>
+        </div>
+
+        <script type='module' src="navbarLoader.js"></script>
     </div> 
     
 
@@ -31,7 +35,7 @@
         <div class="row justify-content-center">
             <!-- Input Form Section -->
             <div class="form-container col-10 col-lg-5 mx-4">
-                <h3 class="title">✈️ Enter Flight Details</h3>
+                <h3 class="title">Enter Flight Details</h3>
                 
                 <form>
                     <div class="mb-4">
@@ -67,7 +71,7 @@
             </div>
             
             <div class="form-container col-10 col-lg-5 mx-4">
-                <h3 class="title">🛫 Flights</h3>
+                <h3 class="title"><i class="fa-solid fa-plane-departure"></i> Flights</h3>
                 <div v-if="flights.length === 0"> 
                     <div class="no-flights text-center mb-4">No flights added.</div>
                     <div class="text-center mt-4">
@@ -142,7 +146,6 @@
     
     <!-- Vue 3 -->
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    <script src = "navbarLoader.js"></script>
      
     <script type="module">
         import { getFirestore, doc, getDoc, getDocs, collection, updateDoc } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
