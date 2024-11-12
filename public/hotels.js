@@ -18,33 +18,6 @@ const app = Vue.createApp({
                 return id;
             }
         },
-        
-        // async mounted() {
-        //     // Get trip info when page loads
-        //     if (this.tripID) {
-        //         try {
-        //             // const tripInfo = await get_trip_info(this.tripID);
-        //             // if (tripInfo) {
-        //             //     this.country = tripInfo.destination;
-        //             //     // Optionally also set dates if needed
-        //             //     this.startDate = tripInfo.startdate;
-        //             //     this.endDate = tripInfo.enddate;
-        //             if (this.tripID) {
-        //                 const tripRef = doc(firebaseApp, 'trips', this.tripID);
-        //                 const tripSnap = await getDoc(tripRef);
-                        
-        //                 if (tripSnap.exists()) {
-        //                     // Get destination, start date, end date from Firebase and set it to country, startDate, endDate
-        //                     this.country = tripSnap.data().destination;
-        //                     this.startDate = tripSnap.data().startdate;
-        //                     this.endDate = tripSnap.data().enddate;
-        //                 }
-        //             }
-        //         } catch (error) {
-        //             console.error("Error getting trip info:", error);
-        //         }
-        //     }
-        // },
 
         mounted() {
             // Retrieve the destination from localStorage when the component is mounted
@@ -153,6 +126,7 @@ const app = Vue.createApp({
 
                     // Optional: Show success message
                     alert('Hotel added successfully!');
+                    window.location.href = `mytripinfo.html?country=${encodeURIComponent(this.country)}`
 
                 } catch (error) {
                     console.error('Error adding hotel:', error);

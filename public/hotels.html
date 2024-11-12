@@ -91,20 +91,25 @@
             position: relative;
             z-index: 100;
             color: white;
-            flex-wrap: nowrap;
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
         /* Add responsive styles for main-content items */
+        @media (max-width: 1200px) {
+            .main-content {
+                padding: 20px;
+                margin: -150px auto 0;
+                width: 95%;
+            }
+        }
+
         @media (max-width: 992px) {
             .main-content {
-                flex-direction: column;
-                margin: 0 auto;
+                flex-direction: row;
+                margin: -250px auto 0;
                 padding: 20px;
-                width: 80%;
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
+                width: 90%;
             }
 
             .destination, .date-picker, .search-button {
@@ -112,42 +117,38 @@
                 justify-content: center;
             }
 
-            input[type="text"], input[type="date"] {
-                width: 180px;
-            }
-            .hotel-container {
-                margin: 10px;
-            }
-            .hotel-card {
-                flex-direction: column;
-                padding: 15px;
-            }
-            .hotel-image {
-                max-width: 100%;
-                margin-bottom: 10px;
-            }
-            .hotel-description {
-                padding: 10px 0;
-            }
-            .hotel-prices {
-                text-align: center;
-                margin: 10px 0;
+            .date-picker {
+                flex-wrap: wrap;
+                justify-content: center;
             }
         }
 
-        @media (max-width: 576px) {
+        @media (max-width: 768px) {
             .main-content {
-                width: 90%;
-                padding: 15px;
-            }
-
-            .date-picker {
                 flex-direction: column;
-                gap: 15px;
+                margin: -300px auto 0;
+                padding: 20px;
+                width: 85%;
+            }
+            .hotel-card {
+                flex-direction: row;
+                align-items: center;
+                text-align: center;
             }
 
-            input[type="text"], input[type="date"] {
-                max-width: 250px;
+            .hotel-image {
+                max-width: 100%;
+                margin-bottom: 15px;
+            }
+
+            .hotel-description {
+                padding: 15px 0;
+            }
+
+            .hotel-prices {
+                width: 100%;
+                align-items: center;
+                margin: 15px 0;
             }
         }
 
@@ -173,13 +174,15 @@
         }
         .hotel-container {
             padding: 10px;
-            margin-top: 50px;
-            margin-left: 20px;
-            margin-right: 20px;
+            margin: 50px 20px;
             display: flex;
             flex-direction: column;
             z-index: 1;
             min-height: calc(100vh - 60vh - 60px);
+            width: auto;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
         }
         .hotel-container h2 {
             margin-bottom: 20px;
@@ -201,14 +204,13 @@
             background-color: #DCB287;  /* Brown color to match your theme */
         }
         .hotel-card {
-            background-color: rgba(255, 255, 255, 0.9);  /* Semi-transparent white background */
             display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
             margin-bottom: 20px;
-            padding: 15px;
+            padding: 20px;
             border-radius: 8px;
-            transition: transform 0.2s ease;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            justify-content: space-between;
+            align-items: center;
         }
 
         /* Alternate background colors for hotel cards */
@@ -233,8 +235,8 @@
         }
 
         .hotel-image {
-            flex: 1;
-            max-width: 200px;
+            flex: 0 0 200px;
+            min-width: 200px;
         }
         .hotel-image img {
             width: 100%;
@@ -242,14 +244,12 @@
             border-radius: 5px;
         }
         .hotel-description {
-            flex: 2;
-            padding: 0 20px;
+            flex: 1;
+            min-width: 300px;
         }
         .hotel-prices {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+            flex: 0 0 auto;
+            min-width: 200px;
         }
         .price-comparison {
             margin-bottom: 10px;
@@ -405,6 +405,23 @@
             bottom: 0; 
             margin-top: auto; 
         }  
+
+        /* Update input field styles */
+        .destination input[type="text"], 
+        .date-picker input[type="date"] {
+            min-width: 200px;
+            max-width: 250px;
+            width: 100%;
+        }
+
+        /* Add container width control */
+        @media (min-width: 1400px) {
+            .hotel-container {
+                width: 1400px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
     </style>
 
 
