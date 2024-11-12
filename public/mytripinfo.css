@@ -118,6 +118,7 @@ body::before {
     font-size: 18px; 
     color: #B5855B;
     font-weight: bold;
+    margin: auto;
 }
 
 .center-message-hotel {

@@ -80,7 +80,7 @@
                     <div v-if="day.activities.length === 0">
                         <!-- Free day message and button in the same line -->
                         <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-                            <p class="center-message" style="margin: auto;">Free day! Add attractions to fill up your day.</p>
+                            <p class="center-message">Free day! Add attractions to fill up your day.</p>
                             <button class="add-attract" @click="setAttractDate(day.date)">+ Attraction</button>
                         </div>
                     </div>
@@ -189,11 +189,11 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <!-- Budget Section -->
-            <div class="news-section">
-                <h2>Latest news in {{ destination }}</h2>
-                {{userID}}
+
+                <div class="news-section">
+                    <h2>Latest news in {{ destination }}</h2>
+                    {{userID}}
+                </div>
             </div>
         </div>
     </div>
@@ -243,15 +243,6 @@
                     isSunrise: null
                 };
             },
-            // async mounted() {
-            //     this.userID = await this.getUserID(); // Fetch the user ID after authentication
-            //     console.log("User ID:", this.userID);  // Log the userID
-
-            //     if (this.userID) {
-            //         this.loadUserTrips();
-            //     }
-            //     this.getTripIDFromURL(); // this function sets both country and tripid
-            // },
 
             async mounted() {
                 // Set tripID and country before loading trips
@@ -309,10 +300,7 @@
             },
             methods: {
                 setAttractDate(date) {
-                    // Store the selected date in localStorage
                     localStorage.setItem('attract_date', date);
-
-                    // Optionally navigate to the attractions page after setting the date
                     this.navigateToAttractions();
                 },
 
@@ -361,7 +349,7 @@
                             // lon: lon,
                             q: this.destination,
                             appid: apikey,
-                            units: 'metric'  // Temperature in Celsius
+                            units: 'metric' 
                         }
                     })
                         .then(response => {
@@ -561,17 +549,17 @@
 
 
                 // Load the user's trips from Firestore
-                async loadUserTrips() {
-                    const userRef = doc(db, "users", this.userID);
-                    const userSnap = await getDoc(userRef);
-                    if (userSnap.exists()) {
-                        const tripIDs = userSnap.data().trips;
-                        for (const tripID of tripIDs) {
-                            const tripData = await this.fetchTripData(tripID);
-                            this.trips.push(tripData);
-                        }
-                    }
-                },
+                // async loadUserTrips() {
+                //     const userRef = doc(db, "users", this.userID);
+                //     const userSnap = await getDoc(userRef);
+                //     if (userSnap.exists()) {
+                //         const tripIDs = userSnap.data().trips;
+                //         for (const tripID of tripIDs) {
+                //             const tripData = await this.fetchTripData(tripID);
+                //             this.trips.push(tripData);
+                //         }
+                //     }
+                // },
 
                 // Fetch a specific trip's data by ID
                 async fetchTripData(tripID) {
@@ -647,7 +635,6 @@
                             }
                         });
 
-                        // Update the `days` array with all days, including empty ones
                         this.days = allDays;
                         console.log("after", this.days)
 
