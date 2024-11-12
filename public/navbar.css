@@ -97,6 +97,7 @@ header{
     font-weight: bold;
     cursor: pointer;
     padding-top: 10px;
+    padding-left: 0.5rem;
     transition: scale 0.2s ease;
 }
 
@@ -112,7 +113,7 @@ header{
 .navbar .profile-icon {
     display: flex;
     align-items: center;
-    gap: 0.2rem; 
+    gap: 1rem !important; 
     margin-right: 2rem;
 }
 
@@ -120,6 +121,7 @@ header{
     width: 40px;
     height: 40px;
     border-radius: 50%;
+    margin-left: 30px;
 }
 
 .profile-icon:hover{

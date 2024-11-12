@@ -30,14 +30,15 @@
         }
         .header {
             position: relative;
-            height: 60vh;
-            background-image: url('countryPics/mountains.jpg') !important; /* Add a vibrant travel image */
+            height: 50vh;
+            padding-top: 70px;
             background-size: cover;
             background-position: center;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
+            border-bottom: #e1e7e4;
         }
         .header::before {
             content: "";
@@ -46,15 +47,18 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5); /* Dark overlay */
-            background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.2)); /* Gradient effect */
+            /* background: rgba(0, 0, 0, 0.5); Dark overlay */
         }
         .header-content {
             position: relative;
             text-align: center;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 30px;
             z-index: 1;
         }
         .header-title {
+            color: #764F37;
             font-family: 'Playfair Display', serif;
             font-size: 48px;
             font-weight: 700;
@@ -98,7 +102,7 @@
             <navbar-component></navbar-component>
         </div>
     
-        <script src = "navbarLoader.js"></script>
+        <script type="module" src="navbarLoader.js"></script>
         <div class="header-content">
             <h1 class="header-title">Discover Your Next Adventure</h1>
             <p class="header-subtitle">Plan, explore, and experience unforgettable trips</p>
