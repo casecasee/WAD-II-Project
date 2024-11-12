@@ -102,7 +102,7 @@ body::before {
 /* New styles for the revamped layout */
 .trip-container {
     display: grid;
-    grid-template-columns: 3fr 1fr;
+    grid-template-columns: 5fr 2fr;
     gap: 30px;
     padding: 20px;
     max-width: 1400px;
@@ -171,6 +171,8 @@ body::before {
     background: white;
     border-radius: 5px;
     margin-bottom: 10px;
+    transition: all 0.3s ease;
+
 }
 
 .hotel-card {
@@ -204,6 +206,8 @@ body::before {
     border-radius: 5px;
     margin-bottom: 10px;
     justify-content: space-between;
+    transition: all 0.3s ease;
+
 }
 
 .hotel-item:hover {
@@ -246,6 +250,7 @@ body::before {
     position: absolute;
     right: 10px;
     display: none;
+    transition: all 0.3s ease;
 }
 
 .delete-cross:hover {
@@ -277,6 +282,7 @@ body::before {
     border-radius: 12px;
     margin-left: 10px;
     border: none;
+    transition: all 0.3s ease;
 }
 
 .add-attract:hover {
@@ -287,7 +293,6 @@ body::before {
     border-radius: 12px;
     margin-left: 10px;
     transform: scale(1.05);
-
 }
 
 .flight-section {
@@ -343,6 +348,26 @@ body::before {
 .flight-date {
     font-size: 0.9em;
     color: #666;
+}
+
+.add-flight {
+    font-size: 15px;
+    color: white;
+    background: #764F37;
+    padding: 6px 16px;
+    border-radius: 12px;
+    border: none;
+    margin-bottom: 10px;
+    transition: all 0.3s ease;
+}
+
+.add-flight:hover {
+    font-size: 15px;
+    color: white;
+    background: #DCB287;
+    padding: 6px 16px;
+    border-radius: 12px;
+    transform: scale(1.05);
 }
 
 .budget-section {
@@ -518,47 +543,49 @@ body::before {
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
-.news-container {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
 .news-card {
     display: flex;
+    flex-direction: column;
     background: #f8f9fa;
     border-radius: 10px;
-    padding: 15px;
+    padding: 10px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
 }
 
 .news-image {
-    width: 150px;
-    height: 100px;
-    object-fit: cover;
+    width: 100%; 
+    height: auto; 
+    object-fit: cover; 
     border-radius: 8px;
-}
-
-.news-content {
-    margin-left: 15px;
-    flex-grow: 1;
+    margin-top: 4px;
+    margin-bottom: 8px;
 }
 
 .news-title {
     font-size: 1.2em;
     color: #764F37;
     font-weight: bold;
+    margin-bottom: 8px;
 }
 
 .news-description {
-    margin-top: 10px;
     color: #666;
 }
 
 .news-date {
-    margin-top: 10px;
     color: #999;
-    font-size: 0.9em;
+    font-size: 14px;
+}
+
+.news-link {
+    color: #764F37;
+    font-size: 14px;
+    text-align: right;
+}
+
+.news-link:hover {
+    transform: scale(1.01);
 }
 
 footer {

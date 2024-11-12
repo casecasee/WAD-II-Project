@@ -44,7 +44,7 @@
                     </div>
                     <div class="mb-4">
                         <label for="departure-date" class="form-label">Departure Date <span class="text-danger">*</span></label>
-                        <input type="date" class="form-control" v-model="departureDate" required>
+                        <input type="date" ref="departureDate" class="form-control" v-model="departureDate" required>
                     </div>
                     <div class="mb-4">
                         <label for="departure-time" class="form-label">Departure Time <span class="text-danger">*</span></label>
@@ -68,7 +68,17 @@
             
             <div class="form-container col-10 col-lg-5 mx-4">
                 <h3 class="title">🛫 Flights</h3>
-                <div v-if="flights.length === 0" class="no-flights text-center mb-4">No flights added.</div>
+                <div v-if="flights.length === 0"> 
+                    <div class="no-flights text-center mb-4">No flights added.</div>
+                    <div class="text-center mt-4">
+                        <button 
+                            type="submit" 
+                            class="btn btn-primary w-100"  
+                            @click="addAllFlightsToTrip">
+                            Return
+                        </button>
+                    </div>
+                </div>
                 <div class="row justify-content-center" v-if="flights.length > 0">
                     <div v-for="(flight, index) in flights" :key="index" class="ticket col-12 col-sm-6 col-lg-4 my-2">
                         <div class="ticket-header">
@@ -117,8 +127,7 @@
                         type="submit" 
                         class="btn btn-primary w-100" 
                         v-if="flights.length > 0" 
-                        @click="addAllFlightsToTrip"
-                    >
+                        @click="addAllFlightsToTrip">
                         Add Flights To Trip!
                     </button>
                 </div>
@@ -157,7 +166,9 @@
                     flightCost: '',
                     flights: [] ,
                     username: '',
-                    test: []
+                    test: [],
+                    startDate: '',
+                    endDate: '',
                 };
             },
             mounted() {
@@ -226,8 +237,7 @@
                         console.log(this.flights);
                         await add_flights_to_trip(this.tripID, this.flights);
                         this.flights = []; // Clear local flights array
-                        alert("All flights have been added to the trip successfully!");
-                        window.location.href = `mytripinfo.html?tripID=${this.tripID}`; // Redirect after success
+                        window.location.href = `mytripinfo.html?country=${this.country}`;
                     } catch (error) {
                         console.error("Error adding flights to Firebase:", error);
                     }
@@ -278,6 +288,17 @@
                             this.flights.push(flight);
                         });
                         console.log("Updated this.flights:", this.flights);
+
+                        this.startDate = tripData.startdate;  // Ensure these fields exist in Firestore
+                        this.endDate = tripData.enddate;
+
+                        // Calculate valid date range: 1 day before startDate, 1 day after endDate
+                        const oneDayBeforeStart = new Date(new Date(this.startDate).setDate(new Date(this.startDate).getDate() - 1)).toISOString().split('T')[0];
+                        const oneDayAfterEnd = new Date(new Date(this.endDate).setDate(new Date(this.endDate).getDate() + 1)).toISOString().split('T')[0];
+
+                        // Set the min and max attributes for the departureDate input
+                        this.$refs.departureDate.setAttribute('min', oneDayBeforeStart);
+                        this.$refs.departureDate.setAttribute('max', oneDayAfterEnd);
                     } else {
                         console.error("No such trip found");
                     }

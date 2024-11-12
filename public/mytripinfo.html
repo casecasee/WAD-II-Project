@@ -60,10 +60,10 @@
                 <h2>Trip Itinerary</h2>
                 <div class="hotel-card">
                     <div class="hotel-header">
-                        <h3>Hotels</h3>
+                        <h3><i class="fa-solid fa-hotel"></i> Hotels</h3>
                     </div>
                     <div v-if="hotels.length === 0" class="center-message-hotel">
-                        <p>Click "Hotels" to add!</p>
+                        <button class="add-flight" @click="navigateToHotels">+ Hotels</button>
                     </div>
                     <div v-for="hotel in hotels" class="hotel-item">
                         <div class="hotel-name">{{ hotel.description }} </div>
@@ -74,7 +74,7 @@
 
                 <div v-for="day in days" :key="day.date" class="day-card">
                     <div class="day-header">
-                        <h3>{{ day.date }}</h3>
+                        <h3><i class="fa-regular fa-calendar"></i> {{ day.date }}</i></h3>
                     </div>
 
                     <div v-if="day.activities.length === 0">
@@ -105,8 +105,8 @@
             <!-- Flight Details Sidebar -->
             <div class="flight-section">
                 <h2>Flight Details</h2>
-                <div v-if="flights.length === 0" class="center-message">
-                    <p>Click on "Flights" to add your flight to the trip!</p>
+                <div v-if="flights.length === 0" class="center-message-hotel">
+                    <button class="add-flight" @click="navigateToAddFlightInfo">+ Flights</button>
                 </div>
                 <div v-for="flight in flights" :key="flight.flight_no" class="flight-card">
                     <div class="flight-header">
@@ -122,7 +122,8 @@
                         <div class="flight-city">
                             <div><strong>{{ flight.departure_city }}</strong></div>
                         </div>
-                        <div class="flight-arrow">→</div>
+                        <div class="fas fa-plane" style="color: #764F37"></div>
+                        <!-- <div class="flight-arrow">→</div> -->
                         <div class="flight-city">
                             <div><strong>{{ flight.arrival_city }}</strong></div>
                         </div>
@@ -169,7 +170,7 @@
                 <h2>Weather</h2>
 
                 <div class="weather-section"
-                    :style="{background: isDaytime ? 'lightblue' : isSunset || isSunrise ? 'linear-gradient(to bottom, purple, orange)' : 'rgb(41, 41, 41)', color: isDaytime || isSunset || isSunrise ? 'black' : 'white'}">
+                    :style="{background: isDaytime ? 'linear-gradient(to top, #83C6DE, #CAE6FE)' : isSunset || isSunrise ? 'linear-gradient(55deg, #BF3475, #FFCE61)' : 'rgb(41, 41, 41)', color: isDaytime || isSunset || isSunrise ? 'black' : 'white'}">
                     <div class="currentTemp">
                         <div class="location">
                             <span><b>{{destination}}</b></span>
@@ -184,15 +185,16 @@
                         <div class="locweather">
                             {{weather}}
                         </div>
-                        <div class="datetime">
-                            <strong>Last updated:</strong> {{ time }}
-                        </div>
                     </div>
                 </div>
 
-                <div class="news-section">
-                    <h2>Latest news in {{ destination }}</h2>
-                    {{userID}}
+                <h2>{{ destination }} News</h2>
+                <div v-for="article in news" :key="article.uuid" class="news-card">
+                    <span class="news-date">{{ formatDate(article.published_at) }}</span>
+                    <img :src="article.image_url" class="news-image">
+                    <div class="news-title">{{ article.title }}</div>
+                    <div class="news-description">{{ article.description }}</div>
+                    <a :href="article.url" target="_blank" class="news-link">Read More</a>
                 </div>
             </div>
         </div>
@@ -240,7 +242,9 @@
                     time: null,
                     isDaytime: null,
                     isSunset: null,
-                    isSunrise: null
+                    isSunrise: null,
+                    news: [],
+                    currentYear: null,
                 };
             },
 
@@ -250,10 +254,13 @@
 
                 this.userID = await this.getUserID(); // Get the user ID after authentication
                 console.log("User ID:", this.userID);  // Log the userID
+                
+                this.getYear();
 
                 if (this.userID) {
                     await this.fetchTripData(this.tripID);  // Get the specific trip data
                     await this.fetchWeatherDetails(this.destination); // Fetch coordinates for the destination
+                    await this.fetchNews();
                 }
             },
 
@@ -299,6 +306,14 @@
                 }
             },
             methods: {
+                getYear() {
+                    const date = new Date()
+                    const year =  date.toLocaleDateString('en-GB', {
+                        year: 'numeric'});
+                    this.currentYear = year
+                    console.log("current year:", this.currentYear)
+                },
+
                 setAttractDate(date) {
                     localStorage.setItem('attract_date', date);
                     this.navigateToAttractions();
@@ -339,6 +354,28 @@
                     return date.toLocaleDateString('en-GB', options); // 'en-GB' formats as 'dd mmm yyyy'
                 },
 
+                async fetchNews() {
+                    const apikey = "-";
+                    const apiUrl = `https://api.thenewsapi.com/v1/news/top?api_token=${apikey}&search=${this.destination}&categories=food,travel&language=en&published_after=${this.currentYear}&limit=3`;
+                    console.log(this.date)
+                    fetch(apiUrl)
+                        .then(response => response.json())
+                        .then(data => {
+                            this.loading = false;
+                            if (data.data && data.data.length) {
+                                this.news = data.data;
+                                this.news.sort((a, b) => new Date(b.published_at) - new Date(a.published_at));
+                                console.log(this.news)
+                            } else {
+                                this.error = 'No local news found for your location.';
+                            }
+                        })
+                        .catch(err => {
+                            this.loading = false;
+                            this.error = 'An error occurred. Please try again later.';
+                        });
+                },
+
                 fetchWeatherDetails(q) {
                     const URL = "https://api.openweathermap.org/data/2.5/weather";
                     const apikey = "-";
@@ -364,12 +401,6 @@
                             const sunriseTime = new Date(sunrise * 1000);
                             const sunsetTime = new Date(sunset * 1000);
 
-                            const formattedTime = currentTime.toLocaleString('en-GB', {
-                                hour: '2-digit',
-                                minute: '2-digit',
-                                hour12: true
-                            });
-
                             const thirtyMinutesBeforeSunset = new Date(sunsetTime.getTime() - 30 * 60 * 1000);
                             const thirtyMinutesAfterSunset = new Date(sunsetTime.getTime() + 30 * 60 * 1000);
                             const thirtyMinutesBeforeSunrise = new Date(sunriseTime.getTime() - 30 * 60 * 1000);
@@ -386,7 +417,6 @@
                             this.weather = weather;
                             this.humidity = humidity + '%';
                             this.temperature = temperature + "°C";
-                            this.time = formattedTime;  // Store formatted date and time
                             this.isDaytime = isDaytime;
                             this.isSunset = isSunset;
                             this.isSunrise = isSunrise;
@@ -638,7 +668,12 @@
                         this.days = allDays;
                         console.log("after", this.days)
 
-                        this.flights = tripData.flights || [];
+                        this.flights = (tripData.flights || []).sort((a, b) => {
+                            const dateA = new Date(a.departure_date);
+                            const dateB = new Date(b.departure_date);
+                            return dateA - dateB;
+                        });
+                        
                         this.budget.flights = this.flights.reduce((sum, flight) => sum + parseFloat(flight.flight_cost || 0), 0);
 
                         this.budget.hotels = tripData.hotels
