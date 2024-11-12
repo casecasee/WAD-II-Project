@@ -377,6 +377,38 @@ body::before {
     transition: width 0.3s ease;
 }
 
+.weather-section {
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 10px;
+    transition: background 1s ease-in-out, color 1s ease-in-out; /* Smooth transition */
+}
+
+.temp {
+	font-size: 30px;
+	text-align: center;
+	display: block;
+	font-weight: 800;
+}
+
+.currentTemp .location {
+    display: flex;
+    padding-bottom: 10px;
+    justify-content: space-between;
+}
+
+.locweather {
+    display: flex;
+    justify-content: center;
+}
+
+.datetime {
+    font-size: 14px;
+    text-align: center;
+    margin-top: 5px;
+}
+
+
 /* Add responsive styles */
 @media screen and (max-width: 480px) {
     .trip-container {

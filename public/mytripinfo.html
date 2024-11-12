@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,32 +8,40 @@
 
     <!-- VUE -->
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    
+
     <!-- Axios and API -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBqbv7BqX1_7CcpPT80locaYJ3fnsdC-Sg&libraries=places"></script>
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBqbv7BqX1_7CcpPT80locaYJ3fnsdC-Sg&libraries=places"></script>
 
     <!-- CSS -->
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet"> 
-    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> -->
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Pacifico&family=Playwrite+GB+S:ital,wght@0,100..400;1,100..400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Pacifico&family=Playwrite+GB+S:ital,wght@0,100..400;1,100..400&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="navbar.css">
-    <link rel = "stylesheet" href = "mytripinfo.css">
+    <link rel="stylesheet" href="mytripinfo.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
 
 
 </head>
+
 <body>
 
     <div>
         <div id="navbar-app">
             <navbar-component></navbar-component>
         </div>
-    
-        <script src = "navbarLoader.js"></script>
+
+        <script src="navbarLoader.js"></script>
     </div>
 
     <div id="app">
@@ -46,11 +55,13 @@
             </div>
         </div>
 
-        <div class="trip-container">        
+        <div class="trip-container">
             <div class="itinerary-section">
                 <h2>Trip Itinerary</h2>
                 <div class="day-card">
-                    <div class="day-header"><h3>Hotels</h3></div>
+                    <div class="day-header">
+                        <h3>Hotels</h3>
+                    </div>
                     <div v-if="hotels.length === 0" class="center-message-hotel">
                         <p>Click "Hotels" to add!</p>
                     </div>
@@ -74,7 +85,8 @@
                         <div class="activity-details">
                             <span>{{ activity.description }}</span>
                             <span class="activity-type">{{ activity.type }}</span>
-                            <span class="delete-cross" @click="deleteActivity(tripID, activity.activityId)">&#10006;</span>
+                            <span class="delete-cross"
+                                @click="deleteActivity(tripID, activity.activityId)">&#10006;</span>
                         </div>
                     </div>
                     <div style="display: flex; justify-content: flex-end;">
@@ -82,7 +94,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- Flight Details Sidebar -->
             <div class="flight-section">
                 <h2>Flight Details</h2>
@@ -98,7 +110,7 @@
                         <span class="flight-type">{{ flight.departure_time }}</span>
                         <!-- Only show Seat No if available -->
                         <span v-if="flight.seat_no" class="flight-type">Seat: {{ flight.seat_no }}</span>
-                    </div> 
+                    </div>
                     <div class="flight-details">
                         <div class="flight-city">
                             <div><strong>{{ flight.departure_city }}</strong></div>
@@ -112,14 +124,12 @@
 
                 <h2>Remaining Budget</h2>
                 <div class="budget-section">
-                
+
                     <div class="budget-header">
                         <h3 :style="{ color: remainingBudgetColor }">${{ remainingBudgetCalc.toFixed(2) }}</h3>
                         <!-- Budget Progress Bar -->
                         <div class="budget-progress">
-                            <div 
-                                class="budget-bar" 
-                                :style="{ 
+                            <div class="budget-bar" :style="{ 
                                     width: budgetBarWidth, 
                                     backgroundColor: budgetBarColor 
                                 }">
@@ -130,34 +140,57 @@
                     </div>
                     <div class="budget-details">
                         <div class="budget-row">
-                            <span><h5>Hotels:</h5></span>
+                            <span>
+                                <h5>Hotels:</h5>
+                            </span>
                             <span>${{ budget.hotels.toFixed(2) }}</span>
                         </div>
                         <div class="budget-row">
-                            <span><h5>Flights:</h5></span>
+                            <span>
+                                <h5>Flights:</h5>
+                            </span>
                             <span>${{ budget.flights.toFixed(2) }}</span>
                         </div>
                         <div class="budget-row">
-                            <span><h5>Activities:</h5></span>
+                            <span>
+                                <h5>Activities:</h5>
+                            </span>
                             <span>${{ budget.activities.toFixed(2) }}</span>
                         </div>
                     </div>
                 </div>
-
                 <h2>Weather</h2>
 
-                <div class="flight-section">
-                    {{ latitude }}:
-                    {{ longitude }}:
+                <div class="weather-section"
+                    :style="{background: isDaytime ? 'lightblue' : isSunset || isSunrise ? 'linear-gradient(to bottom, purple, orange)' : 'rgb(41, 41, 41)', color: isDaytime || isSunset || isSunrise ? 'black' : 'white'}">
+                    <div class="currentTemp">
+                        <div class="location">
+                            <span><b>{{destination}}</b></span>
+                            <span>
+                                <i :class="isDaytime ? 'fas fa-sun' : 'fas fa-moon'" style="font-size:20px"></i>
+                            </span>
+                        </div>
+                        <span class="temp">
+                            <i :class="temperatureIcon" style='font-size:36px'></i>
+                            {{ temperature }}
+                        </span>
+                        <div class="locweather">
+                            {{weather}}
+                        </div>
+                        <div class="datetime">
+                            <strong>Last updated:</strong> {{ time }}
+                        </div>
+                    </div>
                 </div>
             </div>
-
-            <!-- Budget Section -->
-            <div class="news-section">
-                <h2>Latest news in {{ destination }}</h2>
-                {{userID}}
-            </div>
         </div>
+
+        <!-- Budget Section -->
+        <div class="news-section">
+            <h2>Latest news in {{ destination }}</h2>
+            {{userID}}
+        </div>
+    </div>
     </div>
 
     <footer>
@@ -167,11 +200,11 @@
     <script src="navbarLoader.js"></script>
 
     <script type="module">
-        
+
         import { getFirestore, doc, getDoc, getDocs, collection, updateDoc } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
         import { firebaseApp } from "./stuff.js";
-        
+
         const db = getFirestore(firebaseApp);
 
         const app = Vue.createApp({
@@ -193,8 +226,15 @@
                     startDate: '',
                     endDate: '',
                     tripID: null,
-                    latitude: null,  // Store latitude
-                    longitude: null, // Store longitude
+                    latitude: null,
+                    longitude: null,
+                    weather: 'broken clouds',
+                    temperature: '-21°C',
+                    humidity: '88%',
+                    time: null,
+                    isDaytime: null,
+                    isSunset: null,
+                    isSunrise: null
                 };
             },
             // async mounted() {
@@ -209,18 +249,24 @@
 
             async mounted() {
                 // Set tripID and country before loading trips
-                this.getTripIDFromURL(); 
+                this.getTripIDFromURL();
 
                 this.userID = await this.getUserID(); // Get the user ID after authentication
                 console.log("User ID:", this.userID);  // Log the userID
 
                 if (this.userID) {
                     await this.fetchTripData(this.tripID);  // Get the specific trip data
-                    await this.getCoordinates(this.destination); // Fetch coordinates for the destination
+                    await this.fetchWeatherDetails(this.destination); // Fetch coordinates for the destination
                 }
             },
 
             computed: {
+                temperatureIcon() {
+                    const tempValue = parseFloat(this.temperature);
+                    return tempValue >= 20
+                        ? 'fas fa-temperature-high'
+                        : 'fas fa-temperature-low';
+                },
                 totalSpent() {
                     return this.budget.flights + this.budget.hotels + this.budget.activities;
                 },
@@ -299,22 +345,58 @@
                     return date.toLocaleDateString('en-GB', options); // 'en-GB' formats as 'dd mmm yyyy'
                 },
 
-                fetchWeatherDetails(lat, lon) {
+                fetchWeatherDetails(q) {
                     const URL = "https://api.openweathermap.org/data/2.5/weather";
                     const apikey = "-";
 
                     axios.get(URL, {
                         params: {
-                            lat: lat,
-                            lon: lon,
+                            // lat: lat,
+                            // lon: lon,
+                            q: this.destination,
                             appid: apikey,
                             units: 'metric'  // Temperature in Celsius
                         }
                     })
                         .then(response => {
-                            const weather = response.data.weather[0].description;
+                            let weather = response.data.weather[0].description;
                             const humidity = response.data.main.humidity;
                             const temperature = response.data.main.temp;
+                            const timestamp = response.data.dt;
+                            const sunrise = response.data.sys.sunrise;
+                            const sunset = response.data.sys.sunset;
+
+                            const currentTime = new Date(timestamp * 1000);
+                            const sunriseTime = new Date(sunrise * 1000);
+                            const sunsetTime = new Date(sunset * 1000);
+
+                            const formattedTime = currentTime.toLocaleString('en-GB', {
+                                hour: '2-digit',
+                                minute: '2-digit',
+                                hour12: true
+                            });
+
+                            const thirtyMinutesBeforeSunset = new Date(sunsetTime.getTime() - 30 * 60 * 1000);
+                            const thirtyMinutesAfterSunset = new Date(sunsetTime.getTime() + 30 * 60 * 1000);
+                            const thirtyMinutesBeforeSunrise = new Date(sunriseTime.getTime() - 30 * 60 * 1000);
+                            const thirtyMinutesAfterSunrise = new Date(sunriseTime.getTime() + 30 * 60 * 1000);
+
+                            const isDaytime = currentTime >= sunriseTime && currentTime <= sunsetTime;
+                            const isSunset = currentTime >= thirtyMinutesBeforeSunset && currentTime <= thirtyMinutesAfterSunset;
+                            const isSunrise = currentTime >= thirtyMinutesBeforeSunrise && currentTime <= thirtyMinutesAfterSunrise;
+                            const isNighttime = !isDaytime && !isSunset && !isSunrise;
+
+
+                            weather = weather.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+
+                            this.weather = weather;
+                            this.humidity = humidity + '%';
+                            this.temperature = temperature + "°C";
+                            this.time = formattedTime;  // Store formatted date and time
+                            this.isDaytime = isDaytime;
+                            this.isSunset = isSunset;
+                            this.isSunrise = isSunrise;
+                            this.isNighttime = isNighttime;
 
                             console.log(`Weather: ${weather}, Humidity: ${humidity}%, Temperature: ${temperature}°C`);
                         })
@@ -323,28 +405,28 @@
                         });
                 },
 
-                async getCoordinates(destination) {
-                    const apiKey = '-';
-                    const url = `https://api.geoapify.com/v1/geocode/search?text=${encodeURIComponent(destination)}&type=country&apiKey=${apiKey}`;
+                // async getCoordinates(destination) {
+                //     const apiKey = '9c376fe710bf456d8c57969019eecf63';
+                //     const url = `https://api.geoapify.com/v1/geocode/search?text=${encodeURIComponent(destination)}&type=country&apiKey=${apiKey}`;
 
-                    try {
-                        const response = await axios.get(url);
-                        const data = response.data;
+                //     try {
+                //         const response = await axios.get(url);
+                //         const data = response.data;
 
-                        if (data && data.features && data.features.length > 0) {
-                            const firstResult = data.features[0];
-                            this.latitude = firstResult.geometry.coordinates[1];  // Latitude
-                            this.longitude = firstResult.geometry.coordinates[0]; // Longitude
-                            console.log(`Coordinates: Lat=${this.latitude}, Lon=${this.longitude}`);
+                //         if (data && data.features && data.features.length > 0) {
+                //             const firstResult = data.features[0];
+                //             this.latitude = firstResult.geometry.coordinates[1];  // Latitude
+                //             this.longitude = firstResult.geometry.coordinates[0]; // Longitude
+                //             console.log(`Coordinates: Lat=${this.latitude}, Lon=${this.longitude}`);
 
-                            this.fetchWeatherDetails(this.latitude, this.longitude);
-                        } else {
-                            console.error("No results found for the destination.");
-                        }
-                    } catch (error) {
-                        console.error("Error fetching coordinates:", error);
-                    }
-                },
+                //             this.fetchWeatherDetails(this.latitude, this.longitude);
+                //         } else {
+                //             console.error("No results found for the destination.");
+                //         }
+                //     } catch (error) {
+                //         console.error("Error fetching coordinates:", error);
+                //     }
+                // },
 
                 groupAndSortActivities(activities) {
                     // Helper function to format date
@@ -473,16 +555,16 @@
                         const tripData = tripSnap.data();
 
                         console.log("Fetched trip data for tripID:", tripID);
-                        console.log(tripData); 
-                
+                        console.log(tripData);
+
                         this.startDate = tripData.startdate;
                         this.endDate = tripData.enddate;
                         this.destination = tripData.destination;
                         this.budget.total = tripData.budget || 0;
-                        
+
                         let activities = [];
                         let hotels = [];
-                        
+
                         // Map hotels to activities
                         if (tripData.hotels && tripData.hotels.length > 0) {
                             hotels = tripData.hotels.map(hotel => ({
@@ -523,7 +605,7 @@
                         console.log('Grouped Days:', groupedDays);
 
                         // Update the days data property
-                        this.days =  Object.keys(groupedDays).map(date => ({
+                        this.days = Object.keys(groupedDays).map(date => ({
                             date, // e.g., "13 Nov 2024"
                             activities: groupedDays[date] // Array of activities for that day
                         }));
@@ -541,7 +623,7 @@
                             : 0;
 
                         // this.trips.push(tripDetails);
-                        
+
                         // return tripDetails;
                     } else {
                         console.error("No such trip found");
@@ -554,4 +636,5 @@
     </script>
 
 </body>
+
 </html>
