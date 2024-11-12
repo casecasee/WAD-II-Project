@@ -1,4 +1,5 @@
 import { add_attraction, get_trip_info } from "./functions.js";
+import { touristAttractionsByRegion } from "./allAttractions.js"
 
 const app = Vue.createApp({ 
     data() { 
@@ -47,14 +48,14 @@ const app = Vue.createApp({
             window.location.href = `mytripinfo.html?country=${encodeURIComponent(this.country)}`
         },
 
-        async handle(results, status) {
+        async handle(results) {
             // var all = [];
             console.log(results);
             const url = 'https://api.wikimedia.org/core/v1/wikipedia/en/search/page';
 
             for (const res of results) {
-                console.log(res.name);
-                const params = { q: res.name, limit: 1 };
+                // console.log(res.name);
+                const params = { q: res, limit: 1 };
                 const response = await axios.get(url, { params: params } );
                 const ouh = response.data.pages;
                 
@@ -67,7 +68,7 @@ const app = Vue.createApp({
                     if (thumbimage) {
                         var to_add = {};
                         const image = thumbimage.replace('/thumb', '').replace(/\/\d+px-.+$/, ''); // get big image
-                        to_add.name = res.name;
+                        to_add.name = res;
                         to_add.imgurl = image;
                         to_add.desc = description;
                         this.all.push(to_add);
@@ -110,21 +111,25 @@ const app = Vue.createApp({
         const enddate = tripInfo.enddate; 
         this.getDateRange(startdate, enddate); 
 
+        this.handle(touristAttractionsByRegion[this.country]);
 
-        const info = await getCoordinates(this.country);
-        const lat = info.lat;
-        const long = info.long;
 
-        var loc = new google.maps.LatLng(lat, long);
-        const service = new google.maps.places.PlacesService(document.createElement('div'));
 
-        const request = {
-            location: loc,
-            radius: '5000',
-            type: ['tourist_attraction'], 
-        };
 
-        service.nearbySearch(request, this.handle); // set list of attractions
+        // const info = await getCoordinates(this.country);
+        // const lat = info.lat;
+        // const long = info.long;
+
+        // var loc = new google.maps.LatLng(lat, long);
+        // const service = new google.maps.places.PlacesService(document.createElement('div'));
+
+        // const request = {
+        //     location: loc,
+        //     radius: '5000',
+        //     type: ['tourist_attraction'], 
+        // };
+
+        // service.nearbySearch(request, this.handle); // set list of attractions
     }
 });
 
