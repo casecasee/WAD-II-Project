@@ -122,7 +122,7 @@
                     <img :src="trip.image" alt="Trip Image" class="trip-image">
                     <div class="trip-details">
                         <h3>{{ trip.destination }}</h3>
-                        <p>{{ trip.startdate }} to {{ trip.enddate }}</p>
+                        <p>{{ formatDate(trip.startdate) }} to {{ formatDate(trip.enddate) }}</p>
                         <button @click="viewDetails(trip.id, trip.destination)" class="details-button">View Details</button>
                         <button @click="deleteTrip(trip.id)" class="delete-button">
                             <i class="fas fa-trash-alt"></i> <!-- <span>Delete Trip</span> -->
