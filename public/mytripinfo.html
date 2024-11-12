@@ -58,8 +58,8 @@
         <div class="trip-container">
             <div class="itinerary-section">
                 <h2>Trip Itinerary</h2>
-                <div class="day-card">
-                    <div class="day-header">
+                <div class="hotel-card">
+                    <div class="hotel-header">
                         <h3>Hotels</h3>
                     </div>
                     <div v-if="hotels.length === 0" class="center-message-hotel">
@@ -72,24 +72,31 @@
                     </div>
                 </div>
 
-                <div v-if="days.length === 0 || !days.some(day => day.activities.length > 0)" class="center-message">
-                    <p>Click "Attractions" to start!</p>
-                </div>
-                <div v-for="day in days" :key="day.id" class="day-card">
+                <div v-for="day in days" :key="day.date" class="day-card">
                     <div class="day-header">
                         <h3>{{ day.date }}</h3>
-                        <!-- <span class="day-date">{{ day.date }}</span> -->
                     </div>
+
+                    <div v-if="day.activities.length === 0">
+                        <!-- Free day message and button in the same line -->
+                        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                            <p class="center-message" style="margin: auto;">Free day! Add attractions to fill up your day.</p>
+                            <button class="add-attract" @click="setAttractDate(day.date)">+ Attraction</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Check if there are activities for the day -->
                     <div v-for="activity in day.activities" :key="activity.activityId" class="activity-item">
                         <span class="activity-time">{{ activity.formattedTime }}</span>
                         <div class="activity-details">
                             <span>{{ activity.description }}</span>
                             <span class="activity-type">{{ activity.type }}</span>
-                            <span class="delete-cross"
-                                @click="deleteActivity(tripID, activity.activityId)">&#10006;</span>
+                            <span class="delete-cross" @click="deleteActivity(tripID, activity.activityId)">&#10006;</span>
                         </div>
                     </div>
-                    <div style="display: flex; justify-content: flex-end;">
+                    
+                    <!-- Display a free day message if there are no activities -->
+                    <div v-if="day.activities.length > 0" style="display: flex; justify-content: flex-end;">
                         <button class="add-attract" @click="setAttractDate(day.date)">+ Attraction</button>
                     </div>
                 </div>
@@ -183,12 +190,11 @@
                     </div>
                 </div>
             </div>
-        </div>
-
-        <!-- Budget Section -->
-        <div class="news-section">
-            <h2>Latest news in {{ destination }}</h2>
-            {{userID}}
+            <!-- Budget Section -->
+            <div class="news-section">
+                <h2>Latest news in {{ destination }}</h2>
+                {{userID}}
+            </div>
         </div>
     </div>
     </div>
@@ -228,9 +234,9 @@
                     tripID: null,
                     latitude: null,
                     longitude: null,
-                    weather: 'broken clouds',
-                    temperature: '-21°C',
-                    humidity: '88%',
+                    weather: '',
+                    temperature: '',
+                    humidity: '',
                     time: null,
                     isDaytime: null,
                     isSunset: null,
@@ -428,6 +434,26 @@
                 //     }
                 // },
 
+                generateAllDaysBetweenDates(startDate, endDate) {
+                    let days = [];
+                    let currentDate = new Date(startDate);
+
+                    while (currentDate <= endDate) {
+                        let formattedDate = currentDate.toLocaleDateString('en-GB', {
+                            day: '2-digit', month: 'short', year: 'numeric'
+                        });
+
+                        days.push({
+                            date: formattedDate,
+                            activities: []  // Initialize empty activities array
+                        });
+
+                        currentDate.setDate(currentDate.getDate() + 1);  // Move to the next day
+                    }
+
+                    return days;
+                },
+
                 groupAndSortActivities(activities) {
                     // Helper function to format date
                     const formatDate = (timestamp) => {
@@ -557,13 +583,15 @@
                         console.log("Fetched trip data for tripID:", tripID);
                         console.log(tripData);
 
-                        this.startDate = tripData.startdate;
-                        this.endDate = tripData.enddate;
+                        this.startDate = new Date(tripData.startdate);
+                        this.endDate = new Date(tripData.enddate);
                         this.destination = tripData.destination;
                         this.budget.total = tripData.budget || 0;
 
                         let activities = [];
                         let hotels = [];
+
+                        let allDays = this.generateAllDaysBetweenDates(this.startDate, this.endDate);
 
                         // Map hotels to activities
                         if (tripData.hotels && tripData.hotels.length > 0) {
@@ -609,7 +637,19 @@
                             date, // e.g., "13 Nov 2024"
                             activities: groupedDays[date] // Array of activities for that day
                         }));
-                        console.log(this.days)
+                        console.log("before", this.days)
+
+                        allDays.forEach(day => {
+                            if (groupedDays[day.date]) {
+                                day.activities = groupedDays[day.date];
+                            } else {
+                                day.activities = [];  // No activities, empty array
+                            }
+                        });
+
+                        // Update the `days` array with all days, including empty ones
+                        this.days = allDays;
+                        console.log("after", this.days)
 
                         this.flights = tripData.flights || [];
                         this.budget.flights = this.flights.reduce((sum, flight) => sum + parseFloat(flight.flight_cost || 0), 0);
