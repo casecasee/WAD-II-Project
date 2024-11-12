@@ -115,8 +115,8 @@
         <h1 class = "content-title">Attractions in {{ country }}</h1>
 
         <div class='container'>
-            <div class='row row-cols-4 pb-5'>
-                <div class="col" v-for="attraction in all">
+            <div class='row row-cols-4 py-5'>
+                <div class="col py-2" v-for="attraction in all">
                     <country-images @popup="(imgurl) => popup(imgurl, attraction.name)" :a_name="attraction.name" :imgurl="attraction.imgurl" :desc="attraction.desc"></country-images>
                 </div>
             </div>
