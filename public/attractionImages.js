@@ -23,7 +23,12 @@ const app = Vue.createApp({
             return id;
             // return 'ZI1IlYYOwUncoQZ2OztJ'
         },
-        
+         
+        attract_date() {
+            const date  = localStorage.getItem('attract_date') || '';
+            return date
+        }
+
     }, // computed
 
     methods: {
@@ -36,10 +41,8 @@ const app = Vue.createApp({
             this.display_it = false;
         }, 
         async addattract(a_name, date, cost, time) {
-            console.log(date);
-            console.log(cost);
             await add_attraction(this.tripID, a_name, date, cost, time);
-            this.close();
+            // this.close();
             alert('attraction successfully added');
             window.location.href = `mytripinfo.html?country=${encodeURIComponent(this.country)}`
         },
@@ -140,10 +143,8 @@ app.component('country-images', {
     `
     });
 
-    // TODO make the form better bruh
-    // TODO limit date selection to trip dates (dropdown)
     app.component('pop-up', { 
-        props: [ 'a_name', 'display_it', 'bg_img', 'adates' ],
+        props: [ 'a_name', 'display_it', 'bg_img', 'adates', 'attract_date' ],
 
         data() {
             return {
@@ -151,6 +152,17 @@ app.component('country-images', {
                 cost: null,
                 time: ''
             };
+        },
+
+        mounted() {
+            if (this.attract_date) {
+                const date = new Date(this.attract_date);
+                this.date = date.toLocaleDateString('en-GB', {
+                    day: '2-digit',
+                    month: '2-digit'
+                }).replace(/\//g, '-');
+            }
+
         },
 
         methods: {
@@ -164,7 +176,8 @@ app.component('country-images', {
             // Format date for display as "DD Month"
             formattedDate() {
                 return this.adates[this.date] || ''; // Display formatted date or an empty string if not selected
-            }
+            }, 
+            
         },
         
         template: `
