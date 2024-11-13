@@ -127,7 +127,7 @@
             transition: all 0.3s ease;
             color: white;
             border: 2px solid white;
-            border-radius: 30px;
+            border-radius: 20px;
             font-family: 'Montserrat', sans-serif;
             letter-spacing: 2px;
             backdrop-filter: blur(5px);
@@ -198,37 +198,26 @@
         <script type='module' src="navbarLoader.js"></script>
     </div> 
     
-    
+    <div class="carousel-header">
+        <h2>Welcome to Roameo</h2>
+        <p class="small-caption">Start your travel planning here!</p>
+        <button class="add-trip" onclick="window.location.href='addtripinfo.html'">ADD TRIP</button>
+    </div>
     <div class="carousel">
         <div class="slide">
-            <div class="carousel-header">
-                <h2>Welcome to Roameo</h2>
-                <p class="small-caption">Start your travel planning here!</p>
-                <button class="add-trip" onclick="window.location.href='addtripinfo.html'">ADD TRIP</button>
-            </div>
             <img class="d-block w-100" src="https://media.timeout.com/images/106181719/image.jpg" alt="France slide">
         </div>
         <div class="slide">
-            <div class="carousel-header">
-                <h2>Welcome to Roameo</h2>
-                <p class="small-caption">Start your travel planning here!</p>
-                <button class="add-trip" onclick="window.location.href='addtripinfo.html'">ADD TRIP</button>
-            </div>
             <img class="d-block w-100" src="https://editoire.com/wp-content/uploads/2024/01/lake-como-summer-min.jpg" alt="Italy slide">
         </div>
         <div class="slide">
-            <div class="carousel-header">
-                <h2>Welcome to Roameo</h2>
-                <p class="small-caption">Start your travel planning here!</p>
-                <button class="add-trip" onclick="window.location.href='addtripinfo.html'">ADD TRIP</button>
-            </div>
             <img class="d-block w-100" src="https://wallpapers.com/images/hd/beautiful-travel-2048-x-1366-wallpaper-bckyb9x9h6vxy5ff.jpg" alt="Spain slide">
         </div>
     </div>
 
     <div class="navigation">
-        <div class="nav-arrow" id="prev">&lt;</div>
-        <div class="nav-arrow" id="next">&gt;</div>
+        <div class="nav-arrow" id="prev"><i class="fa-solid fa-chevron-left"></i></div>
+        <div class="nav-arrow" id="next"><i class="fa-solid fa-chevron-right"></i></div>
     </div>
 
     <div class="footer" id="footer">
@@ -247,29 +236,61 @@
         const slides = document.querySelectorAll('.slide');
         const prevBtn = document.getElementById('prev');
         const nextBtn = document.getElementById('next');
-        const footer = document.getElementById('footer');
-        const dots = footer.querySelectorAll('.footer-dot');
+        const dots = document.querySelectorAll('.footer-dot');
 
-        let currentSlide = 0;
+        let currentSlide = 1;
+        let slideWidth = slides[0].offsetWidth; // Get initial slide width
         let autoSlideInterval;
         const autoSlideDelay = 5000; // 5 seconds
 
-        function showSlide(index) {
-            carousel.style.transform = `translateX(-${index * 100}%)`;
+        // Clone first and last slides for infinite loop
+        const firstClone = slides[0].cloneNode(true);
+        const lastClone = slides[slides.length - 1].cloneNode(true);
+        carousel.append(firstClone);
+        carousel.prepend(lastClone);
+
+        const totalSlides = document.querySelectorAll('.slide');
+        carousel.style.transform = `translateX(-${slideWidth}px)`; // Start at the first real slide
+
+        function updateSlideWidth() {
+            slideWidth = slides[0].offsetWidth; // Recalculate slide width
+            carousel.style.transform = `translateX(-${currentSlide * slideWidth}px)`; // Adjust position
+        }
+
+        function updateDots(index) {
             dots.forEach((dot, i) => {
-                dot.classList.toggle('active', i === index);
+                dot.classList.toggle('active', i === index - 1);
             });
+        }
+
+        function showSlide(index) {
+            carousel.style.transition = 'transform 0.5s ease-in-out';
+            carousel.style.transform = `translateX(-${index * slideWidth}px)`;
             currentSlide = index;
+
+            if (index === totalSlides.length - 1) {
+                setTimeout(() => {
+                    carousel.style.transition = 'none';
+                    carousel.style.transform = `translateX(-${slideWidth}px)`;
+                    currentSlide = 1;
+                }, 500);
+            } else if (index === 0) {
+                setTimeout(() => {
+                    carousel.style.transition = 'none';
+                    carousel.style.transform = `translateX(-${(totalSlides.length - 2) * slideWidth}px)`;
+                    currentSlide = totalSlides.length - 2;
+                }, 500);
+            }
+
+            updateDots(currentSlide);
         }
 
         function nextSlide() {
-            currentSlide = (currentSlide + 1) % slides.length;
-            showSlide(currentSlide);
+            showSlide(currentSlide + 1);
         }
 
         function prevSlide() {
-            currentSlide = (currentSlide - 1 + slides.length) % slides.length;
-            showSlide(currentSlide);
+            showSlide(currentSlide - 1);
         }
 
         function startAutoSlide() {
@@ -280,31 +301,27 @@
             clearInterval(autoSlideInterval);
         }
 
-        prevBtn.addEventListener('click', () => {
-            prevSlide();
-            stopAutoSlide();
-            startAutoSlide();
-        });
-
         nextBtn.addEventListener('click', () => {
-            nextSlide();
             stopAutoSlide();
+            nextSlide();
             startAutoSlide();
         });
 
-        dots.forEach((dot, index) => {
-            dot.addEventListener('click', () => {
-                showSlide(index);
-                stopAutoSlide();
-                startAutoSlide();
-            });
+        prevBtn.addEventListener('click', () => {
+            stopAutoSlide();
+            prevSlide();
+            startAutoSlide();
         });
 
         carousel.addEventListener('mouseenter', stopAutoSlide);
         carousel.addEventListener('mouseleave', startAutoSlide);
 
+        // Update slide width on window resize
+        window.addEventListener('resize', updateSlideWidth);
+
         // Start the auto-sliding
         startAutoSlide();
+
     </script>
 
     <script type="module" src="data.js"></script> 

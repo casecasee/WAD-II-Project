@@ -106,9 +106,12 @@
 
     <div id="app">
         <h1 class="title">My Trips</h1>
-        
+
         <!-- Current Trips Carousel -->
         <h2>Current Trips</h2>
+        <div v-if="currentTrips.length === 0" class="empty-box">
+            <p>No current trips planned yet. Start exploring and create unforgettable memories!</p>
+        </div>
         <div class="carousel-container">
             <button v-if="showCurrentButtons" class="carousel-btn left" @click="scrollLeft('current')">‹</button>
             <div class="carousel-track" :style="{ transform: `translateX(${scrollPosition.current}px)` }">
@@ -129,6 +132,9 @@
 
         <!-- Old Trips Carousel -->
         <h2>Past Trips</h2>
+        <div v-if="oldTrips.length === 0" class="empty-box">
+            <p>No past trips yet. Begin your journey and watch this space fill up with memories!</p>
+        </div>
         <div class="carousel-container mb-4">
             <button v-if="showOldButtons" class="carousel-btn left" @click="scrollLeft('old')">‹</button>
             <div class="carousel-track" :style="{ transform: `translateX(${scrollPosition.old}px)` }">
@@ -145,8 +151,14 @@
             </div>
             <button v-if="showOldButtons" class="carousel-btn right" @click="scrollRight('old')">›</button>
         </div>
+        <!-- <div v-if="currentTrips.length === 0 && oldTrips.length === 0" class="empty-message">
+            <p>Ready to explore the world? Start your journey here 🌏</p>
+            <a href="addtripinfo.html" class="explore-button">Start Planning</a>
+        </div> -->
     </div>
-
+    <a href="addtripinfo.html" class="floating-add-trip-button">
+        <i class="fas fa-plus"></i>
+    </a>
     <script type = "module" src = "mytrips.js"></script>
     
 

@@ -173,9 +173,91 @@ footer {
     text-align: center;
     padding: 20px;
     color: white;
-    background-color: #764F37; 
+    background-color: #764F37;
     box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
     font-family: 'Montserrat', sans-serif;
     width: 100%;
+    position: relative;  /* Normal flow positioning */
+    bottom: 0;           /* No need to use bottom: 0; here */
+    left: 0;
+}
+
+/* Empty Box Styling */
+.empty-box {
+    width: 80%;
+    margin: 10px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+    text-align: center;
+    color: #777;
+    font-size: 1em;
+}
+
+/* Empty Message Centered with Button */
+.empty-message {
+    text-align: center;
+    color: #333;
+    font-size: 1.2em;
+    margin-top: 40px;
+    font-family: 'Playfair Display', serif;
+}
+
+.empty-message p {
+    margin-bottom: 15px;
+    font-size: 1.2em;
+    color: white;
+}
+
+
+/* Floating Add Trip Button Styling */
+.floating-add-trip-button {
+    position: fixed;
+    bottom: 60px;
+    right: 60px;
+    width: 60px;
+    height: 60px;
+    background-color: #DCB287;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: bold;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    text-decoration: none;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    z-index: 1000;
+}
+
+/* Glow animation */
+.floating-add-trip-button::before {
+    content: '';
     position: absolute;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background-color: rgba(220, 178, 135, 0.3);
+    filter: blur(10px);
+    animation: glowing 2s infinite alternate;
+    z-index: -1;
+}
+
+@keyframes glowing {
+    from {
+        opacity: 0.3;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1.25);
+    }
+}
+
+.floating-add-trip-button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.4);
 }
