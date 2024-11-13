@@ -22,12 +22,6 @@
 
     
     <style>
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background-color: #e1e7e4;
-            margin: 0;
-            padding: 0;
-        }
         .header {
             position: relative;
             height: 50vh;
@@ -52,13 +46,13 @@
         .header-content {
             position: relative;
             text-align: center;
-            background-color: rgba(255, 255, 255, 0.2);
+            /* background-color: rgba(255, 255, 255, 0.2); */
             border-radius: 20px;
             padding: 30px;
             z-index: 1;
         }
         .header-title {
-            color: #764F37;
+            color:white;
             font-family: 'Playfair Display', serif;
             font-size: 48px;
             font-weight: 700;
@@ -85,30 +79,30 @@
             background-color: #764F37;
             color: white;
         }
-        #navbar-app{
+        /* #navbar-app{
             position: absolute; 
             top: 0; 
             width: 100%; 
-            z-index: 2;      
-        }
+            z-index: 2; 
+        } */
     </style>
 
 
 </head>
 <body>
 
-    <div class="header">
+    <!-- <div class="header"> -->
         <div id="navbar-app">
             <navbar-component></navbar-component>
         </div>
     
         <script type="module" src="navbarLoader.js"></script>
-        <div class="header-content">
+        <!-- <div class="header-content">
             <h1 class="header-title">Discover Your Next Adventure</h1>
             <p class="header-subtitle">Plan, explore, and experience unforgettable trips</p>
             <a href="addtripinfo.html" class="explore-button">Plan Now</a>
-        </div>
-    </div>
+        </div> -->
+    <!-- </div> -->
 
     <div id="app">
         <h1 class="title">My Trips</h1>
