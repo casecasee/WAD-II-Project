@@ -11,14 +11,13 @@
 
     <!-- Axios and API -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBqbv7BqX1_7CcpPT80locaYJ3fnsdC-Sg&libraries=places"></script>
+    <!-- <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBqbv7BqX1_7CcpPT80locaYJ3fnsdC-Sg&libraries=places"></script> -->
 
     <!-- CSS -->
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> -->
     <link
         href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Pacifico&family=Playwrite+GB+S:ital,wght@0,100..400;1,100..400&display=swap"
         rel="stylesheet">
@@ -28,6 +27,8 @@
     <link rel="stylesheet" href="navbar.css">
     <link rel="stylesheet" href="mytripinfo.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+
 
 </head>
 
@@ -144,6 +145,11 @@
                         <h5>Total Spent:</h5>
                         <h5> <strong>${{ totalSpent.toFixed(2) }}</strong> / ${{ budget.total.toFixed(2) }}</h5>
                     </div>
+                    <div class="budget-pie-section">
+                        <h5>Spending Breakdown:</h5>
+                        <div id="budget-pie-chart"></div>
+                    </div>
+                    
                     <div class="budget-details">
                         <div class="budget-row">
                             <span>
@@ -239,7 +245,7 @@
                     humidity: '',
                     time: null,
                     isDaytime: null,
-                    isSunset: null,
+                    isSunset: true,
                     isSunrise: null,
                     news: [],
                     currentYear: null,
@@ -260,6 +266,8 @@
                     await this.fetchWeatherDetails(this.destination); // Fetch coordinates for the destination
                     await this.fetchNews();
                 }
+
+                this.createPieChart();
             },
 
             computed: {
@@ -350,6 +358,55 @@
                     const options = { year: 'numeric', month: 'short', day: '2-digit' };
                     const date = new Date(dateString); // Convert string to Date object
                     return date.toLocaleDateString('en-GB', options); // 'en-GB' formats as 'dd mmm yyyy'
+                },
+
+                createPieChart() {
+                    const budgetData = [
+                        { category: "Hotels", value: this.budget.hotels },
+                        { category: "Flights", value: this.budget.flights },
+                        { category: "Activities", value: this.budget.activities }
+                    ];
+
+                    const width = 400, height = 400, margin = 50;
+
+                    const radius = Math.min(width, height) / 2 - margin;
+
+                    const svg = d3.select("#budget-pie-chart")
+                        .append("svg")
+                        .attr("width", width)
+                        .attr("height", height)
+                        .append("g")
+                        .attr("transform", `translate(${width / 2},${height / 2})`);
+
+                    const color = d3.scaleOrdinal()
+                        .domain(budgetData.map(d => d.category))
+                        .range(d3.schemeCategory10);
+
+                    const pie = d3.pie()
+                        .value(d => d.value);
+
+                    const dataReady = pie(budgetData);
+
+                    const arc = d3.arc()
+                        .innerRadius(0)
+                        .outerRadius(radius);
+
+                    svg.selectAll('path')
+                        .data(dataReady)
+                        .join('path')
+                        .attr('d', arc)
+                        .attr('fill', d => color(d.data.category))
+                        .attr("stroke", "white")
+                        .style("stroke-width", "2px")
+                        .style("opacity", 0.7);
+
+                    svg.selectAll('text')
+                        .data(dataReady)
+                        .join('text')
+                        .text(d => `${d.data.category}: $${d.data.value.toFixed(2)}`)
+                        .attr("transform", d => `translate(${arc.centroid(d)})`)
+                        .style("text-anchor", "middle")
+                        .style("font-size", "12px");
                 },
 
                 async fetchNews() {
