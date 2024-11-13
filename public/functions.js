@@ -256,14 +256,22 @@ export const get_all_trips = async function get_all() {
     const collectionRef = collection(db, "trips");
     var rt = [];
     try {
-        const querySnapshot = await getDocs(collectionRef); // Retrieve all documents
-        querySnapshot.forEach(element => {
-            rt.push(element.data());
-            console.log(element.data());
+        // const querySnapshot = await getDocs(collectionRef); // Retrieve all documents
+        // querySnapshot.forEach(element => {
+        //     rt.push(element.data());
+        //     console.log(element.data());
+        const querySnapshot = await getDocs(collectionRef);
+        querySnapshot.forEach(doc => {
+            // Include the document ID in the trip data
+            rt.push({
+                tripID: doc.id,  // Add the document ID
+                ...doc.data()
+            });
+            console.log("Trip data:", {tripID: doc.id, ...doc.data()});
         });
         return rt;
     } catch (error) {
         console.error("Error getting documents:", error);
+        return [];
     }
-
 }
