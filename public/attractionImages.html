@@ -26,64 +26,24 @@
 
     <style>
         body {
-            font-family: 'Montserrat', sans-serif;
-            background-color: #e1e7e4;
-            margin: 0;
-            padding: 0;
-        }
-        .header {
-            position: relative;
-            height: 60vh;
-            background-image: url('countryPics/mountains.jpg') !important; /* Add a vibrant travel image */
+            background-color: #764F37;
+            background-image: url('./countryPics/mountains.jpg') !important;
             background-size: cover;
             background-position: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
+            background-attachment: fixed; /* Keeps the background image fixed during scroll */
+            min-height: 100vh; /* Ensures the body fills the entire viewport */
+            margin: 0; /* Optional: removes margin if any default margin is affecting layout */
         }
-        .header::before {
-            content: "";
-            position: absolute;
+
+        body::before {
+            content: ''; /* Required for pseudo-element */
+            position: fixed; /* Keeps the overlay in place during scroll */
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5); /* Dark overlay */
-            background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.2)); /* Gradient effect */
-        }
-        .header-content {
-            position: relative;
-            text-align: center;
-            z-index: 1;
-        }
-        .header-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 48px;
-            font-weight: 700;
-            margin: 0;
-            color: white;
-        }
-        .header-subtitle {
-            font-size: 18px;
-            margin-top: 10px;
-        }
-        .explore-button {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 12px 24px;
-            font-size: 16px;
-            color: #764F37;
-            background-color: #DCB287;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            text-decoration: none;
-        }
-        .explore-button:hover {
-            background-color: #764F37;
-            color: white;
+            background-color: rgba(0, 0, 0, 0.5); /* Dark overlay with 50% opacity */
+            z-index: -1; /* Keeps the overlay behind the content */
         }
         #navbar-app{
             position: absolute; 
@@ -91,7 +51,13 @@
             width: 100%; 
             z-index: 2;      
         }
-
+        #app{
+            margin-top: 80px;
+            flex-grow: 1;
+        }
+        footer {
+            margin-top: auto;  /* Pushes the footer to the bottom when content isn't tall enough */
+        }
     </style>
 
 
@@ -103,14 +69,6 @@
         </div>
 
         <script type='module' src="navbarLoader.js"></script>
-    </div>
-    <div class="header">
-
-        <div class="header-content">
-            <h1 class="header-title">Discover Your Next Adventure</h1>
-            <p class="header-subtitle">Plan, explore, and experience unforgettable trips</p>
-            <a href="addtripinfo.html" class="explore-button" @click="scrollToForm()">Plan Now</a>
-        </div>
     </div>
 
     <div id="app">
