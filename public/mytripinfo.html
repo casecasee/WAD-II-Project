@@ -88,7 +88,7 @@
                         <div class="activity-details">
                             <span>{{ activity.description }}</span>
                             <span class="activity-type">{{ activity.type }}</span>
-                            <span class="delete-cross" @click="deleteActivity(tripID, activity.activityId)">&#10006;</span>
+                            <span class="delete-cross" @click="deleteActivity(activity.activityId)">&#10006;</span>
                         </div>
                     </div>
                     
@@ -206,7 +206,7 @@
 
     <script type="module">
 
-        import { getFirestore, doc, getDoc, getDocs, collection, updateDoc } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, getDocs, collection, updateDoc, Timestamp } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
         import { firebaseApp } from "./stuff.js";
 
@@ -530,47 +530,50 @@
                     });
                 },
 
-                async deleteActivity(tripID, activityId) {
+                async deleteActivity(activityId) {
                     try {
-                        const tripRef = doc(db, "trips", tripID);
+                        let removedActivityCost = 0;
+
+                        // Step 1: Remove the activity from the local `days` array
+                        this.days.forEach(day => {
+                            const activityIndex = day.activities.findIndex(activity => activity.activityId === activityId);
+                            if (activityIndex !== -1) {
+                                // Capture the cost of the removed activity
+                                removedActivityCost = day.activities[activityIndex].cost || 0;
+                                day.activities.splice(activityIndex, 1);
+                                console.log(`Activity with ID: ${activityId} has been deleted.`);
+                            }
+                        });
+
+                        console.log("Updated days array after deletion:", this.days);
+
+                        // Step 2: Update Firestore with the new activities
+                        const tripRef = doc(getFirestore(), "trips", this.tripID);
                         const tripSnap = await getDoc(tripRef);
 
                         if (tripSnap.exists()) {
                             const tripData = tripSnap.data();
-                            const attractions = tripData.attractions || [];
 
-                            // Find the activity to delete based on the activityId
-                            const activityIndex = attractions.findIndex(activity => activity.id === activityId);
+                            const updatedAttractions = this.days.flatMap(day =>
+                                day.activities.map(activity => ({
+                                    a_name: activity.description,
+                                    cost: activity.cost,
+                                    date: Timestamp.fromMillis(new Date(activity.dateTime.seconds * 1000).getTime())
+                                }))
+                            );
 
-                            if (activityIndex !== -1) {
-                                // Remove the activity from the attractions array
-                                attractions.splice(activityIndex, 1);
+                            await updateDoc(tripRef, { attractions: updatedAttractions });
+                            console.log("Successfully updated attractions in Firebase.");
 
-                                // Update the trip document with the modified attractions array
-                                await updateDoc(tripRef, { attractions });
+                            // Step 3: Adjust the budget dynamically
+                            this.budget.activities -= removedActivityCost;
 
-                                // Remove the activity from the days array in the local data
-                                this.days.forEach(day => {
-                                    const activityIndexInDay = day.activities.findIndex(activity => activity.id === activityId);
-                                    if (activityIndexInDay !== -1) {
-                                        day.activities.splice(activityIndexInDay, 1);  // Only remove this specific activity
-                                    }
-                                });
-
-                                // Filter out days with no activities to prevent rendering empty day cards
-                                this.days = this.days.filter(day => day.activities.length > 0);
-
-                                console.log(`Activity with ID: ${activityId} has been deleted from the database and UI.`);
-                                console.log(this.days); // After deleting the activity
-
-                            } else {
-                                console.log(`Activity with ID: ${activityId} not found in the attractions.`);
-                            }
                         } else {
-                            console.log("No trip found for the given trip ID.");
+                            console.error("No trip found for the given trip ID.");
                         }
+
                     } catch (error) {
-                        console.error("Error deleting activity from database:", error);
+                        console.error("Error deleting activity and updating Firebase:", error);
                     }
                 },
 

@@ -33,6 +33,27 @@ body::before {
     font-weight: 700;
 }
 
+.content-title {
+    text-align: center;
+    color: white;
+    font-size: 40px;
+    font-family: 'Playfair Display', serif;
+    /* font-weight: 700; */
+    position: relative;
+    margin: 40px 0;
+}
+
+/* can remove if the underline is ugly */
+.content-title::after{
+    content: '';
+    position: absolute;
+    bottom: -10px; 
+    left: 50%;
+    transform: translateX(-50%);
+    width: 350px; 
+    height: 3px; 
+    background-color: #DCB287; 
+}
 
 .form-container {
     padding: 30px;
