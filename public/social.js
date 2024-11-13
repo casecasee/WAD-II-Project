@@ -145,37 +145,6 @@ const app = Vue.createApp({
                     }
                 },
                 // add itinerary, different from adding the trip info from latest posts
-                addItinerary() {
-                    this.newPhoto = {
-                        src: '',
-                        alt: '',
-                        desc: '',
-                        destination: '',
-                        duration: 1,
-                        cost: 0,
-                        startDate: '',
-                        endDate: '',
-                        itinerary: [[]]
-                    };
-                    this.showAddPhotoModal = true;
-                },
-                closeAddPhotoModal() {
-                    this.showAddPhotoModal = false;
-                    this.newPhoto = { 
-                        src: '', 
-                        alt: '', 
-                        desc: '',
-                        destination: '',
-                        duration: 1,
-                        cost: 0,
-                        startDate: '',
-                        endDate: '',
-                        itinerary: [[]]
-                    };
-                    this.previewUrl = null;
-                    URL.revokeObjectURL(this.previewUrl);
-                    document.body.classList.remove('no-scroll');
-                },
                 getDayActivities(dayIndex) {
                     if (!this.newPhoto.itinerary[dayIndex]) {
                         this.$set(this.newPhoto.itinerary, dayIndex, []);
@@ -223,38 +192,51 @@ const app = Vue.createApp({
                 async mounted() {
                     this.UID = await UID();
                 },
+                getCurrentDate() {
+                    return new Date().toISOString().split('T')[0];
+                },
+                validateDates() {
+                    if (!this.selectedPhoto.startDate || !this.selectedPhoto.endDate) {
+                        alert('Please select both start and end dates');
+                        return false;
+                    }
+
+                    const start = new Date(this.selectedPhoto.startDate);
+                    const end = new Date(this.selectedPhoto.endDate);
+
+                    if (end < start) {
+                        alert('End date cannot be before start date');
+                        return false;
+                    }
+
+                    return true;
+                },
                 async addToMyTrips(photo) {
                     try {
-                        // Get current user's UID
+                        // Validate dates before proceeding
+                        if (!this.validateDates()) {
+                            return;
+                        }
+
                         this.UID = await UID();
                         
                         if (!this.UID) {
                             throw new Error('User not logged in');
                         }
 
-                        // First add the trip to trips collection
                         const tripID = await add_info_trips(
                             photo.destination, 
-                            photo.startDate, 
-                            photo.endDate, 
+                            photo.startDate,  // Now using the potentially modified dates
+                            photo.endDate,    // Now using the potentially modified dates
                             photo.cost
                         );
 
-                        // Then update the user's trips array
                         await update_trips_users(this.UID, tripID);
-
-                        // Store trip info in localStorage for mytrips.html
+                        
                         localStorage.setItem('selectedCountry', photo.destination);
                         
-                        // Show success message
                         alert('Trip added to your itineraries successfully!');
-                        
-                        // Close the modal
                         this.closeModal();
-
-                        // Redirect to mytrips.html
-                        // somehow gets added to past trips instead of current trips
-                        //BUT ITS DONE!!!!!!
                         window.location.href = 'mytrips.html';
 
                     } catch (error) {
@@ -281,6 +263,17 @@ const app = Vue.createApp({
                 },
                 totalPages() {
                     return Math.ceil(this.photos.length / this.photosPerPage);
+                },
+                calculateDuration() {
+                    if (!this.selectedPhoto?.startDate || !this.selectedPhoto?.endDate) {
+                        return this.selectedPhoto?.duration || 0;
+                    }
+
+                    const start = new Date(this.selectedPhoto.startDate);
+                    const end = new Date(this.selectedPhoto.endDate);
+                    const diffTime = Math.abs(end - start);
+                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                    return diffDays + 1; // Including both start and end days
                 }
             },
             mounted() {

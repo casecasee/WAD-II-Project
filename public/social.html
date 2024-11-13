@@ -460,9 +460,6 @@
                     </li>
                 </ul>
             </nav>
-
-            
-            <button @click="addItinerary" class="add-photo-button">Add Itinerary</button>
         </main>
         <footer>
             <p>&copy; 2024 ROAMEO. All Rights Reserved.</p>
@@ -482,9 +479,21 @@
                             <h4>Trip Itinerary</h4>
                             <div class="itinerary-details">
                                 <div class="trip-info">
-                                    <p><strong>Start Date:</strong> {{ selectedPhoto.startDate }}</p>
-                                    <p><strong>End Date:</strong> {{ selectedPhoto.endDate }}</p>
-                                    <p><strong>Duration:</strong> {{ selectedPhoto.duration }} days</p>
+                                    <div class="mb-3">
+                                        <label><strong>Start Date:</strong></label>
+                                        <input type="date" 
+                                               class="form-control" 
+                                               v-model="selectedPhoto.startDate" 
+                                               :min="getCurrentDate()">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label><strong>End Date:</strong></label>
+                                        <input type="date" 
+                                               class="form-control" 
+                                               v-model="selectedPhoto.endDate"
+                                               :min="selectedPhoto.startDate">
+                                    </div>
+                                    <p><strong>Duration:</strong> {{ calculateDuration }} days</p>
                                     <p><strong>Destination:</strong> {{ selectedPhoto.destination }}</p>
                                     <p><strong>Total Cost:</strong> SGD {{ selectedPhoto.cost }}</p>
                                 </div>
@@ -502,90 +511,6 @@
                             </button>
                         </div>
                         <div class="modal-caption">{{ selectedPhoto.desc }}</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Adding your itinerary -->
-        <div v-if="showAddPhotoModal" class="modal" tabindex="-1" style="display: block;">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Share Your Travel Itinerary</h5>
-                        <button type="button" class="btn-close" @click="closeAddPhotoModal"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form @submit.prevent="submitNewItinerary">
-                            <div class="mb-3">
-                                <label class="form-label">Cover Photo</label>
-                                <div class="file-upload-wrapper">
-                                    <input type="file" 
-                                           class="form-control" 
-                                           @change="handleFileUpload" 
-                                           accept="image/*"
-                                           required>
-                                    <div v-if="previewUrl" class="image-preview mt-2">
-                                        <img :src="previewUrl" alt="Preview" class="preview-image">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Trip Title</label>
-                                <input type="text" class="form-control" v-model="newPhoto.alt" required>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Description</label>
-                                <textarea class="form-control" v-model="newPhoto.desc" required></textarea>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Destination</label>
-                                <input type="text" class="form-control" v-model="newPhoto.destination" required>
-                            </div>
-                            <div class="row mb-3">
-                                <div class="row mb-3">
-                                    <div class="col">
-                                        <label class="form-label">Start Date</label>
-                                        <input type="date" class="form-control" v-model="newPhoto.startDate" required>
-                                    </div>
-                                    <div class="col">
-                                        <label class="form-label">End Date</label>
-                                        <input type="date" class="form-control" v-model="newPhoto.endDate" required>
-                                    </div>
-                                </div>
-                                <!-- settle this later!!!!! -->
-                                <div class="col">
-                                    <label class="form-label">Duration (days)</label>
-                                    <input type="number" class="form-control" v-model="newPhoto.duration" required min="1">
-                                </div>
-                                <div class="col">
-                                    <label class="form-label">Total Cost (SGD)</label>
-                                    <input type="number" class="form-control" v-model="newPhoto.cost" required min="0">
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Daily Itinerary</label>
-                                <div v-for="(day, index) in newPhoto.duration" :key="index" class="mb-3">
-                                    <h6>Day {{ index + 1 }}</h6>
-                                    <div class="activities-list">
-                                        <div v-for="(activity, actIndex) in getDayActivities(index)" :key="actIndex" class="mb-2">
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" 
-                                                       v-model="newPhoto.itinerary[index][actIndex]" 
-                                                       placeholder="Add activity">
-                                                <button type="button" class="btn btn-danger" 
-                                                        @click="removeActivity(index, actIndex)">Remove</button>
-                                            </div>
-                                        </div>
-                                        <button type="button" class="btn btn-secondary btn-sm mt-2" 
-                                                @click="addActivity(index)">Add Activity</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="mb-3 text-center">
-                                <button type="submit" class="share-itinerary-btn">Share Itinerary</button>
-                            </div>
-                        </form>
                     </div>
                 </div>
             </div>
