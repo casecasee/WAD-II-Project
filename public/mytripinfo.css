@@ -3,10 +3,9 @@ body {
     background-image: url('./countryPics/mountains.jpg') !important;
     background-size: cover;
     background-position: center;
-    background-attachment: fixed; /* Keeps the background image fixed during scroll */
-    min-height: 100vh; /* Ensures the body fills the entire viewport */
-    position: relative; /* Required for absolute positioning of pseudo-element */
-    margin: 0; /* Optional: removes margin if any default margin is affecting layout */
+    background-attachment: fixed;
+    min-height: 100vh;
+    position: relative; 
 }
 
 body::before {
@@ -173,7 +172,7 @@ body::before {
     border-radius: 5px;
     margin-bottom: 10px;
     transition: all 0.3s ease;
-
+    flex-direction: row; /* Ensure it's a row by default */
 }
 
 .hotel-card {
@@ -310,6 +309,14 @@ body::before {
     border-radius: 8px;
     padding: 15px;
     margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.flight-card:hover {
+    transform: scale(1.03);
 }
 
 .flight-header {
@@ -324,16 +331,29 @@ body::before {
 }
 
 .flight-details {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
+    display: flex;
+    justify-content: space-between;  /* Keep cities at opposite ends */
     align-items: center;
-    gap: 15px;
-    margin: 10px 0;
+    margin: 8px 0;
 }
 
 .flight-city {
-    font-size: 20px;
     text-align: center;
+    width: 40%; /* Ensure cities take up space on either side */
+}
+
+.flight-city-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+}
+
+.fas.fa-plane {
+    position: absolute; /* Absolutely position the plane icon */
+    left: 50%; /* Position it at the center horizontally */
+    transform: translateX(-50%); /* Adjust to truly center it */
+    color: #B5855B;  /* Plane icon color */
 }
 
 .flight-arrow {
@@ -349,6 +369,25 @@ body::before {
 .flight-date {
     font-size: 0.9em;
     color: #666;
+}
+
+/* For smaller screens (e.g., tablet and mobile) */
+@media screen and (max-width: 768px) {
+    .flight-details {
+        flex-direction: row; /* Keep cities and icon in one row on tablet */
+        justify-content: space-between;  /* Keep the cities at opposite ends */
+    }
+
+    .flight-city {
+        width: 45%; /* Keep cities on either side of the card */
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .flight-details {
+        flex-direction: row; /* Keep cities and icon in one row on mobile */
+        justify-content: space-between;  /* Keep the cities at opposite ends */
+    }
 }
 
 .add-flight {
@@ -460,82 +499,6 @@ body::before {
     margin-top: 5px;
 }
 
-
-/* Add responsive styles */
-@media screen and (max-width: 480px) {
-    .trip-container {
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-        padding: 10px;
-    }
-
-    .itinerary-section, .flight-section {
-        width: 100%;
-        margin: 0;
-        padding: 15px;
-    }
-
-    .flight-section {
-        position: static;  /* Remove sticky positioning on mobile */
-        margin-top: 15px;
-    }
-
-    .day-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 5px;
-    }
-
-    .activity-item {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 5px;
-    }
-
-    .activity-time {
-        min-width: unset;
-        margin-bottom: 5px;
-    }
-
-    .flight-details {
-        grid-template-columns: 1fr;
-        gap: 10px;
-        text-align: center;
-    }
-
-    .flight-arrow {
-        transform: rotate(90deg);
-        margin: 10px 0;
-    }
-
-    .budget-row {
-        font-size: 0.9em;
-    }
-
-    .hotel-card {
-        padding: 10px;
-    }
-
-    h2 {
-        font-size: 1.5rem;
-    }
-
-    h3 {
-        font-size: 1.2rem;
-    }
-
-    .day-date {
-        font-size: 0.8em;
-    }
-
-    .activity-type {
-        display: inline-block;
-        margin-top: 5px;
-        margin-left: 0;
-    }
-}
-
 /* News section */
 .news-section {
     background: white;
@@ -598,4 +561,195 @@ footer {
     font-family: 'Montserrat', sans-serif;
     width: 100%;
     position: absolute;
+}
+
+/* Responsive design */
+@media screen and (max-width:950px) {
+    /* Stack flight-section and itinerary-section below each other */
+    .trip-container {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        padding: 10px;
+    }
+
+    /* Set both sections to full width */
+    .itinerary-section, .flight-section {
+        width: 100%;
+        margin: 0;
+        padding: 15px;
+    }
+
+    /* Remove sticky positioning for flight section on smaller screens */
+    .flight-section {
+        position: static;
+        margin-top: 15px;
+    }
+
+    /* Keep buttons in a single line, just scale smaller */
+    .nav-buttons {
+        flex-direction: row; /* Keep buttons in a row */
+        justify-content: center;
+        gap: 15px; /* Adjust spacing between buttons */
+        margin-top: 10px;
+    }
+
+    .btn {
+        font-size: 16px; /* Smaller font size */
+        padding: 8px 18px; /* Smaller padding */
+    }
+
+    /* Stack day cards vertically */
+    .day-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+
+    /* Stack activity items vertically */
+    .activity-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+
+    }
+
+    .activity-item {
+        flex-direction: row; /* Stay in row layout */
+        gap: 10px; /* Add space between items */
+    }
+
+    .center-message {
+        font-size: 18px;
+    }
+
+    .flight-details {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        text-align: center;
+    }
+
+    .flight-arrow {
+        transform: rotate(90deg);
+        margin: 10px 0;
+    }
+
+    /* Adjust font sizes */
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    h3 {
+        font-size: 1.2rem;
+    }
+
+    .day-date {
+        font-size: 0.8em;
+    }
+
+    .activity-type {
+        display: inline-block;
+        margin-top: auto;
+        margin-left: 10px;
+    }
+
+    /* Adjust hotel card padding */
+    .hotel-card {
+        padding: 10px;
+    }
+
+    /* Adjust budget row font size */
+    .budget-row {
+        font-size: 0.9em;
+    }
+}
+
+@media screen and (max-width: 590px) {
+    .center-message {
+        font-size: 14px;
+    }
+}
+
+/* For very small devices (e.g. below 480px) */
+@media screen and (max-width: 504px) {
+    /* Adjust layout further */
+    .trip-container {
+        padding: 5px;
+    }
+
+    .itinerary-section, .flight-section {
+        padding: 10px;
+    }
+
+    /* Keep flight-section and itinerary-section in full width */
+    .itinerary-section, .flight-section {
+        width: 100%;
+    }
+
+    /* Adjust button font size and padding for smaller screens */
+    .nav-buttons {
+        flex-direction: row; /* Keep the buttons in a single line */
+        justify-content: center;
+        gap: 10px; /* Adjust spacing */
+    }
+
+    .btn {
+        font-size: 14px; /* Further reduce font size */
+        padding: 6px 14px; /* Further reduce padding */
+    }
+
+    /* Adjust the header title for very small screens */
+    .header-title {
+        font-size: 30px;
+    }
+
+    .header-subtitle {
+        font-size: 14px;
+    }
+
+    /* Adjust weather and other details for very small screens */
+    .temp {
+        font-size: 25px;
+    }
+
+    .currentTemp .location,
+    .datetime {
+        font-size: 12px;
+    }
+
+    /* Ensure text is legible and well-spaced on mobile */
+    .hotel-name,
+    .activity-details {
+        font-size: 14px;
+    }
+
+    .budget-bar {
+        height: 8px;
+    }
+
+    .flight-city {
+        font-size: 18px;
+    }
+
+    .add-flight, .add-attract {
+        font-size: 12px;
+        padding: 5px 12px;
+    }
+    .center-message {
+        font-size: 12px;
+    }
+}
+
+/* Keep the nav-buttons in a row layout above 480px */
+@media screen and (min-width: 481px) {
+    .nav-buttons {
+        flex-direction: row; /* Keep the buttons in a single line */
+        justify-content: center; /* Center the buttons */
+        gap: 20px; /* Space them out evenly */
+    }
+
+    .btn {
+        font-size: 19px; /* Restore default button size */
+        padding: 12px 24px; /* Restore default button padding */
+    }
 }

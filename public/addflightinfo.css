@@ -1,21 +1,15 @@
-/* body {
-    margin: 0;
-    font-family: 'Montserrat', sans-serif;
-    background-color: #BDC6C2;
-    height: 100%;
-    position: relative;
-} */
-
 body {
     background-color: #764F37;
     background-image: url('./countryPics/mountains.jpg') !important; 
     background-size: cover; 
     background-position: center;
-    height: 100hv
+    min-height: 100hv;
+    position: relative
 }
+
 body::before {
     content: ''; /* Required for pseudo-element */
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
@@ -273,6 +267,3 @@ footer {
     width: 100%;
     position: absolute;
 }
-
-
-

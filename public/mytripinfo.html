@@ -88,7 +88,7 @@
                         <div class="activity-details">
                             <span>{{ activity.description }}</span>
                             <span class="activity-type">{{ activity.type }}</span>
-                            <span class="delete-cross" @click="deleteActivity(activity.activityId)">&#10006;</span>
+                            <span class="delete-cross" @click="confirmDeleteActivity(activity.activityId)">&#10006;</span>
                         </div>
                     </div>
                     
@@ -119,8 +119,9 @@
                         <div class="flight-city">
                             <div><strong>{{ flight.departure_city }}</strong></div>
                         </div>
-                        <div class="fas fa-plane" style="color: #764F37"></div>
-                        <!-- <div class="flight-arrow">→</div> -->
+                        
+                        <i class="fas fa-plane" style="color: #764F37"></i> <!-- Plane Icon -->
+                        
                         <div class="flight-city">
                             <div><strong>{{ flight.arrival_city }}</strong></div>
                         </div>
@@ -426,29 +427,6 @@
                         });
                 },
 
-                // async getCoordinates(destination) {
-                //     const apiKey = '9c376fe710bf456d8c57969019eecf63';
-                //     const url = `https://api.geoapify.com/v1/geocode/search?text=${encodeURIComponent(destination)}&type=country&apiKey=${apiKey}`;
-
-                //     try {
-                //         const response = await axios.get(url);
-                //         const data = response.data;
-
-                //         if (data && data.features && data.features.length > 0) {
-                //             const firstResult = data.features[0];
-                //             this.latitude = firstResult.geometry.coordinates[1];  // Latitude
-                //             this.longitude = firstResult.geometry.coordinates[0]; // Longitude
-                //             console.log(`Coordinates: Lat=${this.latitude}, Lon=${this.longitude}`);
-
-                //             this.fetchWeatherDetails(this.latitude, this.longitude);
-                //         } else {
-                //             console.error("No results found for the destination.");
-                //         }
-                //     } catch (error) {
-                //         console.error("Error fetching coordinates:", error);
-                //     }
-                // },
-
                 generateAllDaysBetweenDates(startDate, endDate) {
                     let days = [];
                     let currentDate = new Date(startDate);
@@ -530,6 +508,25 @@
                     });
                 },
 
+                async confirmDeleteActivity(activityId) {
+                    // Step 1: Ask for confirmation using SweetAlert2
+                    const result = await Swal.fire({
+                        title: 'Are you sure?',
+                        text: 'This activity will be removed.',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Yes, remove it!',
+                        cancelButtonText: 'Cancel',
+                        reverseButtons: true
+                    });
+
+                    // Step 2: If the user confirmed, delete the activity
+                    if (result.isConfirmed) {
+                        this.deleteActivity(activityId);
+                        Swal.fire('Deleted!', 'Activity has been removed.', 'success');
+                    }
+                },
+
                 async deleteActivity(activityId) {
                     try {
                         let removedActivityCost = 0;
@@ -576,20 +573,6 @@
                         console.error("Error deleting activity and updating Firebase:", error);
                     }
                 },
-
-
-                // Load the user's trips from Firestore
-                // async loadUserTrips() {
-                //     const userRef = doc(db, "users", this.userID);
-                //     const userSnap = await getDoc(userRef);
-                //     if (userSnap.exists()) {
-                //         const tripIDs = userSnap.data().trips;
-                //         for (const tripID of tripIDs) {
-                //             const tripData = await this.fetchTripData(tripID);
-                //             this.trips.push(tripData);
-                //         }
-                //     }
-                // },
 
                 // Fetch a specific trip's data by ID
                 async fetchTripData(tripID) {
