@@ -67,9 +67,8 @@ Vue.createApp({
                     navbarLinks: [
                         { name: 'Home', url: 'homepage.html' },
                         { name: 'Community Feed', url: 'social.html' },
-                        { name: 'My Trips', url: 'mytrips.html' },
-                        { name: 'Add Trip', url: 'addtripinfo.html' }
-
+                        { name: 'My Trips', url: 'mytrips.html' }
+                        // { name: 'Add Trip', url: 'addtripinfo.html' }
                     ]
                 };
             },
