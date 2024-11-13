@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ROAMEO - Community Feed</title>
+    <title>Community Feed</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Roboto+Slab:wght@400;700&display=swap">
@@ -17,80 +17,41 @@
 
 
     <style>
-        body { 
-            font-family: 'Montserrat', sans-serif; 
-            background-color: #e1e7e4; 
-            margin: 0; 
-            padding: 0; 
-        } 
-        .header { 
-            position: relative; 
-            height: 60vh; 
-            background-image: url('countryPics/mountains.jpg') !important; /* Add a vibrant travel image */ 
-            background-size: cover; 
-            background-position: center; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            color: white; 
-        } 
-        .header::before { 
-            content: ""; 
-            position: absolute; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%; 
-            background: rgba(0, 0, 0, 0.5); /* Dark overlay */ 
-            background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.2)); /* Gradient effect */ 
-        } 
-        .header-content { 
-            position: relative; 
-            text-align: center; 
-            z-index: 1; 
-        } 
-        .header-title { 
-            font-family: 'Playfair Display', serif; 
-            font-size: 48px; 
-            font-weight: 700; 
-            margin: 0; 
-        } 
-        .header-subtitle { 
-            font-size: 18px; 
-            margin-top: 10px; 
-        } 
-        .explore-button { 
-            display: inline-block; 
-            margin-top: 20px; 
-            padding: 12px 24px; 
-            font-size: 16px; 
-            color: #764F37; 
-            background-color: #DCB287; 
-            border: none; 
-            border-radius: 5px; 
-            cursor: pointer; 
-            font-weight: bold; 
-            text-decoration: none; 
-        } 
-        .explore-button:hover { 
-            background-color: #764F37; 
-            color: white; 
-        } 
+        body {
+            background-color: #764F37;
+            background-image: url('./countryPics/mountains.jpg') !important;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed; /* Keeps the background image fixed during scroll */
+            min-height: 100vh; /* Ensures the body fills the entire viewport */
+            position: relative; /* Required for absolute positioning of pseudo-element */
+            margin: 0; /* Optional: removes margin if any default margin is affecting layout */
+        }
+
+        body::before {
+            content: ''; /* Required for pseudo-element */
+            position: fixed; /* Keeps the overlay in place during scroll */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Dark overlay with 50% opacity */
+            z-index: -1; /* Keeps the overlay behind the content */
+        }
+
         #navbar-app{ 
-            position: absolute;  
+            position: relative;  
             top: 0;  
             width: 100%;  
             z-index: 2;       
         }
         .main-content {
-            margin-top: 10px;
+            margin-top: 50px; /* Adjust this value if needed */
             padding: 20px;
-            background-color: #fff;  /* White background for contrast */
+            /* background-color: #fff; */
             border-radius: 15px;
-            margin: 20px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
-
         .photo-item {
             position: relative;
             margin-bottom: 20px;
@@ -190,17 +151,17 @@
         }
         .latest-posts-header {
             text-align: center;
-            color: #764F37;
+            color: white;
+            font-size: 40px;
             font-family: 'Playfair Display', serif;
-            margin: 10px 0 10px 0;
+            margin: 10px 0 30px 0;
             padding-bottom: 5px;
             position: relative;
         }
-
         .latest-posts-header::after {
             content: '';
             position: absolute;
-            bottom: 0;
+            bottom: -10px; 
             left: 50%;
             transform: translateX(-50%);
             width: 100px;
@@ -423,23 +384,13 @@
     </style>
 </head>
 <body>
-    <div id="app">
-        <div>
-            <div id="navbar-app">
-                <navbar-component></navbar-component>
-            </div>
-    
-            <script type='module' src="navbarLoader.js"></script>
-        </div>
-        <div class="header"> 
-         
-            <div class="header-content"> 
-                <h1 class="header-title">Discover Your Next Adventure</h1> 
-                <p class="header-subtitle">Plan, explore, and experience unforgettable trips</p> 
-                <a href="addtripinfo.html" class="explore-button">Plan Now</a> 
-            </div> 
-        </div>
+    <div id="navbar-app">
+        <navbar-component></navbar-component>
+    </div>
 
+    <script type="module" src="navbarLoader.js"></script>
+
+    <div id="app">
         <main class="main-content">
             <h2 class="latest-posts-header">Latest Posts</h2>
             <div class="photo-grid">
