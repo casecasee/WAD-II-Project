@@ -32,6 +32,11 @@ const app = Vue.createApp({
     },
 
     methods: {
+        formatDate(dateString) {
+            const options = { year: 'numeric', month: 'short', day: '2-digit' };
+            const date = new Date(dateString); // Convert string to Date object
+            return date.toLocaleDateString('en-GB', options); // 'en-GB' formats as 'dd mmm yyyy'
+        },
         // Method to fetch country images
         // async fetchCountryImage(destination) {
         //     const query = `most visited places in ${destination}`;
