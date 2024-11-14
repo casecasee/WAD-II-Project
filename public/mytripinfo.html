@@ -44,7 +44,10 @@
 
         <div class="trip-container">
             <div class="itinerary-section">
-                <h2>Trip Itinerary</h2>
+                <div class="countdown">
+                    <h2>Trip Itinerary</h2>
+                    <h4 style="font-weight: bold; color:#764F37;">Days to trip: {{ countdownText }}</h4>
+                </div>
                 <div class="hotel-card">
                     <div class="hotel-header">
                         <h3><i class="fa-solid fa-hotel"></i> Hotels</h3>
@@ -90,11 +93,7 @@
             </div>
 
             <!-- Flight Details Sidebar -->
-            <div class="flight-section">
-                <h2>Days to Trip:</h2>
-                    <span class="temp">
-                        {{  countdown  }}
-                    </span>                
+            <div class="flight-section">     
                 <h2>Flight Details</h2>
                 <div v-if="flights.length === 0" class="center-message-hotel">
                     <button class="add-flight" @click="navigateToAddFlightInfo">+ Flights</button>
@@ -127,7 +126,6 @@
 
                     <div class="budget-header">
                         <h3 :style="{ color: remainingBudgetColor }">${{ remainingBudgetCalc.toFixed(2) }}</h3>
-                        <!-- Budget Progress Bar -->
                         <div class="budget-progress">
                             <div class="budget-bar" :style="{ 
                                     width: budgetBarWidth, 
@@ -138,7 +136,6 @@
                         <h5>Total Spent:</h5>
                         <h5> <strong>${{ totalSpent.toFixed(2) }}</strong> / ${{ budget.total.toFixed(2) }}</h5>
                     </div>
-                    
                     <div class="budget-details">
                         <div class="budget-row">
                             <span>
@@ -224,6 +221,7 @@
                         flights: 0,
                         activities: 0
                     },
+                    totalspent: 0,
                     remainingBudget: 0,
                     startDate: '',
                     endDate: '',
@@ -239,7 +237,7 @@
                     isSunrise: null,
                     news: [],
                     currentYear: null,
-                    countdown: '',
+                    countdownText: ''
                 };
             },
 
@@ -254,11 +252,11 @@
 
                 if (this.userID) {
                     await this.fetchTripData(this.tripID);  // Get the specific trip data
+                    this.startCountdown();
+                    this.chart();
+                    // this.updateChart();
                     await this.fetchWeatherDetails(this.destination); // Fetch coordinates for the destination
                     await this.fetchNews();
-                    console.log("Start Date:", this.startDate);
-                    console.log("End Date:", this.endDate);
-                    this.startCountdown()
                 }
             },
 
@@ -270,9 +268,11 @@
                         : 'fas fa-temperature-low';
                 },
                 totalSpent() {
+                    this.totalspent = this.budget.flights + this.budget.hotels + this.budget.activities;
                     return this.budget.flights + this.budget.hotels + this.budget.activities;
                 },
                 remainingBudgetCalc() {
+                    this.remainingBudget = this.budget.total - this.totalSpent;
                     return this.budget.total - this.totalSpent;
                 },
                 remainingBudgetPercentage() {
@@ -304,45 +304,39 @@
                 }
             },
             methods: {
+                startCountdown() {
+                    const start = new Date(this.startDate);
+                    const end = new Date(this.endDate);
+
+                    this.countdownInterval = setInterval(() => {
+                        const now = new Date().getTime();
+                        const startDistance = start.getTime() - now;
+                        const endDistance = end.getTime() - now;
+
+                        if (startDistance < 0) {
+                            if (endDistance > 0) {
+                                this.countdownText = "Your trip is here!";
+                            } else {
+                                this.countdownText = "Trip is over!";
+                            }
+                            clearInterval(this.countdownInterval);
+                        } else {
+                            const days = Math.floor(startDistance / (1000 * 60 * 60 * 24));
+                            const hours = Math.floor((startDistance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                            const minutes = Math.floor((startDistance % (1000 * 60 * 60)) / (1000 * 60));
+                            const seconds = Math.floor((startDistance % (1000 * 60)) / 1000);
+
+                            this.countdownText = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+                        }
+                    }, 1000);
+                },
+
                 getYear() {
                     const date = new Date()
                     const year =  date.toLocaleDateString('en-GB', {
                         year: 'numeric'});
                     this.currentYear = year
                     console.log("current year:", this.currentYear)
-                },
-
-                startCountdown() {
-                    if (!this.startDate || !this.endDate) {
-                        console.log("Dates not set:", this.startDate, this.endDate);
-                        return;
-                    }
-
-                    // Parse the dates from the ISO string format
-                    const targetStartDate = new Date(this.startDate);
-                    const targetEndDate = new Date(this.endDate);
-
-                    const updateCountdown = () => {
-                        const now = new Date();
-                        const nowDateOnly = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-                        const startDateOnly = new Date(targetStartDate.getFullYear(), targetStartDate.getMonth(), targetStartDate.getDate());
-                        const endDateOnly = new Date(targetEndDate.getFullYear(), targetEndDate.getMonth(), targetEndDate.getDate());
-
-                        if (nowDateOnly >= startDateOnly && nowDateOnly <= endDateOnly) {
-                            this.countdown = "Your trip has arrived!";
-                        } else if (nowDateOnly > endDateOnly) {
-                            this.countdown = "Trip Ended";
-                        } else {
-                            const difference = startDateOnly - nowDateOnly;
-                            const daysRemaining = Math.ceil(difference / (1000 * 60 * 60 * 24));
-                            this.countdown = `${daysRemaining} Days!`;
-                        }
-
-                        console.log("Countdown Updated:", this.countdown);
-                    };
-
-                    updateCountdown(); // Initial update
-                    setInterval(updateCountdown, 60000); // Update every minute
                 },
 
                 setAttractDate(date) {
@@ -354,7 +348,7 @@
                     const urlParams = new URLSearchParams(window.location.search);
                     this.tripID = localStorage.getItem('tripID')
                     this.country = urlParams.get('country')
-                    console.log("Current tripID from URL:", this.tripID); // Log for debugging
+                    console.log("Current tripID from URL:", this.tripID);
                 },
 
                 navigateToAttractions() {
@@ -365,7 +359,6 @@
 
                 navigateToHotels() {
                     if (this.tripID) {
-                        // Store the country in localStorage before navigating
                         localStorage.setItem('selectedCountry', this.country);
                         window.location.href = `hotels.html?country=${this.country}`;
                     }
@@ -381,14 +374,13 @@
 
                 formatDate(dateString) {
                     const options = { year: 'numeric', month: 'short', day: '2-digit' };
-                    const date = new Date(dateString); // Convert string to Date object
-                    return date.toLocaleDateString('en-GB', options); // 'en-GB' formats as 'dd mmm yyyy'
+                    const date = new Date(dateString);
+                    return date.toLocaleDateString('en-GB', options);
                 },
 
                 async fetchNews() {
                     // const apikey = config.THENEWS_API_KEY;
                     const apiUrl = `https://api.thenewsapi.com/v1/news/top?api_token=${apikey}&search=${this.destination}&categories=food,travel&language=en&published_after=${this.currentYear}&limit=3`;
-                    console.log(this.date)
                     fetch(apiUrl)
                         .then(response => response.json())
                         .then(data => {
@@ -470,10 +462,10 @@
 
                         days.push({
                             date: formattedDate,
-                            activities: []  // Initialize empty activities array
+                            activities: []
                         });
 
-                        currentDate.setDate(currentDate.getDate() + 1);  // Move to the next day
+                        currentDate.setDate(currentDate.getDate() + 1);
                     }
 
                     return days;
@@ -555,6 +547,7 @@
                     // Step 2: If the user confirmed, delete the activity
                     if (result.isConfirmed) {
                         this.deleteActivity(activityId);
+                        this.updateChart();
                         Swal.fire('Deleted!', 'Activity has been removed.', 'success');
                     }
                 },
@@ -706,7 +699,7 @@
                     } else {
                         console.error("No such trip found");
                     }
-                }
+                },
             }
         });
 

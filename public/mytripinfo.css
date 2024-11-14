@@ -177,7 +177,7 @@ body::before {
 
 .hotel-card {
     background: #f8f9fa;
-    border: 1px solid;
+    /* border: 1px solid; */
     border-radius: 8px;
     padding: 15px;
     margin-bottom: 20px;
@@ -764,4 +764,13 @@ footer {
     .add-flight {
         width: 100%
     }
+}
+
+.countdown {
+    display: flex;
+    justify-content: space-between;
+    /* background-color: #fbe1c7; */
+    /* font-weight: bold; */
+    border-radius: 10px;
+    margin-bottom: 10px;
 }
