@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>postcard</title>
-    <link rel="stylesheet" href="signIn.css">
+    <link rel="stylesheet" href="signinbackup.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Pacifico&family=Playwrite+GB+S:ital,wght@0,100..400;1,100..400&display=swap" rel="stylesheet">
     <!-- Vue 3 -->
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <!-- Bootstrap CSS -->
@@ -13,94 +15,141 @@
 
 </head>
 <body>
-
+    
     <div id="app">
         <img src="countryPics/postcard.jpg" id="image">
-        <div class="postcard" :class="{ flipped: isFlipped }">
-            <div class="side front" >
-                <div class="stripes">
-                    <div class="container">
-                        <div id="line"></div>
-                        <h1 id="title">Roameo</h1>
-                        <h2 id="header">Sign Up</h2>
-                        <div id="stamp"></div>
-                        <div class="form-container">
-                            <div class="form-group">
-                                <label for="name">Name:</label>
-                                <div class="row">
-                                    <div class="col">
-                                        <input v-model="name" type="text" id="name" name="name" autocomplete="off" class="form-control" required>
-                                    </div>
-                                </div>
-                            </div>
+        <div id="line"></div>
+        <div id="moreout" >
+        <div id="out" :class="{ flipped: isFlipped }">
+            <div id="postcard">
+                <div class='container-fluid side front'>
+                    <div class='row mt-3'>
+                        <div class='col-6 text-center'>
+                            <h1 id="title">Welcome to Roameo</h1>   
+                        </div> <!-- col -->
+                        <div class='col-4'>
+                            <h2 id="header">Sign Up</h2>
+                        </div> <!-- col -->
+                        <div class='col-2'>
+                            <div id="stamp"></div>
+                            
+                        </div> <!-- col -->
+                    </div> <!-- row -->
 
-                            <div class="form-group">
-                                <label for="email">Email:</label>
-                                <div class="row">
-                                    <div class="col">
-                                        <input v-model="email" type="email" name="email" autocomplete="off" class="form-control" required>
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="row">
+                        <div class="d-flex col-6 align-items-end justify-content-center ">
+                            <button class="btn btn-success flip-button" @click="flipCard">Already have an account? Sign In</button>
 
-                            <div class="form-group">
-                                <label for="pwd">Password:</label>
-                                <div class="row">
-                                    <div class="col">
-                                        <input v-model="pwd" type="password" name="pwd" autocomplete="off" class="form-control" required>
+                        </div>
+
+                        <div class="col-6">
+                            <div class="form-container">
+                                <div class="form-group">
+                                    <label for="name">Name:</label>
+                                    <div class="row">
+                                        <div class="col">
+                                            <input v-model="name" type="text" id="name" name="name" autocomplete="off" class="form-control" required>
+                                        </div>
                                     </div>
                                 </div>
+
+                                <div class="form-group">
+                                    <label for="email">Email:</label>
+                                    <div class="row">
+                                        <div class="col">
+                                            <input v-model="email" type="email" name="email" autocomplete="off" class="form-control" required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="pwd">Password:</label>
+                                    <div class="row">
+                                        <div class="col">
+                                            <input v-model="pwd" type="password" name="pwd" autocomplete="off" class="form-control" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="signUp" class="d-flex justify-content-center"><button class="btn btn-primary mt-3" @click="signUp()">Sign Up!</button>
+                                </div>
+                                
                             </div>
-                            <div id="signUp"><button class="btn btn-primary" @click="signUp()">Sign Up!</button></div>
+                        </div>
+                    </div>
+
+                </div> <!-- container -->
+
+
+                <div class='container-fluid side back'>
+                    <div class='row mt-3'>
+                        <div class='col-6'>
+                            <h1 id="title">Roameo</h1>   
+                        </div> <!-- col -->
+                        <div class='col-4'>
+                            <h2 id="header">Sign In</h2>
+                        </div> <!-- col -->
+                        <div class='col-2'>
+                            <div id="stamp"></div>
+                            
+                        </div> <!-- col -->
+                    </div> <!-- row -->
+
+                    <div class="row">
+                        <div class="d-flex col-6 align-items-end">
                             
                         </div>
-                        <button class="btn btn-success flip-button" @click="flipCard">Already have an account? Sign In</button>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="side back">
-                <div class="stripes">
-                    <div class="container">
-                        <div id="line"></div>
-                        <h1 id="title">Roameo</h1>
-                        <h2 id="header">Sign In</h2>
-                        <div id="stamp"></div> 
 
-                        <div class="form-container">
+                        <div class="col-6">
 
-                            <div class="form-group">
-                                <label for="email">Email:</label>
-                                <div class="row">
-                                    <div class="col">
-                                        <input v-model="email" type="email" name="email" autocomplete="off" class="form-control" required>
+                                <div class="form-group">
+                                    <label for="email">Email:</label>
+                                    <div class="row">
+                                        <div class="col">
+                                            <input v-model="email" type="email" name="email" autocomplete="off" class="form-control" required>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="form-group">
-                                <label for="pwd">Password:</label>
-                                <div class="row">
-                                    <div class="col">
-                                        <input v-model="pwd" type="password" name="pwd" autocomplete="off" class="form-control" required>
+                                <div class="form-group">
+                                    <label for="pwd">Password:</label>
+                                    <div class="row">
+                                        <div class="col">
+                                            <input v-model="pwd" type="password" name="pwd" autocomplete="off" class="form-control" required>
+                                        </div>
                                     </div>
                                 </div>
+                                
                             </div>
-                            <div id="signUp"><button class="btn btn-primary" @click="signIn()">Sign In!</button></div>
-                        
                         </div>
 
-
-                        <button class="btn btn-success flip-button" @click="flipCard">Need an account? Sign Up</button>
+                    <div class="row" id='pad' style="height:65px">
                     </div>
-                </div>
+
+                    <div class="row">
+                        <div class="d-flex align-items-end justify-content-center col-6">
+                            <button class="btn btn-success flip-button" @click="flipCard">New to Roameo? Sign Up</button>
+                        </div>
+                        <div class="d-flex col-6 justify-content-center">
+                            <div id="signUp"><button class="btn btn-primary mt-3" @click="signIn()">Sign In!</button></div>
+                        </div>
+
+                    </div>
+
+
+                    </div>
+
+                </div> <!-- container -->
             </div>
 
-        </div>
-        
-        </div>
-    </div>
 
+            </div>
+        </div>
+
+
+
+    </div> <!-- app -->
+
+        
     <script src="signIn.js" type="module"></script>
 
     

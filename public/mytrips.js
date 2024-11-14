@@ -60,7 +60,7 @@ const app = Vue.createApp({
             const query = `Famous and iconic locations ${destination}`;
             // const query = `famous place ${destination}`;
 
-            const url = `https://api.unsplash.com/photos/random?client_id=${config.UNSPLASH_API_KEY1}&query=${encodeURIComponent(query)}`;
+            const url = `https://api.unsplash.com/photos/random?client_id=${config.UNSPLASH_API_KEY2}&query=${encodeURIComponent(query)}`;
         
             try {
                 const response = await axios.get(url);

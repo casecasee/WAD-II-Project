@@ -1,10 +1,11 @@
-import { UID, add_info_trips, update_trips_users, get_all_trips } from "./functions.js";
+import { UID, add_info_trips, update_trips_users, trips_for_community, add_attraction, add_hotel } from "./functions.js";
 import { firebaseApp } from "./stuff.js";
 import { 
     getFirestore, 
     doc, 
     collection, 
-    getDocs 
+    getDocs,
+    getDoc
 } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
 import { config } from './config.js';
 
@@ -25,7 +26,9 @@ const app = Vue.createApp({
     methods: {
         async fetchCountryImage(destination) {
             const query = `Famous and iconic locations ${destination}`;
-            const url = `https://api.unsplash.com/photos/random?client_id=${config.UNSPLASH_API_KEY1}&query=${encodeURIComponent(query)}`;
+            //REMIND ME TO CHANGE THIS BACK TO THE ORIGINAL
+            // const url = `https://api.unsplash.com/photos/random?client_id=${config.UNSPLASH_API_KEY1}&query=${encodeURIComponent(query)}`;
+            const url = 'https://images.unsplash.com/photo-1500835556837-99ac94a94552';
         
             try {
                 const response = await axios.get(url);
@@ -38,21 +41,39 @@ const app = Vue.createApp({
 
         async loadTrips() {
             try {
-                const trips = await get_all_trips();
-                console.log("Raw trips data:", trips);
+                this.UID = await UID();
+                const trips = await trips_for_community(this.UID);
+                console.log("Community trips:", trips);
 
                 this.photos = await Promise.all(trips.map(async trip => {
                     const photoURL = await this.fetchCountryImage(trip.destination);
 
-                    // Map attractions data properly
-                    const attractions = trip.attractions.map(attraction => ({
-                        id: attraction.id || Math.random().toString(),
-                        name: attraction.a_name, // Note the property is 'a_name' not 'name'
-                        date: attraction.date,
-                        cost: attraction.cost
-                    }));
+                    // Get subcollections data
+                    const tripRef = doc(db, "trips", trip.tripID);
+                    
+                    // Get hotels
+                    const hotelsRef = collection(tripRef, "hotels");
+                    const hotelsSnap = await getDocs(hotelsRef);
+                    const hotels = hotelsSnap.docs.map(doc => {
+                        const data = doc.data();
+                        console.log("Hotel data:", data);
+                        return {
+                            id: doc.id,
+                            ...data
+                        };
+                    });
 
-                    console.log("Mapped attractions:", attractions); // Debug log
+                    // Get attractions
+                    const attractionsRef = collection(tripRef, "attractions");
+                    const attractionsSnap = await getDocs(attractionsRef);
+                    const attractions = attractionsSnap.docs.map(doc => {
+                        const data = doc.data();
+                        console.log("Attraction data:", data);
+                        return {
+                            id: doc.id,
+                            ...data
+                        };
+                    });
 
                     return {
                         id: trip.tripID,
@@ -63,21 +84,107 @@ const app = Vue.createApp({
                         startDate: trip.startdate,
                         endDate: trip.enddate,
                         budget: trip.budget || 0,
-                        flights: trip.flights || [],
-                        hotels: trip.hotels || [],
-                        attractions: attractions // Use the mapped attractions
+                        hotels: hotels,
+                        attractions: attractions,
+                        // Calculate duration
+                        duration: this.calculateTripDuration(trip.startdate, trip.enddate)
                     };
                 }));
+                console.log("Final photos array:", this.photos.map(photo => ({
+                        id: photo.id,
+                        hotels: photo.hotels,
+                        attractions: photo.attractions
+                    })));
 
-                console.log("Processed photos:", this.photos);
+                console.log("Processed photos with details:", this.photos);
             } catch (error) {
                 console.error('Error loading trips:', error);
             }
         },
 
-        openModal(photo) {
-            console.log("Opening modal for:", photo);
-            this.selectedPhoto = { ...photo };
+        calculateTripDuration(startDate, endDate) {
+            const start = new Date(startDate);
+            const end = new Date(endDate);
+            const diffTime = Math.abs(end - start);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            return diffDays + 1; // Including both start and end days
+        },
+
+        async openModal(photo) {
+            try {
+                console.log("Opening modal for photo:", photo);
+
+                const tripRef = doc(db, "trips", photo.id);
+                const tripSnap = await getDoc(tripRef);
+                const tripData = tripSnap.data();
+
+                this.selectedPhoto = {
+                    ...photo,
+                    hotels: tripData.hotels || [],
+                    attractions: tripData.attractions || [],
+                    budget: tripData.budget || 0,
+                    startDate: tripData.startdate,
+                    endDate: tripData.enddate,
+                    totalCost: this.calculateTotalCost(photo.budget, photo.hotels, photo.attractions)
+                };
+
+                console.log("Attractions in modal:", this.selectedPhoto.attractions);
+                
+                // // Get the specific trip's data
+                // const tripRef = doc(db, "trips", photo.id);
+                
+                // // Get hotels for this trip
+                // const hotelsRef = collection(tripRef, "hotels");
+                // const hotelsSnap = await getDocs(hotelsRef);
+                // const hotels = hotelsSnap.docs.map(doc => ({
+                //     id: doc.id,
+                //     ...doc.data()
+                // }));
+                // console.log("Hotels for trip:", hotels);
+
+                // // Get attractions for this trip
+                // const attractionsRef = collection(tripRef, "attractions");
+                // const attractionsSnap = await getDocs(attractionsRef);
+                // const attractions = attractionsSnap.docs.map(doc => ({
+                //     id: doc.id,
+                //     ...doc.data()
+                // }));
+                // console.log("Attractions for trip:", attractions);
+
+                // // Set the selected photo with all its data
+                // this.selectedPhoto = {
+                //     ...photo,
+                //     hotels: hotels,
+                //     attractions: attractions,
+                //     totalCost: this.calculateTotalCost(photo.budget, hotels, attractions)
+                // };
+
+                console.log("Complete modal data:", this.selectedPhoto);
+            } catch (error) {
+                console.error("Error opening modal:", error);
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Failed to load trip details',
+                    icon: 'error',
+                    confirmButtonColor: '#764F37'
+                });
+            }
+        },
+
+        calculateTotalCost(budget, hotels, attractions) {
+            let total = budget || 0;
+            
+            // Add hotel costs
+            if (hotels && hotels.length) {
+                total += hotels.reduce((sum, hotel) => sum + (parseFloat(hotel.cost) || 0), 0);
+            }
+            
+            // Add attraction costs
+            if (attractions && attractions.length) {
+                total += attractions.reduce((sum, attraction) => sum + (parseFloat(attraction.cost) || 0), 0);
+            }
+            
+            return total;
         },
 
         closeModal() {
@@ -90,7 +197,15 @@ const app = Vue.createApp({
 
         async addToMyTrips(photo) {
             try {
-                if (!this.validateDates()) {
+                this.UID = await UID();
+                
+                if (!this.UID) {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'User not logged in',
+                        icon: 'error',
+                        confirmButtonColor: '#764F37'
+                    });
                     return;
                 }
 
@@ -109,44 +224,42 @@ const app = Vue.createApp({
                 // First add the trip info
                 const tripID = await add_info_trips(
                     photo.destination, 
-                    photo.startDate,
-                    photo.endDate,
-                    photo.cost
+                    startDate,
+                    endDate,
+                    photo.budget || 0
                 );
 
-                console.log("Created trip with ID:", tripID); // Debug log
-
-                // Then update the user's trips
-                await update_trips_users(this.UID, tripID);
-                console.log("Updated user's trips"); // Debug log
-
-                // Add attractions if they exist
+                // Add attractions
                 if (photo.attractions && photo.attractions.length > 0) {
                     for (const attraction of photo.attractions) {
                         await add_attraction(
                             tripID,
-                            attraction.name,
-                            attraction.date,
+                            attraction.a_name,
+                            startDate,
+                            endDate,
                             attraction.cost || 0
                         );
                     }
                 }
 
-                // Add hotels if they exist
+                // Add hotels
                 if (photo.hotels && photo.hotels.length > 0) {
                     for (const hotel of photo.hotels) {
                         await add_hotel(
                             tripID,
-                            hotel.name,
-                            hotel.startDate,
-                            hotel.endDate,
+                            hotel.h_name,
+                            startDate,
+                            endDate,
                             hotel.cost || 0
                         );
                     }
                 }
 
+                // Update user's trips
+                await update_trips_users(this.UID, tripID);
+                
                 localStorage.setItem('selectedCountry', photo.destination);
-                localStorage.setItem('tripID', tripID); // Add this line
+                localStorage.setItem('tripID', tripID);
                 
                 Swal.fire({
                     title: 'Success!',

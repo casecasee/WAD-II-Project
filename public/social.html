@@ -384,6 +384,61 @@
             position: relative;
             z-index: 1000;
         }
+
+        .section-container {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .section-container h5 {
+            color: #764F37;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #DCB287;
+            padding-bottom: 8px;
+        }
+
+        .card {
+            border: none;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            margin-bottom: 10px;
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .card-body h6 {
+            color: #764F37;
+            font-weight: 600;
+        }
+
+        .trip-info {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .add-to-trips-btn {
+            background-color: #DCB287;
+            color: #764F37;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .add-to-trips-btn:hover {
+            background-color: #764F37;
+            color: white;
+            transform: translateY(-2px);
+        }
     </style>
 </head>
 <body>
@@ -428,47 +483,57 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">{{ selectedPhoto.alt }}</h5>
+                        <h5 class="modal-title">Trip to {{ selectedPhoto.destination }}</h5>
                         <button type="button" class="btn-close" @click="closeModal"></button>
                     </div>
                     <div class="modal-body">
                         <img :src="selectedPhoto.src" :alt="selectedPhoto.alt" class="img-fluid">
                         <div class="itinerary-section">
-                            <h4>Trip Itinerary</h4>
-                            <div class="itinerary-details">
-                                <div class="trip-info">
-                                    <div class="mb-3">
-                                        <label><strong>Start Date:</strong></label>
-                                        <input type="date" 
+                            <h4>Trip Details</h4>
+                            <div class="trip-info">
+                                <p><strong>Destination:</strong> {{ selectedPhoto.destination }}</p>
+                                <p><strong>Duration:</strong> {{ calculateDuration }} days</p>
+                                <p><strong>Dates:</strong>
+                                    <input type="date" 
                                                class="form-control" 
                                                v-model="selectedPhoto.startDate" 
-                                               :min="getCurrentDate()">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label><strong>End Date:</strong></label>
-                                        <input type="date" 
+                                               :min="getCurrentDate()"> to <input type="date" 
                                                class="form-control" 
                                                v-model="selectedPhoto.endDate"
                                                :min="selectedPhoto.startDate">
-                                    </div>
-                                    <p><strong>Duration:</strong> {{ calculateDuration }} days</p>
-                                    <p><strong>Destination:</strong> {{ selectedPhoto.destination }}</p>
-                                    <p><strong>Total Cost:</strong> SGD {{ selectedPhoto.cost }}</p>
-                                </div>
-                                <div class="daily-schedule">
-                                    <div v-for="(day, index) in selectedPhoto.itinerary" :key="index" class="day-item">
-                                        <h5>Day {{ index + 1 }}</h5>
-                                        <ul>
-                                            <li v-for="activity in day" :key="activity">{{ activity }}</li>
-                                        </ul>
+                                </p>
+                                <p><strong>Total Cost:</strong> SGD {{ selectedPhoto.totalCost }}</p>
+                            </div>
+
+                            <!-- Hotels Section -->
+                            <div v-if="selectedPhoto.hotels && selectedPhoto.hotels.length > 0" class="section-container">
+                                <h5>Hotels</h5>
+                                <div class="card" v-for="hotel in selectedPhoto.hotels" :key="hotel.h_name">
+                                    <div class="card-body">
+                                        <h6>{{ hotel.h_name }}</h6>
+                                        <!-- <p v-if="hotel.location">Location: {{ hotel.location }}</p> -->
+                                        <p v-if="hotel.cost">Cost: SGD {{ hotel.cost }}</p>
                                     </div>
                                 </div>
                             </div>
-                            <button @click="addToMyTrips(selectedPhoto)" class="add-to-trips-btn">
-                                Add to My Trips
-                            </button>
+
+                            <!-- Attractions Section -->
+                            <div v-if="selectedPhoto.attractions && selectedPhoto.attractions.length > 0" class="section-container">
+                                <h5>Attractions</h5>
+                                <div class="card" v-for="attraction in selectedPhoto.attractions" :key="attraction.a_name">
+                                    <div class="card-body">
+                                        <h6>{{ attraction.a_name }}</h6>
+                                        <!-- <p v-if="attraction.location">Location: {{ attraction.location }}</p>
+                                        <p v-if="attraction.cost">Cost: SGD {{ attraction.cost }}</p> -->
+                                        <p v-if="attraction.cost">Cost: SGD {{ attraction.cost }}</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="modal-caption">{{ selectedPhoto.desc }}</div>
+
+                        <button @click="addToMyTrips(selectedPhoto)" class="add-to-trips-btn mt-4">
+                            Add to My Trips
+                        </button>
                     </div>
                 </div>
             </div>

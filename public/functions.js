@@ -276,6 +276,7 @@ export const get_all_trips = async function get_all() {
     }
 }
 
+// getting trips for community page
 export const trips_for_community = async function get_trips_for_community(UID) {
     console.log(UID);
     const docref_u = doc(db, "users", UID);
