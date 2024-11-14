@@ -254,7 +254,7 @@ header{
         left: 2rem;
         width: unset;
         background: black;
-        backdrop-filter: blur(10px);
+        backdrop-filter: none;
     }
 }
 
