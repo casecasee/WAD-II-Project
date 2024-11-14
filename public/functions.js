@@ -275,3 +275,52 @@ export const get_all_trips = async function get_all() {
         return [];
     }
 }
+
+export const trips_for_community = async function get_trips_for_community(UID) {
+    console.log(UID);
+    const docref_u = doc(db, "users", UID);
+    const doc_snap_u = await getDoc(docref_u);
+    const this_users_trips = doc_snap_u.data().trips;
+    console.log(this_users_trips);
+
+    const collectionRef = collection(db, "trips");
+    var rt = [];
+    try {
+        const querySnapshot = await getDocs(collectionRef);
+        querySnapshot.forEach(doc => {
+            console.log(doc.data());
+            if (this_users_trips.indexOf(doc.id) == -1) { // check if the trip is this users'
+                console.log('check');
+                if (isDateInPast(doc.data().enddate)) {
+                    console.log('this check');
+
+                    rt.push({
+                        tripID: doc.id,  // Add the document ID
+                        ...doc.data()
+                    });
+                    console.log("Trip data:", {tripID: doc.id, ...doc.data()});
+                };
+
+                }
+
+            })
+
+        return rt;
+    } catch (error) {
+        console.error("Error getting documents:", error);
+        return [];
+    }
+
+}
+
+
+
+function isDateInPast(dateString) {
+    const inputDate = new Date(dateString);  // Convert the string to a Date object
+    const today = new Date();                // Get today's date
+
+    // Set the hours of today to 0:00:00 to ignore the time part
+    today.setHours(0, 0, 0, 0);
+
+    return inputDate < today;
+};

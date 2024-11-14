@@ -1,11 +1,12 @@
-import { UID, get_info, add_flights_to_trip, add_attraction, delete_trip, get_all_trips, add_hotel } from './functions';
+import { UID, get_info, add_flights_to_trip, add_attraction, delete_trip, get_all_trips, add_hotel, trips_for_community } from './functions';
 
 const app = Vue.createApp({ 
     data() { 
         return { 
               UID : null,
               all : '', 
-              everything : ''
+              everything : '', 
+              tfc: []
         };
     }, // data
     async mounted() { 
@@ -38,7 +39,15 @@ const app = Vue.createApp({
         }, 
         async get() {
             this.everything = await get_all_trips();
+        }, 
+        async get_minus() {
+            console.log('ahg');
+            this.tfc = await trips_for_community('LzgNxmsjv2Ricuk3O85WAWB4GH52');
+
         }
+
+
+
 
     } // methods
 });

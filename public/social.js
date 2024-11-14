@@ -94,17 +94,17 @@ const app = Vue.createApp({
                     return;
                 }
 
-                this.UID = await UID();
+                // this.UID = await UID();
                 
-                if (!this.UID) {
-                    Swal.fire({
-                        title: 'Error!',
-                        text: 'User not logged in',
-                        icon: 'error',
-                        confirmButtonColor: '#764F37'
-                    });
-                    return;
-                }
+                // if (!this.UID) {
+                //     Swal.fire({
+                //         title: 'Error!',
+                //         text: 'User not logged in',
+                //         icon: 'error',
+                //         confirmButtonColor: '#764F37'
+                //     });
+                //     return;
+                // }
 
                 // First add the trip info
                 const tripID = await add_info_trips(
@@ -252,6 +252,7 @@ const app = Vue.createApp({
         }
     },
     async mounted() {
+        this.UID = await UID();
         await this.loadTrips();
         document.addEventListener('keydown', this.handleEscKey);
     },
