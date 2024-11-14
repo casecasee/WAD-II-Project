@@ -34,10 +34,10 @@
     <!-- Main Content -->
     <h3 class="content-title">Enter Flight Details</h3>
 
-    <div id="app" class="container-fluid my-4">
+    <div id="app" class="container-fluid my-4 g-1">
         <div class="row justify-content-center">
             <!-- Input Form Section -->
-            <div class="form-container col-10 col-lg-5 mx-4">
+            <div class="form-container col-10 col-lg-4 mx-3">
                 <!-- <h3 class="title">Enter Flight Details</h3> -->
                 
                 <form>
@@ -69,11 +69,11 @@
                         <label for="flight-cost" class="form-label">Cost Of Flight ($) <span class="text-danger">*</span></label>
                         <input type="number" class="form-control" v-model="flightCost" placeholder="Enter Cost" min="0" required>
                     </div>
-                    <button type="submit" class="btn btn-primary w-100" @click.prevent="addFlight">Confirm</button>
+                    <button type="submit" class="btn btn-primary w-100" @click.prevent="addFlight">Add Flight!</button>
                 </form>
             </div>
             
-            <div class="form-container col-10 col-lg-5 mx-4">
+            <div class="flight-container col-10 col-lg-7 mx-3">
                 <h3 class="title"><i class="fa-solid fa-plane-departure"></i> Flights</h3>
                 <div v-if="flights.length === 0"> 
                     <div class="no-flights text-center mb-4">No flights added.</div>
@@ -135,7 +135,7 @@
                         class="btn btn-primary w-100" 
                         v-if="flights.length > 0" 
                         @click="addAllFlightsToTrip">
-                        Add Flights To Trip!
+                        Confirm!
                     </button>
                 </div>
                 
@@ -249,13 +249,28 @@
 
                 async addAllFlightsToTrip() {
                     try {
-                        // Save flights to Firestore
                         console.log(this.flights);
                         await add_flights_to_trip(this.tripID, this.flights);
-                        this.flights = []; // Clear local flights array
+                        this.flights = []; 
+
+                        await Swal.fire({
+                            icon: 'success',
+                            confirmButtonText: 'OK',
+                            timer: 2000,
+                            showConfirmButton: true,
+                        });
+
                         window.location.href = `mytripinfo.html?country=${this.country}`;
+
                     } catch (error) {
                         console.error("Error adding flights to Firebase:", error);
+
+                        await Swal.fire({
+                            title: 'Error',
+                            text: 'There was an issue adding the flights to the trip.',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
                     }
                 },
                 resetForm() {

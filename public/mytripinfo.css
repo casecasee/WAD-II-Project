@@ -563,16 +563,6 @@ footer {
     position: absolute;
 }
 
-.budget-pie-section {
-    margin-top: 20px;
-    text-align: center;
-}
-
-#budget-pie-chart {
-    width: 100%;
-    max-width: 400px;
-    margin: 0 auto;
-}
 
 /* Responsive design */
 @media screen and (max-width:950px) {
@@ -681,7 +671,6 @@ footer {
     }
 }
 
-/* For very small devices (e.g. below 480px) */
 @media screen and (max-width: 504px) {
     /* Adjust layout further */
     .trip-container {
@@ -762,5 +751,17 @@ footer {
     .btn {
         font-size: 19px; /* Restore default button size */
         padding: 12px 24px; /* Restore default button padding */
+    }
+}
+
+@media screen and (max-width: 429px) {
+    .center-message {
+        flex-grow: 1;
+    }
+    .add-attract {
+        flex-grow: 1;
+    }
+    .add-flight {
+        width: 100%
     }
 }

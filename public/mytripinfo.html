@@ -6,16 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Trips</title>
 
-    <!-- VUE -->
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-
-    <!-- Axios and API -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <!-- <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBqbv7BqX1_7CcpPT80locaYJ3fnsdC-Sg&libraries=places"></script> -->
-
-    <!-- CSS -->
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <link
@@ -29,12 +21,8 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://d3js.org/d3.v7.min.js"></script>
 
-
 </head>
-
 <body>
-    
-
     <div>
         <div id="navbar-app">
             <navbar-component></navbar-component>
@@ -78,7 +66,7 @@
 
                     <div v-if="day.activities.length === 0">
                         <!-- Free day message and button in the same line -->
-                        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; flex-wrap: wrap;">
                             <p class="center-message">Free day! Add attractions to fill up your day.</p>
                             <button class="add-attract" @click="setAttractDate(day.date)">+ Attraction</button>
                         </div>
@@ -103,6 +91,10 @@
 
             <!-- Flight Details Sidebar -->
             <div class="flight-section">
+                <h2>Days to Trip:</h2>
+                    <span class="temp">
+                        {{  countdown  }}
+                    </span>                
                 <h2>Flight Details</h2>
                 <div v-if="flights.length === 0" class="center-message-hotel">
                     <button class="add-flight" @click="navigateToAddFlightInfo">+ Flights</button>
@@ -146,10 +138,6 @@
                         <h5>Total Spent:</h5>
                         <h5> <strong>${{ totalSpent.toFixed(2) }}</strong> / ${{ budget.total.toFixed(2) }}</h5>
                     </div>
-                    <div class="budget-pie-section">
-                        <h5>Spending Breakdown:</h5>
-                        <div id="budget-pie-chart"></div>
-                    </div>
                     
                     <div class="budget-details">
                         <div class="budget-row">
@@ -172,8 +160,8 @@
                         </div>
                     </div>
                 </div>
-                <h2>Weather</h2>
 
+                <h2>Weather</h2>
                 <div class="weather-section"
                     :style="{background: isDaytime ? 'linear-gradient(to top, #83C6DE, #CAE6FE)' : isSunset || isSunrise ? 'linear-gradient(55deg, #BF3475, #FFCE61)' : 'rgb(41, 41, 41)', color: isDaytime || isSunset || isSunrise ? 'black' : 'white'}">
                     <div class="currentTemp">
@@ -251,6 +239,7 @@
                     isSunrise: null,
                     news: [],
                     currentYear: null,
+                    countdown: '',
                 };
             },
 
@@ -267,9 +256,10 @@
                     await this.fetchTripData(this.tripID);  // Get the specific trip data
                     await this.fetchWeatherDetails(this.destination); // Fetch coordinates for the destination
                     await this.fetchNews();
+                    console.log("Start Date:", this.startDate);
+                    console.log("End Date:", this.endDate);
+                    this.startCountdown()
                 }
-
-                this.createPieChart();
             },
 
             computed: {
@@ -322,6 +312,39 @@
                     console.log("current year:", this.currentYear)
                 },
 
+                startCountdown() {
+                    if (!this.startDate || !this.endDate) {
+                        console.log("Dates not set:", this.startDate, this.endDate);
+                        return;
+                    }
+
+                    // Parse the dates from the ISO string format
+                    const targetStartDate = new Date(this.startDate);
+                    const targetEndDate = new Date(this.endDate);
+
+                    const updateCountdown = () => {
+                        const now = new Date();
+                        const nowDateOnly = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                        const startDateOnly = new Date(targetStartDate.getFullYear(), targetStartDate.getMonth(), targetStartDate.getDate());
+                        const endDateOnly = new Date(targetEndDate.getFullYear(), targetEndDate.getMonth(), targetEndDate.getDate());
+
+                        if (nowDateOnly >= startDateOnly && nowDateOnly <= endDateOnly) {
+                            this.countdown = "Your trip has arrived!";
+                        } else if (nowDateOnly > endDateOnly) {
+                            this.countdown = "Trip Ended";
+                        } else {
+                            const difference = startDateOnly - nowDateOnly;
+                            const daysRemaining = Math.ceil(difference / (1000 * 60 * 60 * 24));
+                            this.countdown = `${daysRemaining} Days!`;
+                        }
+
+                        console.log("Countdown Updated:", this.countdown);
+                    };
+
+                    updateCountdown(); // Initial update
+                    setInterval(updateCountdown, 60000); // Update every minute
+                },
+
                 setAttractDate(date) {
                     localStorage.setItem('attract_date', date);
                     this.navigateToAttractions();
@@ -360,55 +383,6 @@
                     const options = { year: 'numeric', month: 'short', day: '2-digit' };
                     const date = new Date(dateString); // Convert string to Date object
                     return date.toLocaleDateString('en-GB', options); // 'en-GB' formats as 'dd mmm yyyy'
-                },
-
-                createPieChart() {
-                    const budgetData = [
-                        { category: "Hotels", value: this.budget.hotels },
-                        { category: "Flights", value: this.budget.flights },
-                        { category: "Activities", value: this.budget.activities }
-                    ];
-
-                    const width = 400, height = 400, margin = 50;
-
-                    const radius = Math.min(width, height) / 2 - margin;
-
-                    const svg = d3.select("#budget-pie-chart")
-                        .append("svg")
-                        .attr("width", width)
-                        .attr("height", height)
-                        .append("g")
-                        .attr("transform", `translate(${width / 2},${height / 2})`);
-
-                    const color = d3.scaleOrdinal()
-                        .domain(budgetData.map(d => d.category))
-                        .range(d3.schemeCategory10);
-
-                    const pie = d3.pie()
-                        .value(d => d.value);
-
-                    const dataReady = pie(budgetData);
-
-                    const arc = d3.arc()
-                        .innerRadius(0)
-                        .outerRadius(radius);
-
-                    svg.selectAll('path')
-                        .data(dataReady)
-                        .join('path')
-                        .attr('d', arc)
-                        .attr('fill', d => color(d.data.category))
-                        .attr("stroke", "white")
-                        .style("stroke-width", "2px")
-                        .style("opacity", 0.7);
-
-                    svg.selectAll('text')
-                        .data(dataReady)
-                        .join('text')
-                        .text(d => `${d.data.category}: $${d.data.value.toFixed(2)}`)
-                        .attr("transform", d => `translate(${arc.centroid(d)})`)
-                        .style("text-anchor", "middle")
-                        .style("font-size", "12px");
                 },
 
                 async fetchNews() {
@@ -489,7 +463,6 @@
                 generateAllDaysBetweenDates(startDate, endDate) {
                     let days = [];
                     let currentDate = new Date(startDate);
-
                     while (currentDate <= endDate) {
                         let formattedDate = currentDate.toLocaleDateString('en-GB', {
                             day: '2-digit', month: 'short', year: 'numeric'
@@ -644,6 +617,7 @@
                         console.log(tripData);
 
                         this.startDate = new Date(tripData.startdate);
+                        console.log("START", this.startDate)
                         this.endDate = new Date(tripData.enddate);
                         this.destination = tripData.destination;
                         this.budget.total = tripData.budget || 0;
