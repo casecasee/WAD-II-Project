@@ -246,6 +246,7 @@
             margin-bottom: 0; 
         }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
     <div>
@@ -460,7 +461,7 @@
             { word: '부탁합니다 (Butakhamnida)', translation: 'Please' },
             { word: '천만에요 (Cheonmaneyo)', translation: 'You\'re welcome' },
             { word: '좋은 아침입니다 (Joeun achimimnida)', translation: 'Good morning' },
-            { word: '어떻게 지내세요 (Eotteoke jinaeseyo)', translation: 'How are you' },
+            { word: '어떻게 지내���요 (Eotteoke jinaeseyo)', translation: 'How are you' },
             { word: '만나서 반갑습니다 (Mannaseo bangapseumnida)', translation: 'Nice to meet you' }
         ];
 
@@ -691,7 +692,7 @@
                         showAlert('Error loading user data. Please try again.', 'danger');
                     }
                 } else {
-                    window.location.href = 'login.html';
+                    window.location.href = 'index.html';
                 }
                 });
             });
@@ -769,7 +770,7 @@
                 showAlert('Error loading user data. Please try again.', 'danger');
             }
         } else {
-            window.location.href = 'login.html';
+            window.location.href = 'index.html';
         }
     });
 });
@@ -894,22 +895,104 @@ document.getElementById('profilePic').addEventListener('change', async (e) => {
     }
 });
 
-// Handle logout
+// Update your logout function in the script section
 async function logout() {
     try {
-        const auth = getAuth(firebaseApp);
-        await signOut(auth);
-        window.location.href = 'login.html';
+        // Show confirmation dialog
+        const result = await Swal.fire({
+            title: 'Are you sure?',
+            text: "You will be logged out of your account",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#764F37',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, log out',
+            cancelButtonText: 'Cancel'
+        });
+
+        // If user confirms logout
+        if (result.isConfirmed) {
+            const auth = getAuth(firebaseApp);
+            await signOut(auth);
+            
+            // Show success message before redirecting
+            await Swal.fire({
+                title: 'Logged Out!',
+                text: 'You have been successfully logged out',
+                icon: 'success',
+                confirmButtonColor: '#764F37',
+                timer: 1500,
+                timerProgressBar: true,
+                showConfirmButton: false
+            });
+
+            // Redirect to login page
+            window.location.href = 'index.html';
+        }
     } catch (error) {
         console.error('Error logging out:', error);
-        showAlert('Error logging out: ' + error.message, 'danger');
-        }
+        Swal.fire({
+            title: 'Error!',
+            text: 'Error logging out: ' + error.message,
+            icon: 'error',
+            confirmButtonColor: '#764F37'
+        });
     }
+}
     </script>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="navbarLoader.js"></script>
     <footer>
         <p>&copy; 2024 ROAMEO. All Rights Reserved.</p>
     </footer>
+    <script type="module">
+        import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
+        import { firebaseApp } from "./stuff.js";
+
+        // Make logout function globally available
+        window.logout = async function() {
+            try {
+                // Show confirmation dialog
+                const result = await Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You will be logged out of your account",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#764F37',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, log out',
+                    cancelButtonText: 'Cancel'
+                });
+
+                // If user confirms logout
+                if (result.isConfirmed) {
+                    const auth = getAuth(firebaseApp);
+                    await signOut(auth);
+                    
+                    // Show success message before redirecting
+                    await Swal.fire({
+                        title: 'Logged Out!',
+                        text: 'You have been successfully logged out',
+                        icon: 'success',
+                        confirmButtonColor: '#764F37',
+                        timer: 1500,
+                        timerProgressBar: true,
+                        showConfirmButton: false
+                    });
+
+                    // Redirect to login page
+                    window.location.href = 'index.html';
+                }
+            } catch (error) {
+                console.error('Error logging out:', error);
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Error logging out: ' + error.message,
+                    icon: 'error',
+                    confirmButtonColor: '#764F37'
+                });
+            }
+        }
+    </script>
 </body>
 </html>
