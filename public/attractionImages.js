@@ -50,7 +50,7 @@ const app = Vue.createApp({
                                 // text: ,
                                 icon: 'success',
                                 showConfirmButton: true,
-                                confirmButtonColor: '#d33',
+                                // confirmButtonColor: '#d33',
                                 // showCancelButton: true,
                                 // cancelButtonColor: '#d33',
                                 // cancelButtonColor: '#3085d6',
