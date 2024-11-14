@@ -269,7 +269,7 @@
             <div class="settings-menu">
                 <a href="#" class="tab-link" data-tab="account">Account Settings</a>
                 <a href="#" class="tab-link" data-tab="game">Language Game</a>
-                <a href="#" class="tab-link" data-tab="badges">My Badges</a>
+                <!-- <a href="#" class="tab-link" data-tab="badges">My Badges</a> -->
             </div>
         </div>
 
@@ -300,7 +300,7 @@
                     <input type="file" class="form-control" id="profilePic" accept="image/*" 
                            onchange="updateProfilePicture(this.files[0])">
                 </div> -->
-                <h3>Profile Picture</h3>
+                <!-- <h3>Profile Picture</h3>
                 <div class="mb-4">
                     <div class="d-flex align-items-center mb-3">
                         <img id="profile-preview" src="dp.png" alt="Profile Picture" 
@@ -313,9 +313,9 @@
                     <div id="upload-progress" class="progress mb-2 d-none">
                         <div class="progress-bar" role="progressbar" style="width: 0%"></div>
                     </div>
-                </div>
+                </div> -->
 
-                <hr>
+                <!-- <hr> -->
 
                 <button onclick="logout()" class="btn btn-danger">Logout</button>
             </div>
@@ -340,7 +340,7 @@
             </div>
 
             <!-- Badges Tab -->
-            <div id="badges" class="tab-content">
+            <!-- <div id="badges" class="tab-content">
                 <h2>My Badges</h2>
                 <div class="badges-section">
                     <div class="badge">
@@ -371,7 +371,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 
@@ -974,14 +974,11 @@ async function logout() {
                         title: 'Logged Out!',
                         text: 'You have been successfully logged out',
                         icon: 'success',
-                        confirmButtonColor: '#764F37',
-                        timer: 1500,
-                        timerProgressBar: true,
-                        showConfirmButton: false
+                        showConfirmButton: true
+                    }).then(() => {
+                        window.location.href = 'index.html';
                     });
 
-                    // Redirect to login page
-                    window.location.href = 'index.html';
                 }
             } catch (error) {
                 console.error('Error logging out:', error);

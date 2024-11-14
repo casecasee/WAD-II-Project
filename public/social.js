@@ -27,8 +27,8 @@ const app = Vue.createApp({
         async fetchCountryImage(destination) {
             const query = `Famous and iconic locations ${destination}`;
             //REMIND ME TO CHANGE THIS BACK TO THE ORIGINAL
-            // const url = `https://api.unsplash.com/photos/random?client_id=${config.UNSPLASH_API_KEY1}&query=${encodeURIComponent(query)}`;
-            const url = 'https://images.unsplash.com/photo-1500835556837-99ac94a94552';
+            const url = `https://api.unsplash.com/photos/random?client_id=${config.UNSPLASH_API_KEY1}&query=${encodeURIComponent(query)}`;
+            // const url = 'https://images.unsplash.com/photo-1500835556837-99ac94a94552';
         
             try {
                 const response = await axios.get(url);
@@ -265,9 +265,7 @@ const app = Vue.createApp({
                     title: 'Success!',
                     text: 'Trip added to your itineraries successfully!',
                     icon: 'success',
-                    confirmButtonColor: '#764F37',
-                    timer: 2000,
-                    timerProgressBar: true
+                    showConfirmButton: true
                 }).then(() => {
                     this.closeModal();
                     window.location.href = 'mytrips.html';
