@@ -44,8 +44,19 @@ const app = Vue.createApp({
         async addattract(a_name, date, cost, time) {
             await add_attraction(this.tripID, a_name, date, cost, time);
             // this.close();
-            alert('attraction successfully added');
-            window.location.href = `mytripinfo.html?country=${encodeURIComponent(this.country)}`
+            // alert('attraction successfully added');
+            let response = await Swal.fire({
+                                title: 'Attraction successfully added!',
+                                // text: ,
+                                icon: 'success',
+                                showConfirmButton: true,
+                                confirmButtonColor: '#d33',
+                                // showCancelButton: true,
+                                // cancelButtonColor: '#d33',
+                                // cancelButtonColor: '#3085d6',
+                                confirmButtonText: 'Return to dashboard'});
+            if (response.isConfirmed) {
+                window.location.href = `mytripinfo.html?country=${encodeURIComponent(this.country)}`}
         },
 
         async handle(results) {
@@ -203,15 +214,19 @@ app.component('country-images', {
                                     <label for="dateSelect">Date:</label>
                                     <div class="row">
                                         <div class="col">
+
                                             <input type="text" v-model="formattedDate" id="selectedDate" class="form-control bg-white" readonly>
                                             <select v-model="date" id="dateSelect" size='5' name="dateSelect" class="form-control" required>
                                                 <option v-for="(formattedDate, dateKey) in adates" :key="dateKey" :value="dateKey">
                                                     {{formattedDate}}
                                                 </option>
                                             </select>
+
+                                            
                                         </div>
                                     </div>
                                 </div>
+
                                 
                             </div> <!-- col -->
                 
@@ -235,9 +250,6 @@ app.component('country-images', {
                             </div>
                         </div>
 
-
-
-
                         <div class='row'>
 
                             <div class='col'>
@@ -251,10 +263,8 @@ app.component('country-images', {
                                         </div>
                                     </div>
                                 </div>
-
                                 
-                            </div>
-                                
+                            </div> 
                             
                         </div>
 
@@ -266,9 +276,6 @@ app.component('country-images', {
 
 
                     </div> <!-- container -->
-
-
-                
                             
                         </div>
                         

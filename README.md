@@ -1,6 +1,6 @@
 # WAD-II
 
-URL (deployed app): https://wad2-pt2.web.app/
+URL (deployed app): https://roameo-wad2.web.app/
 
 URL (git repo): https://github.com/casecasee/WAD-II-Project.git
 
@@ -14,5 +14,5 @@ Log-in details:
     - password must be at least 6 characters
 
 - Account populated with trips:
-    - email:
-    - password:
+    - email: smootraveller@gmail.com
+    - password: test123
