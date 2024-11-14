@@ -126,7 +126,6 @@
 
                     <div class="budget-header">
                         <h3 :style="{ color: remainingBudgetColor }">${{ remainingBudgetCalc.toFixed(2) }}</h3>
-                        <!-- Budget Progress Bar -->
                         <div class="budget-progress">
                             <div class="budget-bar" :style="{ 
                                     width: budgetBarWidth, 
@@ -137,11 +136,6 @@
                         <h5>Total Spent:</h5>
                         <h5> <strong>${{ totalSpent.toFixed(2) }}</strong> / ${{ budget.total.toFixed(2) }}</h5>
                     </div>
-
-                    <div class="donut-chart-container">
-                        <svg id="donut-chart"></svg>
-                    </div>
-                    
                     <div class="budget-details">
                         <div class="budget-row">
                             <span>
@@ -260,6 +254,7 @@
                     await this.fetchTripData(this.tripID);  // Get the specific trip data
                     this.startCountdown();
                     this.chart();
+                    // this.updateChart();
                     await this.fetchWeatherDetails(this.destination); // Fetch coordinates for the destination
                     await this.fetchNews();
                 }
@@ -310,20 +305,15 @@
             },
             methods: {
                 startCountdown() {
-                    // Convert the startDate and endDate strings to Date objects
                     const start = new Date(this.startDate);
                     const end = new Date(this.endDate);
 
-                    // Update the countdown every second
                     this.countdownInterval = setInterval(() => {
-                        // Calculate the remaining time
                         const now = new Date().getTime();
                         const startDistance = start.getTime() - now;
                         const endDistance = end.getTime() - now;
 
-                        // If the countdown has reached zero
                         if (startDistance < 0) {
-                            // If the current date is before the endDate
                             if (endDistance > 0) {
                                 this.countdownText = "Your trip is here!";
                             } else {
@@ -331,65 +321,16 @@
                             }
                             clearInterval(this.countdownInterval);
                         } else {
-                            // Calculate days, hours, minutes, and seconds
                             const days = Math.floor(startDistance / (1000 * 60 * 60 * 24));
                             const hours = Math.floor((startDistance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                             const minutes = Math.floor((startDistance % (1000 * 60 * 60)) / (1000 * 60));
                             const seconds = Math.floor((startDistance % (1000 * 60)) / 1000);
 
-                            // Update the countdown text
-                            this.countdownText = `${days}d | ${hours}h | ${minutes}m | ${seconds}s`;
+                            this.countdownText = `${days}d ${hours}h ${minutes}m ${seconds}s`;
                         }
                     }, 1000);
                 },
 
-                chart() {
-                    const data = [
-                        { label: 'Hotels', value: this.budget.hotels },
-                        { label: 'Flights', value: this.budget.flights },
-                        { label: 'Activities', value: this.budget.activities },
-                        { label: 'Remaining', value: this.remainingBudget }
-                    ];
-
-                    const width = 300;
-                    const height = 300;
-                    const radius = Math.min(width, height) / 3;
-
-                    const color = d3.scaleOrdinal()
-                        .domain(data.map(d => d.label))
-                        .range(["#ff6347", "#1e90ff", "#32cd32", "#d3d3d3"]);
-
-                    const arc = d3.arc()
-                        .outerRadius(radius - 10)
-                        .innerRadius(radius - 60);
-
-                    const pie = d3.pie()
-                        .sort(null)
-                        .value(d => d.value);
-
-                    const svg = d3.select("#donut-chart")
-                        .attr("width", width)
-                        .attr("height", height)
-                        .append("g")
-                        .attr("transform", `translate(${width / 2},${height / 2})`);
-
-                    const slices = svg.selectAll(".slice")
-                        .data(pie(data))
-                        .enter()
-                        .append("g")
-                        .attr("class", "slice");
-
-                    slices.append("path")
-                        .attr("d", arc)
-                        .style("fill", d => color(d.data.label));
-
-                    slices.filter(d => d.data.value !== 0)
-                        .append("text")
-                        .attr("transform", d => `translate(${arc.centroid(d)})`)
-                        .attr("dy", ".35em")
-                        .attr("text-anchor", "middle")
-                        .text(d => d.data.label);
-                },
                 getYear() {
                     const date = new Date()
                     const year =  date.toLocaleDateString('en-GB', {
@@ -407,7 +348,7 @@
                     const urlParams = new URLSearchParams(window.location.search);
                     this.tripID = localStorage.getItem('tripID')
                     this.country = urlParams.get('country')
-                    console.log("Current tripID from URL:", this.tripID); // Log for debugging
+                    console.log("Current tripID from URL:", this.tripID);
                 },
 
                 navigateToAttractions() {
@@ -418,7 +359,6 @@
 
                 navigateToHotels() {
                     if (this.tripID) {
-                        // Store the country in localStorage before navigating
                         localStorage.setItem('selectedCountry', this.country);
                         window.location.href = `hotels.html?country=${this.country}`;
                     }
@@ -434,8 +374,8 @@
 
                 formatDate(dateString) {
                     const options = { year: 'numeric', month: 'short', day: '2-digit' };
-                    const date = new Date(dateString); // Convert string to Date object
-                    return date.toLocaleDateString('en-GB', options); // 'en-GB' formats as 'dd mmm yyyy'
+                    const date = new Date(dateString);
+                    return date.toLocaleDateString('en-GB', options);
                 },
 
                 async fetchNews() {
@@ -522,10 +462,10 @@
 
                         days.push({
                             date: formattedDate,
-                            activities: []  // Initialize empty activities array
+                            activities: []
                         });
 
-                        currentDate.setDate(currentDate.getDate() + 1);  // Move to the next day
+                        currentDate.setDate(currentDate.getDate() + 1);
                     }
 
                     return days;
@@ -607,6 +547,7 @@
                     // Step 2: If the user confirmed, delete the activity
                     if (result.isConfirmed) {
                         this.deleteActivity(activityId);
+                        this.updateChart();
                         Swal.fire('Deleted!', 'Activity has been removed.', 'success');
                     }
                 },
