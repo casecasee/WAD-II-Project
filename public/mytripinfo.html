@@ -372,7 +372,7 @@
                 },
 
                 async fetchNews() {
-                    const apikey = config.THENEWS_API_KEY;
+                    // const apikey = config.THENEWS_API_KEY;
                     const apiUrl = `https://api.thenewsapi.com/v1/news/top?api_token=${apikey}&search=${this.destination}&categories=food,travel&language=en&published_after=${this.currentYear}&limit=3`;
                     fetch(apiUrl)
                         .then(response => response.json())
@@ -394,7 +394,7 @@
 
                 fetchWeatherDetails(q) {
                     const URL = "https://api.openweathermap.org/data/2.5/weather";
-                    const apikey = config.OPENWEATHER_API_KEY;
+                    // const apikey = config.OPENWEATHER_API_KEY;
 
                     axios.get(URL, {
                         params: {

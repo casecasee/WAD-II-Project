@@ -25,6 +25,8 @@
             position: relative; /* Required for absolute positioning of pseudo-element */
             margin: 0; /* Optional: removes margin if any default margin is affecting layout */
             overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
         }
         body::before {
             content: ''; /* Required for pseudo-element */
@@ -552,7 +554,7 @@
     <script type="module" src="hotels.js"></script>
 
     <footer>
-        <p>&copy; 2024 ROAMEO. All Rights Reserved.</p>
+        &copy; 2024 ROAMEO. All Rights Reserved.
     </footer>
 </body>
 </html>

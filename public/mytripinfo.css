@@ -6,6 +6,8 @@ body {
     background-attachment: fixed;
     min-height: 100vh;
     position: relative; 
+    display: flex;
+    flex-direction: column;
 }
 
 body::before {
@@ -560,7 +562,7 @@ footer {
     box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
     font-family: 'Montserrat', sans-serif;
     width: 100%;
-    position: absolute;
+    position: relative;
 }
 
 

@@ -35,7 +35,9 @@
             background-attachment: fixed; /* Keeps the background image fixed during scroll */
             min-height: 100vh; /* Ensures the body fills the entire viewport */
             margin: 0; /* Optional: removes margin if any default margin is affecting layout */
-            position: relative
+            position: relative;
+            display: flex;
+            flex-direction: column;
         }
 
         body::before {
@@ -62,7 +64,7 @@
         }
         footer {
             bottom: 0;
-            position: absolute;
+            position: relative;
         }
     </style>
 
@@ -92,7 +94,7 @@
     </div>
 
     <footer>
-        <p>&copy; 2024 ROAMEO. All Rights Reserved.</p>
+        &copy; 2024 ROAMEO. All Rights Reserved.
     </footer>
 
         
