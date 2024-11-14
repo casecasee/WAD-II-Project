@@ -1,3 +1,5 @@
+
+
 body {
     background-color: #764F37;
     background-image: url('./countryPics/mountains.jpg') !important;
@@ -177,10 +179,11 @@ footer {
     box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
     font-family: 'Montserrat', sans-serif;
     width: 100%;
-    position: relative;  /* Normal flow positioning */
-    bottom: 0;           /* No need to use bottom: 0; here */
+    bottom: 0;
     left: 0;
+    position: absolute;
 }
+
 
 /* Empty Box Styling */
 .empty-box {

@@ -410,7 +410,7 @@
                 },
 
                 async fetchNews() {
-                    const apikey = "-";
+                    const apikey = "In7Boy8U1mfG4J2BTmzJ0dXxucyacS4CPjlORcRN";
                     const apiUrl = `https://api.thenewsapi.com/v1/news/top?api_token=${apikey}&search=${this.destination}&categories=food,travel&language=en&published_after=${this.currentYear}&limit=3`;
                     console.log(this.date)
                     fetch(apiUrl)
@@ -433,7 +433,7 @@
 
                 fetchWeatherDetails(q) {
                     const URL = "https://api.openweathermap.org/data/2.5/weather";
-                    const apikey = "-";
+                    const apikey = "cfac8ba6280c9670e9d8d720e56cfd61";
 
                     axios.get(URL, {
                         params: {

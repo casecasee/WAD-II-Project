@@ -1,5 +1,6 @@
 // <!------------------------------------------------------ USES API TO GET IMAGE ------------------------------------------------------------------->
 import { UID, get_info, delete_trip } from './functions.js';
+import { config } from './config.js';
 
 const app = Vue.createApp({
     data() {
@@ -59,7 +60,7 @@ const app = Vue.createApp({
             const query = `Famous and iconic locations ${destination}`;
             // const query = `famous place ${destination}`;
 
-            const url = `https://api.unsplash.com/photos/random?client_id=JivBMMHuK8nWdlawocBWaYEZBRT35nzdtkNs8yJM-6g&query=${encodeURIComponent(query)}`;
+            const url = `https://api.unsplash.com/photos/random?client_id=${config.UNSPLASH_API_KEY1}&query=${encodeURIComponent(query)}`;
         
             try {
                 const response = await axios.get(url);
