@@ -25,7 +25,7 @@ const app = Vue.createApp({
     methods: {
         async fetchCountryImage(destination) {
             const query = `Famous and iconic locations ${destination}`;
-            const url = `https://api.unsplash.com/photos/random?client_id=${config.UNSPLASH_API_KEY}&query=${encodeURIComponent(query)}`;
+            const url = `https://api.unsplash.com/photos/random?client_id=${config.UNSPLASH_API_KEY1}&query=${encodeURIComponent(query)}`;
         
             try {
                 const response = await axios.get(url);
@@ -42,66 +42,34 @@ const app = Vue.createApp({
                 console.log("Raw trips data:", trips);
 
                 this.photos = await Promise.all(trips.map(async trip => {
-                    // Skip if no tripID
-                    if (!trip.tripID) {
-                        console.log("Trip missing tripID:", trip);
-                        return null;
-                    }
-
                     const photoURL = await this.fetchCountryImage(trip.destination);
-                    
 
-                    try {
-                        // Get subcollections data
-                        const tripRef = doc(db, "trips", trip.tripID);
-                        
-                        // Get flights
-                        const flightsRef = collection(tripRef, "flights");
-                        const flightsSnap = await getDocs(flightsRef);
-                        const flights = flightsSnap.docs.map(doc => ({
-                            id: doc.id,
-                            ...doc.data()
-                        }));
+                    // Map attractions data properly
+                    const attractions = trip.attractions.map(attraction => ({
+                        id: attraction.id || Math.random().toString(),
+                        name: attraction.a_name, // Note the property is 'a_name' not 'name'
+                        date: attraction.date,
+                        cost: attraction.cost
+                    }));
 
-                        // Get hotels
-                        const hotelsRef = collection(tripRef, "hotels");
-                        const hotelsSnap = await getDocs(hotelsRef);
-                        const hotels = hotelsSnap.docs.map(doc => ({
-                            id: doc.id,
-                            ...doc.data()
-                        }));
+                    console.log("Mapped attractions:", attractions); // Debug log
 
-                        // Get attractions
-                        const attractionsRef = collection(tripRef, "attractions");
-                        const attractionsSnap = await getDocs(attractionsRef);
-                        const attractions = attractionsSnap.docs.map(doc => ({
-                            id: doc.id,
-                            ...doc.data()
-                        }));
-
-                        return {
-                            id: trip.tripID,
-                            src: photoURL,
-                            alt: `Trip to ${trip.destination}`,
-                            desc: `Trip to ${trip.destination}`,
-                            destination: trip.destination,
-                            startDate: trip.startdate,
-                            endDate: trip.enddate,
-                            cost: trip.cost || 0,
-                            flights: flights,
-                            hotels: hotels,
-                            attractions: attractions,
-                            itinerary: trip.activities || []
-                        };
-                    } catch (error) {
-                        console.error(`Error fetching details for trip ${trip.tripID}:`, error);
-                        return null;
-                    }
+                    return {
+                        id: trip.tripID,
+                        src: photoURL,
+                        alt: `Trip to ${trip.destination}`,
+                        desc: `Trip to ${trip.destination}`,
+                        destination: trip.destination,
+                        startDate: trip.startdate,
+                        endDate: trip.enddate,
+                        budget: trip.budget || 0,
+                        flights: trip.flights || [],
+                        hotels: trip.hotels || [],
+                        attractions: attractions // Use the mapped attractions
+                    };
                 }));
 
-                // Filter out any null values
-                this.photos = this.photos.filter(photo => photo !== null);
-                console.log("Final processed photos:", this.photos);
+                console.log("Processed photos:", this.photos);
             } catch (error) {
                 console.error('Error loading trips:', error);
             }
