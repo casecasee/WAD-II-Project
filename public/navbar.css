@@ -253,8 +253,6 @@ header{
     .dropdown_menu{
         left: 2rem;
         width: unset;
-        background: black;
-        backdrop-filter: none;
     }
 }
 
