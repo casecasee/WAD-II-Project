@@ -39,16 +39,17 @@ const app = Vue.createApp({
         async loadTrips() {
             try {
                 const trips = await get_all_trips();
-                console.log("Fetched trips:", trips);
+                console.log("Raw trips data:", trips);
 
                 this.photos = await Promise.all(trips.map(async trip => {
-                    // Check if trip and tripID exist
-                    if (!trip || !trip.tripID) {
-                        console.log("Invalid trip data:", trip);
+                    // Skip if no tripID
+                    if (!trip.tripID) {
+                        console.log("Trip missing tripID:", trip);
                         return null;
                     }
 
                     const photoURL = await this.fetchCountryImage(trip.destination);
+                    
 
                     try {
                         // Get subcollections data
@@ -98,9 +99,9 @@ const app = Vue.createApp({
                     }
                 }));
 
-                // Filter out any null values from failed loads
+                // Filter out any null values
                 this.photos = this.photos.filter(photo => photo !== null);
-                console.log("Processed photos with trip details:", this.photos);
+                console.log("Final processed photos:", this.photos);
             } catch (error) {
                 console.error('Error loading trips:', error);
             }
