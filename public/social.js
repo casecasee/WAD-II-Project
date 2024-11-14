@@ -8,6 +8,7 @@ import {
     getDoc
 } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
 import { config } from './config.js';
+import { mapping } from "./wth.js";
 
 
 // Initialize Firestore
@@ -21,14 +22,16 @@ const app = Vue.createApp({
             currentPage: 1,
             photosPerPage: 8,
             UID: null,
+            oldstart:'',
+            oldend:''
         }
     },
     methods: {
         async fetchCountryImage(destination) {
             const query = `Famous and iconic locations ${destination}`;
             //REMIND ME TO CHANGE THIS BACK TO THE ORIGINAL
-            const url = `https://api.unsplash.com/photos/random?client_id=${config.UNSPLASH_API_KEY1}&query=${encodeURIComponent(query)}`;
-            // const url = 'https://images.unsplash.com/photo-1500835556837-99ac94a94552';
+            // const url = `https://api.unsplash.com/photos/random?client_id=${config.UNSPLASH_API_KEY1}&query=${encodeURIComponent(query)}`;
+            const url = 'https://images.unsplash.com/photo-1500835556837-99ac94a94552';
         
             try {
                 const response = await axios.get(url);
@@ -117,6 +120,8 @@ const app = Vue.createApp({
                 const tripRef = doc(db, "trips", photo.id);
                 const tripSnap = await getDoc(tripRef);
                 const tripData = tripSnap.data();
+                this.oldstart = tripData.startdate;
+                this.oldend = tripData.enddate;
 
                 this.selectedPhoto = {
                     ...photo,
@@ -232,33 +237,29 @@ const app = Vue.createApp({
                 // Add attractions
                 if (photo.attractions && photo.attractions.length > 0) {
                     for (const attraction of photo.attractions) {
-5
-                        const date = attraction.date.toDate();
 
-                        // Format the date as DD-MM
-                        // const day = String(date.getDate()).padStart(2, '0');    // Get day with leading zero
-                        // const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
+                        const mapp = mapping(this.oldstart, this.oldend, this.selectedPhoto.startDate, this.selectedPhoto.endDate)
+                        const date = attraction.date.toDate(); // firebase timestamp obj
 
-                        // const formattedDate = `${day}-${month}`;
+                        const year = date.getFullYear();
+                        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed, so add 1
+                        const day = String(date.getDate()).padStart(2, '0');
 
-                        // Format the time as HH:MM
+                        const formattedDate = `${year}-${month}-${day}`;
+                        
                         const hours = String(date.getHours()).padStart(2, '0'); // Get hours with leading zero
                         const minutes = String(date.getMinutes()).padStart(2, '0');
 
                         const formattedTime = `${hours}:${minutes}`;
 
-                        const addd = this.selectedPhoto.startDate.slice(5)
-                        // const dateMMDD = "12-25"; // Example for December 25th
+                        const mapped_date = mapp[formattedDate];
+                        console.log(mapped_date)
+                        const final_mapped = mapped_date.slice(5)
 
-                        // Split the date string by the hyphen
-                        const [monthh, dayy] = addd.split("-");
-
-                        // Rearrange and format to DD-MM
+                        // const addd = this.selectedPhoto.startDate.slice(5) // YYYY-MM-DD
+                        const [monthh, dayy] = final_mapped.split("-");
                         const dateDDMM = `${dayy}-${monthh}`;
-
-
-                        // console.log(this.selectedPhoto.startDate);
-
+                        console.log(dateDDMM);
 
 
                         await add_attraction(
