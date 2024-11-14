@@ -1,6 +1,7 @@
 import { getFirestore, doc, getDoc, getDocs, collection, updateDoc } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.13.2/firebase-auth.js";
 import { firebaseApp } from "./stuff.js";
+import { config } from './config.js';
 
 const db = getFirestore(firebaseApp);
 
@@ -13,8 +14,8 @@ const app = Vue.createApp({
                 endDate: '',
                 hotels: [],
                 showPopup: false,
-                RAPID_API_KEY: "7bb272beafmshf057635e1f360f4p10cef0jsn822b6e337760",
-                RAPID_API_HOST: "booking-com.p.rapidapi.com",
+                RAPID_API_KEY: config.RAPID_API_KEY,
+                RAPID_API_HOST: config.RAPID_API_HOST,
                 country: '',
                 hotelStartDate: '',
                 hotelEndDate: '',
@@ -52,7 +53,12 @@ const app = Vue.createApp({
             },
             async searchHotels() {
                 if (!this.country || !this.startDate || !this.endDate) { 
-                    alert('Please fill in all fields');
+                    Swal.fire({
+                        title: 'Warning!',
+                        text: 'Please fill in all fields',
+                        icon: 'warning',
+                        confirmButtonColor: '#764F37'
+                    });
                     return;
                 }
 
@@ -101,7 +107,12 @@ const app = Vue.createApp({
                     }
                 } catch (error) {
                     console.error('Error:', error);
-                    alert('Error fetching hotel data');
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'Failed to fetch hotel data. Please try again.',
+                        icon: 'error',
+                        confirmButtonColor: '#764F37'
+                    });
                 }
             },
             async addHotel(event) {
@@ -123,7 +134,12 @@ const app = Vue.createApp({
                     // Get tripID from localStorage
                     const tripID = localStorage.getItem('tripID');
                     if (!tripID) {
-                        alert('No trip ID found. Please select a trip first.');
+                        Swal.fire({
+                            title: 'Error!',
+                            text: 'No trip ID found. Please select a trip first.',
+                            icon: 'error',
+                            confirmButtonColor: '#764F37'
+                        });
                         return;
                     }
 
@@ -136,21 +152,27 @@ const app = Vue.createApp({
                         hotel.min_total_price || 0
                     );
 
-                    // Show success popup
-                    this.showPopup = true;
-                    
-                    // Hide popup after 2 seconds
-                    setTimeout(() => {
-                        this.showPopup = false;
-                    }, 2000);
-
-                    // Optional: Show success message
-                    alert('Hotel added successfully!');
-                    window.location.href = `mytripinfo.html?country=${encodeURIComponent(this.country)}`
+                    // Show success message with SweetAlert2
+                    Swal.fire({
+                        title: 'Success!',
+                        text: 'Hotel has been added to your trip successfully!',
+                        icon: 'success',
+                        confirmButtonColor: '#764F37',
+                        timer: 2000,
+                        timerProgressBar: true
+                    }).then(() => {
+                        // Redirect after the alert is closed
+                        window.location.href = `mytripinfo.html?country=${encodeURIComponent(this.country)}`;
+                    });
 
                 } catch (error) {
                     console.error('Error adding hotel:', error);
-                    alert('Failed to add hotel to trip: ' + error.message);
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'Failed to add hotel to trip: ' + error.message,
+                        icon: 'error',
+                        confirmButtonColor: '#764F37'
+                    });
                 }
             },
             closePopup() {

@@ -67,3 +67,10 @@ node_modules/
 
 # dataconnect generated files
 .dataconnect
+
+# Add these lines to your .gitignore
+config.js
+.env
+
+# Ignore config file with sensitive data
+public/config.js

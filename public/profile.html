@@ -327,7 +327,7 @@
                         <h3>Current Word</h3>
                         <p id="current-word">Bonjour</p>
                         <div class="game-input-group">
-                            <input type="text" id="answer" placeholder="Type the translation">
+                            <input type="text" id="answer" placeholder="Type the translation" onkeypress="if(event.key === 'Enter') checkAnswer()">
                             <button id="submit-answer" class="btn btn-primary">Submit</button>
                         </div>
                     </div>
@@ -399,6 +399,9 @@
     });
 
     // LANGUAGE GAME
+    let currentWordIndex = 0;
+    let score = 0;
+    let streak = 0;
     const words = [
             // French words
             { word: 'Bonjour', translation: 'Hello' },
@@ -461,10 +464,62 @@
             { word: '만나서 반갑습니다 (Mannaseo bangapseumnida)', translation: 'Nice to meet you' }
         ];
 
-        let currentWordIndex = 0;
-        let score = 0;
-        let streak = 0;
+        function initializeGame() {
+            const submitButton = document.getElementById('submit-answer');
+            const answerInput = document.getElementById('answer');
+            const currentWordElement = document.getElementById('current-word');
 
+            if (currentWordElement) {
+                currentWordElement.textContent = words[currentWordIndex].word;
+            }
+
+            if (submitButton) {
+                submitButton.addEventListener('click', checkAnswer);
+            }
+
+            // if (answerInput) {
+            //     answerInput.addEventListener('keypress', (e) => {
+            //         if (e.key === 'Enter') {
+            //             checkAnswer();
+            //         }
+            //     });
+            // }
+        }
+        // Tab switching function
+        function showTab(tabId) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.style.display = 'none';
+            });
+            
+            // Show selected tab
+            const selectedTab = document.getElementById(tabId);
+            if (selectedTab) {
+                selectedTab.style.display = 'block';
+                // Initialize game if game tab is selected
+                if (tabId === 'game') {
+                    initializeGame();
+                }
+            }
+        }
+
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            // Add click handlers to tab links
+            const tabLinks = document.querySelectorAll('.tab-link');
+            if (tabLinks) {
+                tabLinks.forEach(link => {
+                    link.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const tabId = e.target.getAttribute('data-tab');
+                        showTab(tabId);
+                    });
+                });
+            }
+
+            // Show default tab
+            showTab('account');
+        });
         document.addEventListener('DOMContentLoaded', () => {
         const submitButton = document.getElementById('submitAnswer');
         const answerInput = document.getElementById('answer');
@@ -523,7 +578,7 @@
             messageDiv.style.color = 'red';
             messageDiv.style.marginTop = '10px';
             gameCard.appendChild(messageDiv);
-            setTimeout(() => messageDiv.remove(), 3000);
+            setTimeout(() => messageDiv.remove(), 1000);
         }
     </script>
     <script type="module">
