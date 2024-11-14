@@ -18,7 +18,7 @@ li{
 
 a{
     text-decoration: none;
-    color:white;
+    color:white; 
     font-size: 1rem;
     transition: color 0.3s ease, transform 0.3s ease;
 }
@@ -253,6 +253,8 @@ header{
     .dropdown_menu{
         left: 2rem;
         width: unset;
+        background: rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
     }
 }
 
