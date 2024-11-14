@@ -203,6 +203,24 @@ const app = Vue.createApp({
         async addToMyTrips(photo) {
             try {
                 this.UID = await UID();
+
+                let loadingPopup = Swal.fire({
+                    title: 'Adding to My Trips...',
+                    html: `
+                        <div class="loading-content">
+                            <div>Adding trip to ${photo.destination}</div>
+                            <div>Please wait while we process your request</div>
+                        </div>
+                    `,
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                    willOpen: () => {
+                        Swal.showLoading();
+                    },
+                    customClass: {
+                        popup: 'loading-popup'
+                    }
+                });
                 
                 if (!this.UID) {
                     Swal.fire({

@@ -9,6 +9,13 @@ body {
     min-height: 100vh; /* Ensures the body fills the entire viewport */
     position: relative; /* Required for absolute positioning of pseudo-element */
     margin: 0; /* Optional: removes margin if any default margin is affecting layout */
+    display: flex;
+    flex-direction: column;
+}
+
+#app {
+    flex: 1;
+    padding-bottom: 60px;
 }
 
 body::before {
