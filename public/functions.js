@@ -36,7 +36,7 @@ function getFirebaseTimestamp(dateString, timeString) {
     const [day, month] = dateString.split('-').map(Number);
     const [hours, minutes] = timeString.split(':').map(Number);
 
-    // Get the current year
+    // Get the current year 
     const year = new Date().getFullYear();
 
     // Create a JavaScript Date object
@@ -170,9 +170,10 @@ export const add_hotel = async function add_hotel(tripID, hotel_name, checkin, c
 
 //------------------------------------------------- add attraction to attraction arr ----------------------------------------------
 export const add_attraction = async function add_attraction(tripID, a_name, date, cost, time) {
+    // console.log(tripID);
     const doc_ref = doc(db, "trips", tripID);
-    console.log(date);
-    console.log(time);
+    // console.log(date);
+    // console.log(time);
     const ts = getFirebaseTimestamp(date, time);
 
 
@@ -184,6 +185,7 @@ export const add_attraction = async function add_attraction(tripID, a_name, date
     const doc_snap =  await getDoc(doc_ref);
     const a_list = doc_snap.data().attractions;
     a_list.push(new_data);
+    console.log(a_list);
 
     await updateDoc(doc_ref, {'attractions' : a_list});
 }
@@ -291,9 +293,9 @@ export const trips_for_community = async function get_trips_for_community(UID) {
         querySnapshot.forEach(doc => {
             console.log(doc.data());
             if (this_users_trips.indexOf(doc.id) == -1) { // check if the trip is this users'
-                console.log('check');
+                // console.log('check');
                 if (isDateInPast(doc.data().enddate)) {
-                    console.log('this check');
+                    // console.log('this check');
 
                     rt.push({
                         tripID: doc.id,  // Add the document ID
