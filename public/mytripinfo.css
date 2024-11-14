@@ -681,7 +681,6 @@ footer {
     }
 }
 
-/* For very small devices (e.g. below 480px) */
 @media screen and (max-width: 504px) {
     /* Adjust layout further */
     .trip-container {
@@ -762,5 +761,17 @@ footer {
     .btn {
         font-size: 19px; /* Restore default button size */
         padding: 12px 24px; /* Restore default button padding */
+    }
+}
+
+@media screen and (max-width: 429px) {
+    .center-message {
+        flex-grow: 1;
+    }
+    .add-attract {
+        flex-grow: 1;
+    }
+    .add-flight {
+        width: 100%
     }
 }
