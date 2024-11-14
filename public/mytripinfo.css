@@ -563,16 +563,6 @@ footer {
     position: absolute;
 }
 
-.budget-pie-section {
-    margin-top: 20px;
-    text-align: center;
-}
-
-#budget-pie-chart {
-    width: 100%;
-    max-width: 400px;
-    margin: 0 auto;
-}
 
 /* Responsive design */
 @media screen and (max-width:950px) {
