@@ -224,20 +224,49 @@ const app = Vue.createApp({
                 // First add the trip info
                 const tripID = await add_info_trips(
                     photo.destination, 
-                    startDate,
-                    endDate,
+                    this.selectedPhoto.startDate,
+                    this.selectedPhoto.endDate,
                     photo.budget || 0
                 );
 
                 // Add attractions
                 if (photo.attractions && photo.attractions.length > 0) {
                     for (const attraction of photo.attractions) {
+5
+                        const date = attraction.date.toDate();
+
+                        // Format the date as DD-MM
+                        // const day = String(date.getDate()).padStart(2, '0');    // Get day with leading zero
+                        // const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
+
+                        // const formattedDate = `${day}-${month}`;
+
+                        // Format the time as HH:MM
+                        const hours = String(date.getHours()).padStart(2, '0'); // Get hours with leading zero
+                        const minutes = String(date.getMinutes()).padStart(2, '0');
+
+                        const formattedTime = `${hours}:${minutes}`;
+
+                        const addd = this.selectedPhoto.startDate.slice(5)
+                        // const dateMMDD = "12-25"; // Example for December 25th
+
+                        // Split the date string by the hyphen
+                        const [monthh, dayy] = addd.split("-");
+
+                        // Rearrange and format to DD-MM
+                        const dateDDMM = `${dayy}-${monthh}`;
+
+
+                        // console.log(this.selectedPhoto.startDate);
+
+
+
                         await add_attraction(
                             tripID,
                             attraction.a_name,
-                            startDate,
-                            endDate,
-                            attraction.cost || 0
+                            dateDDMM,
+                            attraction.cost || 0, 
+                            formattedTime
                         );
                     }
                 }
@@ -248,8 +277,8 @@ const app = Vue.createApp({
                         await add_hotel(
                             tripID,
                             hotel.h_name,
-                            startDate,
-                            endDate,
+                            this.selectedPhoto.startDate,
+                            this.selectedPhoto.endDate,
                             hotel.cost || 0
                         );
                     }

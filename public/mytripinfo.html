@@ -44,7 +44,10 @@
 
         <div class="trip-container">
             <div class="itinerary-section">
-                <h2>Trip Itinerary</h2>
+                <div class="countdown">
+                    <h2>Trip Itinerary</h2>
+                    <h4 style="font-weight: bold; color:#764F37;">Days to trip: {{ countdownText }}</h4>
+                </div>
                 <div class="hotel-card">
                     <div class="hotel-header">
                         <h3><i class="fa-solid fa-hotel"></i> Hotels</h3>
@@ -65,14 +68,12 @@
                     </div>
 
                     <div v-if="day.activities.length === 0">
-                        <!-- Free day message and button in the same line -->
                         <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; flex-wrap: wrap;">
                             <p class="center-message">Free day! Add attractions to fill up your day.</p>
                             <button class="add-attract" @click="setAttractDate(day.date)">+ Attraction</button>
                         </div>
                     </div>
                     
-                    <!-- Check if there are activities for the day -->
                     <div v-for="activity in day.activities" :key="activity.activityId" class="activity-item">
                         <span class="activity-time">{{ activity.formattedTime }}</span>
                         <div class="activity-details">
@@ -82,7 +83,6 @@
                         </div>
                     </div>
                     
-                    <!-- Display a free day message if there are no activities -->
                     <div v-if="day.activities.length > 0" style="display: flex; justify-content: flex-end;">
                         <button class="add-attract" @click="setAttractDate(day.date)">+ Attraction</button>
                     </div>
@@ -90,11 +90,7 @@
             </div>
 
             <!-- Flight Details Sidebar -->
-            <div class="flight-section">
-                <h2>Days to Trip:</h2>
-                    <span class="temp">
-                        {{  countdown  }}
-                    </span>                
+            <div class="flight-section">     
                 <h2>Flight Details</h2>
                 <div v-if="flights.length === 0" class="center-message-hotel">
                     <button class="add-flight" @click="navigateToAddFlightInfo">+ Flights</button>
@@ -106,7 +102,6 @@
                     </div>
                     <div class="flight-header">
                         <span class="flight-type">{{ flight.departure_time }}</span>
-                        <!-- Only show Seat No if available -->
                         <span v-if="flight.seat_no" class="flight-type">Seat: {{ flight.seat_no }}</span>
                     </div>
                     <div class="flight-details">
@@ -127,7 +122,6 @@
 
                     <div class="budget-header">
                         <h3 :style="{ color: remainingBudgetColor }">${{ remainingBudgetCalc.toFixed(2) }}</h3>
-                        <!-- Budget Progress Bar -->
                         <div class="budget-progress">
                             <div class="budget-bar" :style="{ 
                                     width: budgetBarWidth, 
@@ -138,7 +132,6 @@
                         <h5>Total Spent:</h5>
                         <h5> <strong>${{ totalSpent.toFixed(2) }}</strong> / ${{ budget.total.toFixed(2) }}</h5>
                     </div>
-                    
                     <div class="budget-details">
                         <div class="budget-row">
                             <span>
@@ -224,6 +217,7 @@
                         flights: 0,
                         activities: 0
                     },
+                    totalspent: 0,
                     remainingBudget: 0,
                     startDate: '',
                     endDate: '',
@@ -239,26 +233,23 @@
                     isSunrise: null,
                     news: [],
                     currentYear: null,
-                    countdown: '',
+                    countdownText: ''
                 };
             },
 
             async mounted() {
-                // Set tripID and country before loading trips
                 this.getTripIDFromURL();
 
-                this.userID = await this.getUserID(); // Get the user ID after authentication
-                console.log("User ID:", this.userID);  // Log the userID
+                this.userID = await this.getUserID(); 
+                console.log("User ID:", this.userID); 
                 
                 this.getYear();
 
                 if (this.userID) {
-                    await this.fetchTripData(this.tripID);  // Get the specific trip data
-                    await this.fetchWeatherDetails(this.destination); // Fetch coordinates for the destination
+                    await this.fetchTripData(this.tripID); 
+                    this.startCountdown();
+                    await this.fetchWeatherDetails(this.destination);
                     await this.fetchNews();
-                    console.log("Start Date:", this.startDate);
-                    console.log("End Date:", this.endDate);
-                    this.startCountdown()
                 }
             },
 
@@ -270,79 +261,75 @@
                         : 'fas fa-temperature-low';
                 },
                 totalSpent() {
+                    this.totalspent = this.budget.flights + this.budget.hotels + this.budget.activities;
                     return this.budget.flights + this.budget.hotels + this.budget.activities;
                 },
                 remainingBudgetCalc() {
+                    this.remainingBudget = this.budget.total - this.totalSpent;
                     return this.budget.total - this.totalSpent;
                 },
                 remainingBudgetPercentage() {
                     if (this.budget.total === 0) {
-                        return 0; // Avoid division by zero
+                        return 0;
                     }
                     return (this.remainingBudgetCalc / this.budget.total) * 100;
                 },
                 budgetBarWidth() {
-                    return `${Math.max(this.remainingBudgetPercentage, 0).toFixed(2)}%`; // Ensure at least 0%
+                    return `${Math.max(this.remainingBudgetPercentage, 0).toFixed(2)}%`;
                 },
                 budgetBarColor() {
                     if (this.remainingBudgetPercentage >= 50) {
-                        return '#4CAF50'; // Green
+                        return '#4CAF50'; 
                     } else if (this.remainingBudgetPercentage >= 15) {
-                        return '#FFA500'; // Orange
+                        return '#FFA500';
                     } else {
-                        return '#dc3545'; // Red
+                        return '#dc3545'; 
                     }
                 },
                 remainingBudgetColor() {
                     if (this.remainingBudgetPercentage >= 50) {
-                        return '#28a745'; // Green
+                        return '#28a745'; 
                     } else if (this.remainingBudgetPercentage >= 15) {
-                        return '#FFA500'; // Orange
+                        return '#FFA500'; 
                     } else {
-                        return '#dc3545'; // Red
+                        return '#dc3545';
                     }
                 }
             },
             methods: {
+                startCountdown() {
+                    const start = new Date(this.startDate);
+                    const end = new Date(this.endDate);
+
+                    this.countdownInterval = setInterval(() => {
+                        const now = new Date().getTime();
+                        const startDistance = start.getTime() - now;
+                        const endDistance = end.getTime() - now;
+
+                        if (startDistance < 0) {
+                            if (endDistance > 0) {
+                                this.countdownText = "Your trip is here!";
+                            } else {
+                                this.countdownText = "Trip is over!";
+                            }
+                            clearInterval(this.countdownInterval);
+                        } else {
+                            const days = Math.floor(startDistance / (1000 * 60 * 60 * 24));
+                            const hours = Math.floor((startDistance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                            const minutes = Math.floor((startDistance % (1000 * 60 * 60)) / (1000 * 60));
+                            const seconds = Math.floor((startDistance % (1000 * 60)) / 1000);
+
+                            this.countdownText = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+                        }
+                    }, 1000);
+                },
+
                 getYear() {
                     const date = new Date()
                     const year =  date.toLocaleDateString('en-GB', {
                         year: 'numeric'});
                     this.currentYear = year
                     console.log("current year:", this.currentYear)
-                },
-
-                startCountdown() {
-                    if (!this.startDate || !this.endDate) {
-                        console.log("Dates not set:", this.startDate, this.endDate);
-                        return;
-                    }
-
-                    // Parse the dates from the ISO string format
-                    const targetStartDate = new Date(this.startDate);
-                    const targetEndDate = new Date(this.endDate);
-
-                    const updateCountdown = () => {
-                        const now = new Date();
-                        const nowDateOnly = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-                        const startDateOnly = new Date(targetStartDate.getFullYear(), targetStartDate.getMonth(), targetStartDate.getDate());
-                        const endDateOnly = new Date(targetEndDate.getFullYear(), targetEndDate.getMonth(), targetEndDate.getDate());
-
-                        if (nowDateOnly >= startDateOnly && nowDateOnly <= endDateOnly) {
-                            this.countdown = "Your trip has arrived!";
-                        } else if (nowDateOnly > endDateOnly) {
-                            this.countdown = "Trip Ended";
-                        } else {
-                            const difference = startDateOnly - nowDateOnly;
-                            const daysRemaining = Math.ceil(difference / (1000 * 60 * 60 * 24));
-                            this.countdown = `${daysRemaining} Days!`;
-                        }
-
-                        console.log("Countdown Updated:", this.countdown);
-                    };
-
-                    updateCountdown(); // Initial update
-                    setInterval(updateCountdown, 60000); // Update every minute
                 },
 
                 setAttractDate(date) {
@@ -354,7 +341,7 @@
                     const urlParams = new URLSearchParams(window.location.search);
                     this.tripID = localStorage.getItem('tripID')
                     this.country = urlParams.get('country')
-                    console.log("Current tripID from URL:", this.tripID); // Log for debugging
+                    console.log("Current tripID from URL:", this.tripID);
                 },
 
                 navigateToAttractions() {
@@ -365,7 +352,6 @@
 
                 navigateToHotels() {
                     if (this.tripID) {
-                        // Store the country in localStorage before navigating
                         localStorage.setItem('selectedCountry', this.country);
                         window.location.href = `hotels.html?country=${this.country}`;
                     }
@@ -381,14 +367,13 @@
 
                 formatDate(dateString) {
                     const options = { year: 'numeric', month: 'short', day: '2-digit' };
-                    const date = new Date(dateString); // Convert string to Date object
-                    return date.toLocaleDateString('en-GB', options); // 'en-GB' formats as 'dd mmm yyyy'
+                    const date = new Date(dateString);
+                    return date.toLocaleDateString('en-GB', options);
                 },
 
                 async fetchNews() {
-                    // const apikey = config.THENEWS_API_KEY;
+                    const apikey = config.THENEWS_API_KEY;
                     const apiUrl = `https://api.thenewsapi.com/v1/news/top?api_token=${apikey}&search=${this.destination}&categories=food,travel&language=en&published_after=${this.currentYear}&limit=3`;
-                    console.log(this.date)
                     fetch(apiUrl)
                         .then(response => response.json())
                         .then(data => {
@@ -409,7 +394,7 @@
 
                 fetchWeatherDetails(q) {
                     const URL = "https://api.openweathermap.org/data/2.5/weather";
-                    // const apikey = config.OPENWEATHER_API_KEY;
+                    const apikey = config.OPENWEATHER_API_KEY;
 
                     axios.get(URL, {
                         params: {
@@ -470,17 +455,16 @@
 
                         days.push({
                             date: formattedDate,
-                            activities: []  // Initialize empty activities array
+                            activities: []
                         });
 
-                        currentDate.setDate(currentDate.getDate() + 1);  // Move to the next day
+                        currentDate.setDate(currentDate.getDate() + 1);
                     }
 
                     return days;
                 },
 
                 groupAndSortActivities(activities) {
-                    // Helper function to format date
                     const formatDate = (timestamp) => {
                         const date = new Date(timestamp * 1000);
                         return date.toLocaleDateString('en-GB', {
@@ -490,7 +474,6 @@
                         });
                     };
 
-                    // Helper function to format time
                     const formatTime = (timestamp) => {
                         const date = new Date(timestamp * 1000);
                         return date.toLocaleTimeString('en-US', {
@@ -500,7 +483,6 @@
                         });
                     };
 
-                    // Group activities by date
                     const grouped = activities.reduce((acc, activity) => {
                         const formattedDate = formatDate(activity.dateTime.seconds);
                         if (!acc[formattedDate]) {
@@ -513,19 +495,17 @@
                         return acc;
                     }, {});
 
-                    // Sort each group by time
                     Object.keys(grouped).forEach((date) => {
                         grouped[date].sort((a, b) => a.dateTime.seconds - b.dateTime.seconds);
                         grouped[date] = grouped[date].map((activity, index) => ({
                             ...activity,
-                            activityId: `${date}-${index}`, // Unique ID in the format date-index
+                            activityId: `${date}-${index}`,
                         }));
                     });
 
                     return grouped;
                 },
 
-                // Get the UID of the logged-in user
                 async getUserID() {
                     const auth = getAuth(firebaseApp);
                     return new Promise((resolve, reject) => {
@@ -533,7 +513,7 @@
                             if (user) {
                                 resolve(user.uid);
                             } else {
-                                window.location.href = 'index.html'; // Redirect if no user is signed in
+                                window.location.href = 'index.html';
                                 reject("No user signed in");
                             }
                         });
@@ -541,7 +521,6 @@
                 },
 
                 async confirmDeleteActivity(activityId) {
-                    // Step 1: Ask for confirmation using SweetAlert2
                     const result = await Swal.fire({
                         title: 'Are you sure?',
                         text: 'This activity will be removed.',
@@ -552,7 +531,6 @@
                         reverseButtons: true
                     });
 
-                    // Step 2: If the user confirmed, delete the activity
                     if (result.isConfirmed) {
                         this.deleteActivity(activityId);
                         Swal.fire('Deleted!', 'Activity has been removed.', 'success');
@@ -563,11 +541,9 @@
                     try {
                         let removedActivityCost = 0;
 
-                        // Step 1: Remove the activity from the local `days` array
                         this.days.forEach(day => {
                             const activityIndex = day.activities.findIndex(activity => activity.activityId === activityId);
                             if (activityIndex !== -1) {
-                                // Capture the cost of the removed activity
                                 removedActivityCost = day.activities[activityIndex].cost || 0;
                                 day.activities.splice(activityIndex, 1);
                                 console.log(`Activity with ID: ${activityId} has been deleted.`);
@@ -576,7 +552,6 @@
 
                         console.log("Updated days array after deletion:", this.days);
 
-                        // Step 2: Update Firestore with the new activities
                         const tripRef = doc(getFirestore(), "trips", this.tripID);
                         const tripSnap = await getDoc(tripRef);
 
@@ -594,7 +569,6 @@
                             await updateDoc(tripRef, { attractions: updatedAttractions });
                             console.log("Successfully updated attractions in Firebase.");
 
-                            // Step 3: Adjust the budget dynamically
                             this.budget.activities -= removedActivityCost;
 
                         } else {
@@ -606,7 +580,6 @@
                     }
                 },
 
-                // Fetch a specific trip's data by ID
                 async fetchTripData(tripID) {
                     const tripRef = doc(db, "trips", tripID);
                     const tripSnap = await getDoc(tripRef);
@@ -627,7 +600,6 @@
 
                         let allDays = this.generateAllDaysBetweenDates(this.startDate, this.endDate);
 
-                        // Map hotels to activities
                         if (tripData.hotels && tripData.hotels.length > 0) {
                             hotels = tripData.hotels.map(hotel => ({
                                 type: "Hotel Check-In",
@@ -635,19 +607,16 @@
                                 checkIn: hotel.checkin,
                                 checkOut: hotel.checkout,
                                 cost: hotel.cost,
-                                formattedCheckin: this.formatDate(hotel.checkin), // Format the check-in date
-                                formattedCheckout: this.formatDate(hotel.checkout) // Format the check-in date
+                                formattedCheckin: this.formatDate(hotel.checkin), 
+                                formattedCheckout: this.formatDate(hotel.checkout)
                             }));
                         }
 
-                        // Sort hotels by the formatted checkin date
                         hotels.sort((a, b) => new Date(a.formattedCheckin) - new Date(b.formattedCheckin));
                         console.log("sorted hotels", hotels);
                         this.hotels = hotels;
                         console.log("test", this.hotels);
 
-
-                        // Map attractions to activities
                         if (tripData.attractions && tripData.attractions.length > 0) {
                             activities.push(...tripData.attractions.map(attraction => ({
                                 type: "Activity",
@@ -657,19 +626,16 @@
                             })));
                         }
 
-                        // Sort activities by date/time
                         activities.sort((a, b) => new Date(a.date) - new Date(b.date));
 
                         console.log('Activities before grouping:', activities);
 
-                        // Group activities by day
                         let groupedDays = this.groupAndSortActivities(activities);
                         console.log('Grouped Days:', groupedDays);
 
-                        // Update the days data property
                         this.days = Object.keys(groupedDays).map(date => ({
-                            date, // e.g., "13 Nov 2024"
-                            activities: groupedDays[date] // Array of activities for that day
+                            date,
+                            activities: groupedDays[date]
                         }));
                         console.log("before", this.days)
 
@@ -677,7 +643,7 @@
                             if (groupedDays[day.date]) {
                                 day.activities = groupedDays[day.date];
                             } else {
-                                day.activities = [];  // No activities, empty array
+                                day.activities = [];
                             }
                         });
 
@@ -699,14 +665,10 @@
                         this.budget.activities = tripData.attractions
                             ? tripData.attractions.reduce((sum, activity) => sum + (activity.cost || 0), 0)
                             : 0;
-
-                        // this.trips.push(tripDetails);
-
-                        // return tripDetails;
                     } else {
                         console.error("No such trip found");
                     }
-                }
+                },
             }
         });
 
