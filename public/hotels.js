@@ -157,9 +157,7 @@ const app = Vue.createApp({
                         title: 'Success!',
                         text: 'Hotel has been added to your trip successfully!',
                         icon: 'success',
-                        confirmButtonColor: '#764F37',
-                        timer: 2000,
-                        timerProgressBar: true
+                        showConfirmButton: true
                     }).then(() => {
                         // Redirect after the alert is closed
                         window.location.href = `mytripinfo.html?country=${encodeURIComponent(this.country)}`;
